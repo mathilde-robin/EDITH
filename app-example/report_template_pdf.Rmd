@@ -1,0 +1,298 @@
+---
+title: "Rapport d'Analyse de Synergie - Formule de Bliss"
+author: "Application Shiny - Analyse de Synergie"
+date: "`r Sys.Date()`"
+output:
+  pdf_document:
+    toc: true
+    toc_depth: 3
+    number_sections: true
+    fig_width: 8
+    fig_height: 5
+    latex_engine: pdflatex
+    keep_tex: false
+header-includes:
+  - \usepackage[french]{babel}
+  - \usepackage{float}
+  - \usepackage{amsmath}
+  - \usepackage{graphicx}
+  - \usepackage{booktabs}
+  - \usepackage{longtable}
+geometry: margin=1in
+params:
+  analysis_type: "simple"
+  simple_data: NULL
+  matrix_data: NULL
+  multiple_data: NULL
+  multiple_results: NULL
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE, 
+  warning = FALSE, 
+  message = FALSE,
+  fig.align = "center",
+  fig.pos = "H",
+  dpi = 300
+)
+
+# Charger les packages nécessaires
+suppressPackageStartupMessages({
+  library(ggplot2)
+  library(dplyr)
+  library(knitr)
+  library(kableExtra)
+})
+
+# Source des fonctions
+source("utils/bliss_functions.R")
+```
+
+# Introduction
+
+Ce rapport présente les résultats d'une analyse de synergie utilisant la **formule de Bliss**. Cette méthode permet d'évaluer si l'effet combiné de deux drogues est synergique, additif ou antagoniste.
+
+## Principe de la Formule de Bliss
+
+La formule de Bliss calcule l'effet attendu d'une combinaison de drogues selon :
+
+$$E_{attendu} = E_A + E_B - (E_A \times E_B)$$
+
+Où :
+
+- $E_A$ = Effet de la drogue A
+- $E_B$ = Effet de la drogue B  
+- $E_{attendu}$ = Effet attendu selon le modèle de Bliss
+
+## Interprétation des Résultats
+
+- **Synergie** : Effet observé > Effet attendu (différence > 0.05)
+- **Additivité** : Effet observé ≈ Effet attendu (|différence| ≤ 0.05)
+- **Antagonisme** : Effet observé < Effet attendu (différence < -0.05)
+
+```{r conditional-content}
+# Le contenu suivant est conditionnel selon le type d'analyse
+analysis_type <- params$analysis_type
+```
+
+`r if(analysis_type == "simple") "# Analyse Simple"`
+
+```{r simple-analysis, eval=analysis_type=="simple", results='asis'}
+if (analysis_type == "simple" && !is.null(params$simple_data)) {
+  simple_data <- params$simple_data
+  
+  cat("## Paramètres d'Entrée\n\n")
+  cat("- **Effet Drogue A** :", simple_data$effect_A, "\n")
+  cat("- **Effet Drogue B** :", simple_data$effect_B, "\n") 
+  cat("- **Effet Observé** :", simple_data$observed_effect, "\n\n")
+  
+  cat("## Résultats des Calculs\n\n")
+  cat("- **Effet Attendu (Bliss)** :", round(simple_data$expected_effect, 4), "\n")
+  cat("- **Différence** :", round(simple_data$difference, 4), "\n")
+  cat("- **Pourcentage de Synergie** :", round(simple_data$synergy_percent, 2), "%\n")
+  cat("- **Type d'Interaction** :", simple_data$interaction_type, "\n\n")
+}
+```
+
+```{r simple-plot, eval=analysis_type=="simple", fig.cap="Comparaison des effets selon la formule de Bliss"}
+if (analysis_type == "simple" && !is.null(params$simple_data)) {
+  print(plot_bliss_comparison_static(params$simple_data))
+}
+```
+
+```{r simple-interpretation, eval=analysis_type=="simple", results='asis'}
+if (analysis_type == "simple" && !is.null(params$simple_data)) {
+  simple_data <- params$simple_data
+  
+  cat("## Interprétation\n\n")
+  
+  if (simple_data$interaction_type == "Synergique") {
+    cat("**SYNERGIE DÉTECTÉE** : L'effet combiné des deux drogues est **supérieur** à ce qui était attendu selon le modèle de Bliss. Cela suggère une interaction positive entre les deux substances.\n\n")
+    cat("**Implications** : La combinaison de ces drogues pourrait être plus efficace que l'utilisation de chacune séparément.\n\n")
+  } else if (simple_data$interaction_type == "Antagoniste") {
+    cat("**ANTAGONISME DÉTECTÉ** : L'effet combiné des deux drogues est **inférieur** à ce qui était attendu selon le modèle de Bliss. Cela suggère une interaction négative entre les deux substances.\n\n")
+    cat("**Implications** : La combinaison de ces drogues pourrait être moins efficace que prévu.\n\n")
+  } else {
+    cat("**ADDITIVITÉ** : L'effet combiné des deux drogues correspond à ce qui était attendu selon le modèle de Bliss. Les effets s'additionnent de manière prévisible.\n\n")
+    cat("**Implications** : La combinaison se comporte comme attendu, sans interaction particulière.\n\n")
+  }
+}
+```
+
+`r if(analysis_type == "matrix") "# Analyse de Matrice de Doses"`
+
+```{r matrix-analysis, eval=analysis_type=="matrix", results='asis'}
+if (analysis_type == "matrix" && !is.null(params$matrix_data)) {
+  matrix_data <- params$matrix_data
+  
+  cat("## Configuration de la Matrice\n\n")
+  cat("- **Nombre de combinaisons** :", nrow(matrix_data), "\n")
+  cat("- **Dose maximale A** :", max(matrix_data$dose_A), "\n")
+  cat("- **Dose maximale B** :", max(matrix_data$dose_B), "\n\n")
+  
+  # Statistiques
+  stats <- matrix_data %>%
+    summarise(
+      synergiques = sum(interaction_type == "Synergique"),
+      additifs = sum(interaction_type == "Additif"),
+      antagonistes = sum(interaction_type == "Antagoniste"),
+      total = n(),
+      pct_syn = round(synergiques/total*100, 1),
+      pct_add = round(additifs/total*100, 1),
+      pct_ant = round(antagonistes/total*100, 1)
+    )
+  
+  cat("## Statistiques Globales\n\n")
+  cat("- **Combinaisons Synergiques** :", stats$synergiques, "/", stats$total, "(", stats$pct_syn, "%)\n")
+  cat("- **Combinaisons Additives** :", stats$additifs, "/", stats$total, "(", stats$pct_add, "%)\n")
+  cat("- **Combinaisons Antagonistes** :", stats$antagonistes, "/", stats$total, "(", stats$pct_ant, "%)\n\n")
+}
+```
+
+```{r matrix-plot, eval=analysis_type=="matrix", fig.cap="Heatmap de synergie pour les différentes combinaisons de doses"}
+if (analysis_type == "matrix" && !is.null(params$matrix_data)) {
+  print(plot_synergy_heatmap_static(params$matrix_data))
+}
+```
+
+```{r matrix-table, eval=analysis_type=="matrix", results='asis'}
+if (analysis_type == "matrix" && !is.null(params$matrix_data)) {
+  cat("## Données Détaillées (15 premières combinaisons)\n\n")
+  
+  table_data <- params$matrix_data %>%
+    select(dose_A, dose_B, effect_A, effect_B, expected_effect, observed_effect, 
+           difference, interaction_type) %>%
+    mutate(across(where(is.numeric), ~round(.x, 4))) %>%
+    head(15)
+  
+  kable(table_data, 
+        caption = "Détail des combinaisons de doses et leurs effets",
+        col.names = c("Dose A", "Dose B", "Effet A", "Effet B", 
+                     "Attendu", "Observé", "Différence", "Type"),
+        booktabs = TRUE) %>%
+    kable_styling(latex_options = c("striped", "hold_position", "scale_down"))
+}
+```
+
+`r if(analysis_type == "multiple") "# Analyse de Données Multiples"`
+
+```{r multiple-analysis, eval=analysis_type=="multiple", results='asis'}
+if (analysis_type == "multiple" && !is.null(params$multiple_results)) {
+  multiple_results <- params$multiple_results
+  multiple_data <- params$multiple_data
+  stats <- multiple_results$statistics
+  
+  cat("## Données d'Entrée\n\n")
+  cat("- **Nombre d'échantillons** :", stats$n_samples, "\n")
+  cat("- **Source** : Saisie manuelle ou import CSV\n\n")
+  
+  cat("## Statistiques Descriptives\n\n")
+  cat("- **Synergie moyenne** :", round(stats$mean_synergy, 4), "\n")
+  cat("- **Écart-type** :", round(stats$sd_synergy, 4), "\n\n")
+  
+  cat("## Répartition des Types d'Interaction\n\n")
+  cat("- **Synergiques** :", stats$n_synergistic, "(", stats$percent_synergistic, "%)\n")
+  cat("- **Additifs** :", stats$n_additive, "(", stats$percent_additive, "%)\n")
+  cat("- **Antagonistes** :", stats$n_antagonistic, "(", stats$percent_antagonistic, "%)\n\n")
+}
+```
+
+```{r multiple-plots, eval=analysis_type=="multiple", fig.height=8}
+if (analysis_type == "multiple" && !is.null(params$multiple_results)) {
+  library(gridExtra)
+  
+  # Distribution des effets
+  p1 <- plot_synergy_distribution_static(params$multiple_results$results)
+  
+  # Graphique en secteurs
+  p2 <- plot_interaction_pie(params$multiple_results$statistics)
+  
+  # Combiner les graphiques
+  grid.arrange(p1, p2, ncol = 1, 
+               top = "Visualisations de l'analyse multiple")
+}
+```
+
+```{r multiple-table, eval=analysis_type=="multiple", results='asis'}
+if (analysis_type == "multiple" && !is.null(params$multiple_results)) {
+  cat("## Résultats Détaillés\n\n")
+  
+  table_data <- params$multiple_results$results %>%
+    select(effet_A, effet_B, effet_observe, expected_effect, difference, 
+           synergy_percent, interaction_type) %>%
+    mutate(across(where(is.numeric), ~round(.x, 4)))
+  
+  # Limiter à 15 lignes pour PDF
+  if (nrow(table_data) > 15) {
+    table_data <- table_data[1:15, ]
+    cat("\\textit{Note : Tableau tronqué aux 15 premières lignes pour raisons d'espace.}\n\n")
+  }
+  
+  kable(table_data,
+        caption = "Résultats détaillés de l'analyse de synergie",
+        col.names = c("Effet A", "Effet B", "Observé", "Attendu", 
+                     "Différence", "% Synergie", "Type"),
+        booktabs = TRUE) %>%
+    kable_styling(latex_options = c("striped", "hold_position", "scale_down"))
+}
+```
+
+# Conclusions et Recommandations
+
+```{r conclusions, results='asis'}
+cat("## Résumé de l'Analyse\n\n")
+
+if (analysis_type == "simple") {
+  if (!is.null(params$simple_data)) {
+    simple_data <- params$simple_data
+    cat("Cette analyse simple a révélé une interaction de type **", simple_data$interaction_type, "** entre les deux drogues testées.\n\n")
+    
+    if (simple_data$interaction_type == "Synergique") {
+      cat("**Recommandations** :\n\n")
+      cat("- Explorer davantage cette combinaison prometteuse\n")
+      cat("- Considérer des tests à différentes doses\n")
+      cat("- Valider sur un échantillon plus large\n\n")
+    }
+  }
+} else if (analysis_type == "matrix") {
+  if (!is.null(params$matrix_data)) {
+    matrix_data <- params$matrix_data
+    synergy_pct <- round(sum(matrix_data$interaction_type == "Synergique") / nrow(matrix_data) * 100, 1)
+    
+    cat("L'analyse de matrice a révélé que ", synergy_pct, "% des combinaisons de doses testées présentent une synergie.\n\n")
+    
+    cat("**Recommandations** :\n\n")
+    cat("- Identifier les zones de doses optimales (zone bleue sur la heatmap)\n")
+    cat("- Éviter les zones d'antagonisme (zone rouge)\n")
+    cat("- Affiner l'analyse autour des doses prometteuses\n\n")
+  }
+} else if (analysis_type == "multiple") {
+  if (!is.null(params$multiple_results)) {
+    stats <- params$multiple_results$statistics
+    
+    cat("L'analyse de ", stats$n_samples, " échantillons a révélé :\n\n")
+    cat("- ", stats$percent_synergistic, "% de combinaisons synergiques\n")
+    cat("- Une synergie moyenne de ", round(stats$mean_synergy, 3), "\n\n")
+    
+    if (stats$percent_synergistic > 50) {
+      cat("**Observation** : La majorité des combinaisons montrent une synergie, suggérant une interaction positive générale.\n\n")
+    }
+    
+    cat("**Recommandations** :\n\n")
+    cat("- Approfondir l'étude des échantillons les plus synergiques\n")
+    cat("- Analyser les facteurs communs aux combinaisons efficaces\n")
+    cat("- Considérer une étude dose-réponse\n\n")
+  }
+}
+
+cat("## Notes Méthodologiques\n\n")
+cat("- Cette analyse utilise la formule de Bliss comme référence\n")
+cat("- Le seuil de synergie/antagonisme est fixé à ±0.05\n") 
+cat("- Les résultats doivent être validés expérimentalement\n")
+cat("- Considérer d'autres modèles (Loewe, HSA) pour confirmation\n\n")
+
+cat("\\vspace{1cm}\n\n")
+cat("\\textbf{Rapport généré le} :", format(Sys.time(), "%d/%m/%Y à %H:%M"), "\n\n")
+cat("\\textbf{Application} : Shiny - Analyse de Synergie v2.0\n")
+```
