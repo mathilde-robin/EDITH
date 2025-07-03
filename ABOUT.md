@@ -18,11 +18,14 @@ Le script est conçu pour être utilisé dans un environnement R et nécessite q
 
 La formule de Bliss est utilisée pour évaluer l'additivité des effets de deux ou plusieurs médicaments lorsqu'ils sont administrés en combinaison. Elle repose sur l'idée que si deux médicaments agissent indépendamment l'un de l'autre, l'effet combiné devrait être égal à la somme des effets individuels de chaque médicament.
 La formule de Bliss est généralement exprimée comme suit :
+
 E_combined = E_A + E_B - (E_A * E_B)
 où :
 - E_combined est l'effet combiné des deux médicaments.
 - E_A est l'effet du médicament A.
 - E_B est l'effet du médicament B.
+
+  
 (((Cette formule suppose que les effets des médicaments sont mesurés sur une échelle de 0 à 1, où 0 représente l'absence d'effet et 1 représente l'effet maximal.))) ????
 En d'autres termes, si les médicaments A et B sont administrés séparément, leurs effets individuels sont additionnés, mais l'effet combiné est ajusté en soustrayant le produit de leurs effets individuels. Cela permet de tenir compte du fait que les médicaments peuvent interagir de manière additive ou synergique.
 La formule de Bliss est souvent utilisée dans les études pharmacologiques pour évaluer si une combinaison de médicaments produit un effet supérieur à celui attendu en fonction de leurs effets individuels. Si l'effet combiné est supérieur à celui prédit par la formule de Bliss, cela suggère une synergie entre les médicaments. Si l'effet combiné est inférieur, cela indique un antagonisme.
