@@ -232,7 +232,7 @@ plot_heatmap <- function (data, drugs, color) {
   return(p)
 }
 
-save_replicat <- function (global, i) {
+save_replicat_2drugs <- function (global, i) {
   
   # remove null replicates
   global <- global[sapply(global, function (x) !is.null(x))]
@@ -250,7 +250,7 @@ save_replicat <- function (global, i) {
   doses_rows <- lapply(global, function (block) {
     rownames(block[["data_init"]])
   })
-
+  
   if (!all(sapply(doses_rows, function(x) identical(x, doses_rows[[1]])))){
     svDialogs::dlg_message("Replicates don't have the same doses in row", type = "ok")
   }
@@ -279,6 +279,45 @@ save_replicat <- function (global, i) {
   pdf(paste0(excel_sheets[i], ".pdf"), width = grid::unit(x = width, units = "in"), height = grid::unit(x = height, units = "in"))
   gridExtra::grid.arrange(grobs = grobs, nrow = 2, ncol = length(global))
   dev.off()
+}
+
+two_drugs <- function (i, drugs, excel_sheet) {
+  
+  # replicates identification
+  sep    <- which(apply(excel_sheet, 1, function(x) all(is.na(x))))
+  starts <- c(1, sep + 1)
+  ends   <- c(sep - 1, nrow(excel_sheet))
+  blocks <- purrr::map2(starts, ends, ~ .x:.y) %>% 
+    purrr::discard(~length(.) < 4)
+  
+  # for each replicate
+  global <- lapply(blocks, function (block) {
+    
+    data_init <- clean_subtable(df = excel_sheet[block,])
+    data_init <- checks(data_init)
+    
+    if (is.null(data_init)) {
+      stop(call. = FALSE)
+    }
+    
+    data_bliss <- bliss_matrix(data_init = data_init)
+    data_diff  <- round(data_bliss - data_init, 1)
+    
+    return (list(
+      data_init = data_init, 
+      data_bliss = data_bliss, 
+      index_list = index(data_init = data_init, data_bliss = data_bliss),
+      heatmap_init  = plot_heatmap(data = data_init, drugs = drugs, color = 1),
+      heatmap_bliss = plot_heatmap(data = data_bliss, drugs = drugs, color = 1),
+      heatmap_diff  = plot_heatmap(data = data_diff, drugs = drugs, color = 2)
+    ))
+  })
+  
+  save_replicat_2drugs(global = global, i = i)
+}
+
+three_drugs <- function (i, drugs, excel_sheet) {
+  
 }
 
 ################################################################################
@@ -315,41 +354,16 @@ invisible(
       drugC = as.character(excel_sheet[1,3])
     )
     
-    if (any(c(drugs$drugA, drugs$drugB) %in% c("NA", "", NA))) {
+    if (any(c(drugs$drugA, drugs$drugB) %in% c("NA", "", " ", NA))) {
       svDialogs::dlg_message(message = paste0("Drug name(s) are missing in sheet ", i), type = "ok")
       return (NULL)
     }
     
-    # replicates identification
-    sep    <- which(apply(excel_sheet, 1, function(x) all(is.na(x))))
-    starts <- c(1, sep + 1)
-    ends   <- c(sep - 1, nrow(excel_sheet))
-    blocks <- purrr::map2(starts, ends, ~ .x:.y) %>% 
-      purrr::discard(~length(.) < 4)
-    
-    # for each replicate
-    global <- lapply(blocks, function (block) {
-
-      data_init <- clean_subtable(df = excel_sheet[block,])
-      data_init <- checks(data_init)
-      
-      if (is.null(data_init)) {
-        stop(call. = FALSE)
-      }
-        
-      data_bliss <- bliss_matrix(data_init = data_init)
-      data_diff  <- round(data_bliss - data_init, 1)
-      
-      return (list(
-        data_init = data_init, 
-        data_bliss = data_bliss, 
-        index_list = index(data_init = data_init, data_bliss = data_bliss),
-        heatmap_init  = plot_heatmap(data = data_init, drugs = drugs, color = 1),
-        heatmap_bliss = plot_heatmap(data = data_bliss, drugs = drugs, color = 1),
-        heatmap_diff  = plot_heatmap(data = data_diff, drugs = drugs, color = 2)
-      ))
-    })
-    
-    save_replicat(global = global, i = i)
+    # 2 or 3 drugs?
+    if (drugs$drugC %in% c("NA", "", " ", NA)) {
+      two_drugs(i = i, drugs = drugs, excel_sheet = excel_sheet)
+    } else {
+      three_drugs(i = i, drugs = drugs, excel_sheet = excel_sheet)
+    }
   })
 )
