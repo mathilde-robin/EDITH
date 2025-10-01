@@ -329,8 +329,9 @@ three_drugs <- function (i, drugs, excel_sheet) {
     purrr::discard(~length(.) < 4)
   
   # for each replicate
-  global <- lapply(blocks, function (block) {
+  global <- lapply(1:length(blocks), function (sep_n) {
     
+    block <- blocks[[sep_n]]
     data <- as.matrix(excel_sheet[block,])
     class(data) <- "numeric"
     
@@ -339,7 +340,7 @@ three_drugs <- function (i, drugs, excel_sheet) {
                   drugC = as.numeric(unique(data[-1, ncol(data)])))
     
     
-    data <- round(data[-nrow(data), -c(1, ncol(data))], 0)
+    data <- round(data[-1, -c(1, ncol(data))], 0)
     data[which(data > 100)] <- 100 
     
     data <- t(data)
@@ -414,7 +415,7 @@ three_drugs <- function (i, drugs, excel_sheet) {
       
       index <- data.frame(dose = colnames(EIab), EI = as.numeric(EIab), CI = as.numeric(CIab), AI = as.numeric(AIab))
       # write.csv2(index, file = paste0(output_dir, sheets[i], "_", sep_n, "_", dimnam_i, "_index.csv"), row.names = FALSE, quote = FALSE)
-      write.xlsx(index, file = paste0(output_dir, excel_sheets[i], "_", sep_n, "_", dimnam_i, "_index.xlsx"), row.names = FALSE)
+      openxlsx::write.xlsx(index, file = paste0(output_dir, excel_sheets[i], "_", sep_n, "_", dimnam_i, "_index.xlsx"), row.names = FALSE)
       
       ## plots 
       colbreaks <- seq(-100, 100, 20)
@@ -471,7 +472,7 @@ three_drugs <- function (i, drugs, excel_sheet) {
       
       
       ## PDF manip 
-      pdf(paste0(output_dir, sheets[i], "_", sep_n, "_", dimnam_i, ".pdf"))
+      pdf(paste0(output_dir, excel_sheets[i], "_", sep_n, "_", dimnam_i, ".pdf"))
       
       print(matrices.data)
       print(matrices.Diff)
@@ -522,40 +523,40 @@ three_drugs <- function (i, drugs, excel_sheet) {
       table.page <- as.numeric(table(resume.pdf$page))
       
       list.plot <- c()
-      for (page_i in unique(resume.pdf$page)) {
+      for (page_j in unique(resume.pdf$page)) {
         
-        resume.temp <- dplyr::filter(resume.pdf, page == page_i)
+        resume.temp <- dplyr::filter(resume.pdf, page == page_j)
         matrices <- resume.temp$matrices
         
         row1 <- matrices.data[[matrices[1]]]
-        for (i in 2:length(matrices)) {
-          len <- 1/i
-          if (i < length(matrices)) row1 <- ggarrange(row1, matrices.data[[matrices[i]]], widths = c(1-len, len), legend = "none")
-          if (i == length(matrices)) row1 <- ggarrange(row1, matrices.data[[matrices[i]]], widths = c(1-len, len), legend = "right", common.legend = TRUE)
+        for (j in 2:length(matrices)) {
+          len <- 1/j
+          if (j < length(matrices)) row1 <- ggpubr::ggarrange(row1, matrices.data[[matrices[j]]], widths = c(1-len, len), legend = "none")
+          if (j == length(matrices)) row1 <- ggpubr::ggarrange(row1, matrices.data[[matrices[j]]], widths = c(1-len, len), legend = "right", common.legend = TRUE)
         }
         
         row2 <- matrices.Diff[[matrices[1]]]
-        for (i in 2:length(matrices)) {
-          len <- 1/i
-          if (i < length(matrices)) row2 <- ggarrange(row2, matrices.Diff[[matrices[i]]], widths = c(1-len, len), legend = "none")
-          if (i == length(matrices)) row2 <- ggarrange(row2, matrices.Diff[[matrices[i]]], widths = c(1-len, len), legend = "right", common.legend = TRUE)
+        for (j in 2:length(matrices)) {
+          len <- 1/j
+          if (j < length(matrices)) row2 <- ggpubr::ggarrange(row2, matrices.Diff[[matrices[j]]], widths = c(1-len, len), legend = "none")
+          if (j == length(matrices)) row2 <- ggpubr::ggarrange(row2, matrices.Diff[[matrices[j]]], widths = c(1-len, len), legend = "right", common.legend = TRUE)
         }
         
         if (length(matrices) < max(table.page)) {
           empty <- ggplot() + theme_void()
-          i <- length(matrices)
-          while (i < max(table.page)) {
-            i <- i + 1
-            len <- 1/i
-            row1 <- ggarrange(row1, empty, widths = c(1-len, len))
-            row2 <- ggarrange(row2, empty, widths = c(1-len, len))
+          j <- length(matrices)
+          while (j < max(table.page)) {
+            j <- j + 1
+            len <- 1/j
+            row1 <- ggpubr::ggarrange(row1, empty, widths = c(1-len, len))
+            row2 <- ggpubr::ggarrange(row2, empty, widths = c(1-len, len))
           }
         }
         
-        p <- ggarrange(row1, row2, nrow = 2)
+        p <- ggpubr::ggarrange(row1, row2, nrow = 2)
         list.plot <- c(list.plot, list(p))
       }
-      ggexport(plotlist = list.plot, filename = paste0(output_dir, sheets[i], "_", sep_n, "_", dimnam_i, "_matrices.pdf"), width = max(resume.pdf$width.cum), height = height, onefile = T)
+      ggpubr::ggexport(plotlist = list.plot, filename = paste0(output_dir, excel_sheets[i], "_", sep_n, "_", dimnam_i, "_matrices.pdf"), width = max(resume.pdf$width.cum), height = height, onefile = T)
       
     }
   })
