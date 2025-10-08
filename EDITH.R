@@ -195,7 +195,7 @@ convert_scientific <- function (vect) {
   })
 }
 
-plot_heatmap <- function (data, drugs, color) {
+plot_heatmap <- function (data, drugs, color, title = "") {
   
   rownames(data) <- convert_scientific(vect = rownames(data))
   colnames(data) <- convert_scientific(vect = colnames(data))
@@ -226,7 +226,13 @@ plot_heatmap <- function (data, drugs, color) {
     rect_gp = grid::gpar(col = "white", lwd = 0.05),
     cell_fun = function(j, i, x, y, width, height, fill) {
       grid::grid.text(label = round(x = data[i,j], digits = 0), x = x, y = y, gp = grid::gpar(fontsize = 10, col = "white"))
-    }
+    },
+    top_annotation = ComplexHeatmap::HeatmapAnnotation(
+      foo = ComplexHeatmap::anno_block(
+        gp = grid::gpar(fill = "white", col = "white"),
+        labels = title, 
+        labels_gp = grid::gpar(col = "black", fontsize = 12, fontface = "bold"))
+    )
   )
   
   return(p)
@@ -414,7 +420,6 @@ three_drugs <- function (i, drugs, excel_sheet) {
       EI <- log(dfa) * log(dfb) * log(dfc) * sum(100 - data_array[-1, -1, ], na.rm = TRUE) / 100
       
       index <- data.frame(dose = colnames(EIab), EI = as.numeric(EIab), CI = as.numeric(CIab), AI = as.numeric(AIab))
-      # write.csv2(index, file = paste0(output_dir, sheets[i], "_", sep_n, "_", dimnam_i, "_index.csv"), row.names = FALSE, quote = FALSE)
       openxlsx::write.xlsx(index, file = paste0(output_dir, excel_sheets[i], "_", sep_n, "_", dimnam_i, "_index.xlsx"), row.names = FALSE)
       
       ## plots 
@@ -424,22 +429,12 @@ three_drugs <- function (i, drugs, excel_sheet) {
       matrices.data <- c()
       for (l in dose_c) {
         
-        data.plot <- as.data.frame(data_array[, , as.character(l)])
-        data.plot$doseA <- rownames(data.plot)
-        data.plot <- reshape2::melt(data.plot, id.vars = "doseA")
-        
-        plot.data <- ggplot(data.plot, aes(x = variable, y = doseA, fill = value)) +
-          geom_tile() +
-          scale_y_discrete(position = "left", limits = rev(as.character(dose_a))) +
-          scale_x_discrete(position = "bottom", limits = as.character(dose_b)) +
-          scale_fill_gradient(low = "dodgerblue1", high = "navy", 
-                              limits = c(0, 100),
-                              breaks = c(0, 50, 100)) +
-          labs(x = name_b, y = name_a, title = paste(name_c, as.character(l))) +
-          geom_text(aes(label = round(value)), color = "white") +
-          theme_minimal() +
-          theme(axis.title = element_text(size = 14),
-                axis.text = element_text(size = 12))
+        plot.data <- plot_heatmap(
+          data = data_array[, , as.character(l)], 
+          drugs = list(drugA = drugs[[dimnam_i]][1], drugB = drugs[[dimnam_i]][2]), 
+          color = 1, 
+          title = paste0(drugs[[dimnam_i]][3]," = ",l)
+        )
         
         matrices.data <- c(matrices.data, list(plot.data))
       }
@@ -449,23 +444,12 @@ three_drugs <- function (i, drugs, excel_sheet) {
       matrices.Diff <- c()
       for (l in dose_c) {
         
-        Diff.plot <- as.data.frame(Diff[, , as.character(l)])
-        Diff.plot$doseA <- rownames(Diff.plot)
-        Diff.plot <- reshape2::melt(Diff.plot, id.vars = "doseA")
-        
-        plot.Diff <- ggplot(Diff.plot, aes(x = variable, y = doseA, fill = value)) +
-          geom_tile() +
-          scale_y_discrete(position = "left", limits = rev(as.character(dose_a))) +
-          scale_x_discrete(position = "bottom", limits = as.character(dose_b)) +
-          scale_fill_gradientn(colors = c("#00FF00", "#004e00", "#000000", "#000000", "#000000", "#4e0000", "#FF0000"),
-                               values = c(0, 0.425, 0.426, 0.5, 0.575, 0.576, 1),
-                               limits = c(colbreaks[1], colbreaks[11]),
-                               breaks = c(colbreaks[1], 0, colbreaks[11])) +
-          labs(x = name_b, y = name_a, title = paste(name_c, as.character(l))) +
-          geom_text(aes(label = round(value)), color = "white") +
-          theme_minimal() +
-          theme(axis.title = element_text(size = 14),
-                axis.text = element_text(size = 12))
+        plot.Diff <- plot_heatmap(
+          data = Diff[, , as.character(l)], 
+          drugs = list(drugA = drugs[[dimnam_i]][1], drugB = drugs[[dimnam_i]][2]), 
+          color = 2, 
+          title = paste0(drugs[[dimnam_i]][3]," = ",l)
+        )
         
         matrices.Diff <- c(matrices.Diff, list(plot.Diff))
       }
@@ -477,22 +461,7 @@ three_drugs <- function (i, drugs, excel_sheet) {
       print(matrices.data)
       print(matrices.Diff)
       
-      bpEI <- barplot(EIab, col = "dodgerblue1", ylim = c(min(0, min(EIab) * 1.5), max(0, max(EIab) * 1.5)),
-                      main = as.character(paste("EI for matrices", " \n ", "with", name_a, "and", name_b)))
-      text(bpEI, EIab, labels = round(EIab, 1), EIab, pos = 3)
-      
-      bpAI <- barplot(AIab, col = "green", ylim = c(min(0, min(AIab) * 1.5), max(0, max(AIab * 1.5))),
-                      main = as.character(paste("AI for matrices", " \n ", "with", name_a, "and", name_b)))
-      text(bpAI, AIab, labels = round(AIab, 1), AIab, pos = 3)
-      
-      bpCI <- barplot(CIab, col = "red", ylim = c(min(0, min(CIab) * 1.5), max(0, max(CIab * 1.5))),
-                      main = as.character(paste("CI for matrices", " \n ", "with", name_a, "and", name_b)))
-      text(bpCI, CIab, labels = round(CIab, 1), CIab, pos = 3)
-      
-      plot(EIab, CIab, main = "EI vs CI", xlab = "EI", ylab = "CI", pch = 19)
-      plot(AIab, CIab, main = "AI vs CI", xlab = "AI", ylab = "CI", pch = 19)
-      plot(dose_c, CIab/EIab, main = "CI/EI", xlab = as.character(name_c), ylab = "CI/EI", pch = 19)
-      
+    
       dev.off()
       
       
