@@ -457,78 +457,35 @@ three_drugs <- function (i, drugs, excel_sheet) {
       
       ## PDF manip 
       pdf(paste0(output_dir, excel_sheets[i], "_", sep_n, "_", dimnam_i, ".pdf"))
-      
-      print(matrices.data)
-      print(matrices.Diff)
-      
-    
+      for (k in 1:length(matrices.data)) ComplexHeatmap::draw(matrices.data[[k]])
+      for (k in 1:length(matrices.Diff)) ComplexHeatmap::draw(matrices.Diff[[k]])
       dev.off()
       
       
       ## PDF matrices
-      width <- length(dose_b) * length(matrices.data)
-      height <- length(dose_a) * 2
+      grobs <- c(
+        lapply(1:length(matrices.data), function (block) {
+          grid::grid.grabExpr(ComplexHeatmap::draw(matrices.data[[block]]))
+        }),
+        lapply(1:length(matrices.Diff), function (block) {
+          grid::grid.grabExpr(ComplexHeatmap::draw(matrices.Diff[[block]]))
+        })
+      )
       
-      # maximum = 10*10 in = 100 in
-      # 1PDF = 50 in
-      # max heatmap = 10 in 
+      width  <- length(dose_b) * length(dose_c) * 1.33
+      height <- 2 * length(dose_a)
       
-      nb.page.estim <- ceiling(width / 50)
-      nb.mat.estim <- ceiling(length(matrices.data) / nb.page.estim)
-      
-      resume.pdf <- data.frame(page = rep(1:nb.page.estim, each = nb.mat.estim)[1:length(matrices.data)], 
-                               matrices = 1:length(matrices.data), 
-                               width = length(dose_b),
-                               width.tot = cumsum(rep(length(dose_b), length(matrices.data))))
-      
-      resume.pdf <- resume.pdf %>% group_by(page) %>% mutate(width.cum = cumsum(width))
-      
-      while (any(max(resume.pdf$width.cum) > 50)) {
-        ind.sup <- min(which(resume.pdf$width.cum > 50)):nrow(resume.pdf)
-        resume.pdf$width.cum[ind.sup] <- cumsum(resume.pdf$width[ind.sup])
-        resume.pdf$page[ind.sup] <- resume.pdf$page[ind.sup[1]] + c(rep(1, nb.mat.estim), rep(2, max(0, length(ind.sup) - nb.mat.estim)))[1:length(ind.sup)]
-      }
-      
-      table.page <- as.numeric(table(resume.pdf$page))
-      
-      list.plot <- c()
-      for (page_j in unique(resume.pdf$page)) {
-        
-        resume.temp <- dplyr::filter(resume.pdf, page == page_j)
-        matrices <- resume.temp$matrices
-        
-        row1 <- matrices.data[[matrices[1]]]
-        for (j in 2:length(matrices)) {
-          len <- 1/j
-          if (j < length(matrices)) row1 <- ggpubr::ggarrange(row1, matrices.data[[matrices[j]]], widths = c(1-len, len), legend = "none")
-          if (j == length(matrices)) row1 <- ggpubr::ggarrange(row1, matrices.data[[matrices[j]]], widths = c(1-len, len), legend = "right", common.legend = TRUE)
-        }
-        
-        row2 <- matrices.Diff[[matrices[1]]]
-        for (j in 2:length(matrices)) {
-          len <- 1/j
-          if (j < length(matrices)) row2 <- ggpubr::ggarrange(row2, matrices.Diff[[matrices[j]]], widths = c(1-len, len), legend = "none")
-          if (j == length(matrices)) row2 <- ggpubr::ggarrange(row2, matrices.Diff[[matrices[j]]], widths = c(1-len, len), legend = "right", common.legend = TRUE)
-        }
-        
-        if (length(matrices) < max(table.page)) {
-          empty <- ggplot() + theme_void()
-          j <- length(matrices)
-          while (j < max(table.page)) {
-            j <- j + 1
-            len <- 1/j
-            row1 <- ggpubr::ggarrange(row1, empty, widths = c(1-len, len))
-            row2 <- ggpubr::ggarrange(row2, empty, widths = c(1-len, len))
-          }
-        }
-        
-        p <- ggpubr::ggarrange(row1, row2, nrow = 2)
-        list.plot <- c(list.plot, list(p))
-      }
-      ggpubr::ggexport(plotlist = list.plot, filename = paste0(output_dir, excel_sheets[i], "_", sep_n, "_", dimnam_i, "_matrices.pdf"), width = max(resume.pdf$width.cum), height = height, onefile = T)
-      
+      pdf(paste0(output_dir, excel_sheets[i], "_", sep_n, "_", dimnam_i, "_matrices.pdf"), width = grid::unit(x = width, units = "in"), height = grid::unit(x = height, units = "in"))
+      gridExtra::grid.arrange(grobs = grobs, nrow = 2, ncol = length(matrices.data))
+      dev.off()
     }
   })
+}
+
+
+
+save_3drugs <- function () {
+  
 }
 
 
