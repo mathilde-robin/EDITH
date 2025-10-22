@@ -148,39 +148,92 @@ checks <- function (data_init) {
 bliss_matrix <- function (data_init) {
   # calculate the additivity matrix according to Bliss' method
   
-  fua <- data_init[1,]
-  fub <- data_init[,1]
+  if (type == 2) {
+    fua <- data_init[1,]
+    fub <- data_init[,1]
+    
+    fu <- vector()
+    for (a in fua) {
+      for (b in fub) {
+        fu <- append(fu, c(a, b))
+      }
+    } 
+    
+    fu <- matrix(fu, ncol = 2, byrow = TRUE, dimnames = list(c(), c("a", "b")))/100
+    data_bliss <- apply(fu, 1, prod) * 100
+    data_bliss <- matrix(data_bliss, dim(data_init), dimnames = dimnames(data_init))
+    
+    return (data_bliss)
+  }
   
-  fu <- vector()
-  for (a in fua) {
-    for (b in fub) {
-      fu <- append(fu, c(a, b))
+  if (type == 3) {
+    fua <- data_init[, "0", "0"]
+    fub <- data_init["0", , "0"]
+    fuc <- data_init["0", "0", ]
+    
+    fu <- vector()
+    for (c in fuc) {
+      for (b in fub) {
+        for (a in fua) {
+          fu <- append(fu, c(a, b, c))
+        }
+      }
     }
-  } 
-  
-  fu <- matrix(fu, ncol = 2, byrow = TRUE, dimnames = list(c(), c("a", "b")))/100
-  data_bliss <- apply(fu, 1, prod) * 100
-  data_bliss <- matrix(data_bliss, dim(data_init), dimnames = dimnames(data_init))
-  
-  return (data_bliss)
+    
+    fu <- matrix(fu, ncol = 3, byrow = TRUE, dimnames = list(c(), c("a", "b", "c"))) / 100
+    data_bliss <- apply(fu, 1, prod) * 100
+    data_bliss <- array(data_bliss, dim(data_init), dimnames = dimnames(data_init))
+    
+    return (data_bliss)
+  }
 }
 
 index <- function (data_init, data_bliss) {
   # calculate of syntetic indexes according to Lehar's method
   
-  dfa <- as.numeric(colnames(data_init)[3]) / as.numeric(colnames(data_init)[2])
-  dfb <- as.numeric(rownames(data_init)[3]) / as.numeric(rownames(data_init)[2])
+  if (type == 2) {
+    
+    dfa <- as.numeric(colnames(data_init)[3]) / as.numeric(colnames(data_init)[2])
+    dfb <- as.numeric(rownames(data_init)[3]) / as.numeric(rownames(data_init)[2])
+    
+    # additivity index
+    AI <- log(dfa) * log(dfb) * sum(100 - data_bliss, na.rm = TRUE) / 100
+    
+    # combination index
+    CI <- log(dfa) * log(dfb) * sum(data_bliss - data_init, na.rm = TRUE) / 100
+    
+    # efficacy index
+    EI <- log(dfa) * log(dfb) * sum(100 - data_init[-1,-1], na.rm = TRUE) / 100
+    
+    return (list(AI = AI, CI = CI, EI = EI))
+  }
   
-  # additivity index
-  AI <- log(dfa) * log(dfb) * sum(100 - data_bliss, na.rm = TRUE) / 100
-  
-  # combination index
-  CI <- log(dfa) * log(dfb) * sum(data_bliss - data_init, na.rm = TRUE) / 100
-  
-  # efficacy index
-  EI <- log(dfa) * log(dfb) * sum(100 - data_init[-1,-1], na.rm = TRUE) / 100
-  
-  return (list(AI = AI, CI = CI, EI = EI))
+  if (type == 3) {
+    
+    dfa <- as.numeric(dimnames(data_init)[[2]][3]) / as.numeric(dimnames(data_init)[[2]][2])
+    dfb <- as.numeric(dimnames(data_init)[[1]][3]) / as.numeric(dimnames(data_init)[[1]][2])
+    dfc <- as.numeric(dimnames(data_init)[[3]][3]) / as.numeric(dimnames(data_init)[[3]][2])
+    
+    AIab <- sapply(dimnames(data_init)[[3]], function (l) {
+      log(dfa) * log(dfb) * sum((100 - data_bliss)[,,l], na.rm = TRUE) / 100
+    })
+    
+    # AI <- log(dfa) * log(dfb) * log(dfc) * sum(100 - data_array - Diff, na.rm = TRUE) / 100
+    
+    CIab <- sapply(dimnames(data_init)[[3]], function (l) {
+      log(dfa) * log(dfb) * sum((data_bliss - data_init)[,,l], na.rm = TRUE) / 100
+    })
+    
+    # CI <- log(dfa) * log(dfb) * log(dfc) * sum(Diff, na.rm = TRUE) / 100
+    
+    EIab <- sapply(dimnames(data_init)[[3]], function (l) {
+      log(dfa) * log(dfb) * sum((100 - data_init)[-1, -1, l], na.rm = TRUE) / 100
+    })
+    
+    # EI <- log(dfa) * log(dfb) * log(dfc) * sum(100 - data_array[-1, -1, ], na.rm = TRUE) / 100
+    
+    return (data.frame(dose = dimnames(data_init)[[3]], EI = EIab, CI = CIab, AI = AIab))
+  }
 }
 
 convert_scientific <- function (vect) {
@@ -370,57 +423,14 @@ three_drugs <- function (i, drugs, excel_sheet) {
       
       
       ## Bliss additive effect estimation
-      fua <- data_array[, "0", "0"]
-      fub <- data_array["0", , "0"]
-      fuc <- data_array["0", "0", ]
-      
-      fu <- vector()
-      for(c in fuc){
-        for(b in fub){
-          for(a in fua){
-            fu <- append(fu, c(a, b, c))
-          }
-        }
-      }
-      
-      fu <- matrix(fu, ncol = 3, byrow = TRUE, dimnames = list(c(), c("a", "b", "c"))) / 100
-      Bliss <- apply(fu, 1, prod) * 100
-      Bliss <- array(Bliss, dim(data_array), dimnames = dimnames(data_array))
+      data_bliss <- bliss_matrix(data_init = data_array)
       
       
       ## difference matrix
-      Diff <- round(Bliss - data_array, 1)
+      data_diff <- round(data_bliss - data_array, 1)
       
-      
-      ## calculation of syntetic indexes according to Lehar's method
-      ## (combination + additivity + efficacy indexes)
-      
-      ### il faut que les drug a et b aient plus de 2 doses
-      
-      dfa <- tail(dose_a, 2)[1]/tail(dose_a, 1)
-      dfb <- tail(dose_b, 2)[1]/tail(dose_b, 1)
-      dfc <- tail(dose_c, 2)[1]/tail(dose_c, 1)
-      
-      CIab <- matrix(NA, 1, length(dose_c), dimnames = list(NULL, dose_c))
-      for(l in as.character(dose_c)) {
-        CIab[1, l] <- log(dfa) * log(dfb) * sum(Diff[, , l], na.rm = TRUE) / 100
-      } 
-      CI <- log(dfa) * log(dfb) * log(dfc) * sum(Diff, na.rm = TRUE) / 100
-      
-      AIab <- matrix(NA, 1, length(dose_c), dimnames = list(NULL, dose_c)) 
-      for(l in c(as.character(dose_c))){
-        AIab[1, l] <- log(dfa) * log(dfb) * sum((100 - data_array - Diff)[, , l], na.rm = TRUE) / 100
-      }
-      AI <- log(dfa) * log(dfb) * log(dfc) * sum(100 - data_array - Diff, na.rm = TRUE) / 100
-      
-      EIab <- matrix(NA, 1, length(dose_c), dimnames = list(NULL, dose_c))
-      for(l in c(as.character(dose_c))){
-        EIab[1, l] = log(dfa) * log(dfb) * sum(100 - data_array[-1, -1, l], na.rm = TRUE) / 100
-      }
-      EI <- log(dfa) * log(dfb) * log(dfc) * sum(100 - data_array[-1, -1, ], na.rm = TRUE) / 100
-      
-      index <- data.frame(dose = colnames(EIab), EI = as.numeric(EIab), CI = as.numeric(CIab), AI = as.numeric(AIab))
-      openxlsx::write.xlsx(index, file = paste0(output_dir, excel_sheets[i], "_", sep_n, "_", dimnam_i, "_index.xlsx"), row.names = FALSE)
+      index(data_init = data_array, data_bliss = data_bliss) %>%
+        openxlsx::write.xlsx(file = paste0(output_dir, excel_sheets[i], "_", sep_n, "_", dimnam_i, "_index.xlsx"), row.names = FALSE)
       
       ## plots 
       colbreaks <- seq(-100, 100, 20)
@@ -445,7 +455,7 @@ three_drugs <- function (i, drugs, excel_sheet) {
       for (l in dose_c) {
         
         plot.Diff <- plot_heatmap(
-          data = Diff[, , as.character(l)], 
+          data = data_diff[, , as.character(l)], 
           drugs = list(drugA = drugs[[dimnam_i]][1], drugB = drugs[[dimnam_i]][2]), 
           color = 2, 
           title = paste0(drugs[[dimnam_i]][3]," = ",l)
@@ -530,9 +540,12 @@ invisible(
     }
     
     # 2 or 3 drugs?
+    type <- NA
     if (drugs$drugC %in% c("NA", "", " ", NA)) {
+      type <<- 2
       two_drugs(i = i, drugs = drugs, excel_sheet = excel_sheet)
     } else {
+      type <<- 3
       three_drugs(i = i, drugs = drugs, excel_sheet = excel_sheet)
     }
   })
