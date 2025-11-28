@@ -61,23 +61,54 @@ say_hello <- function () {
   }
 }
 
-clean_subtable <- function (df) {
+clean_subtable <- function (df, drug_names) {
   
-  # numerics matrix conversion
-  subtable <- df[-1, -1] %>%
-    dplyr::mutate(dplyr::across(dplyr::everything(), as.numeric)) %>%
-    as.matrix()
+  if (type == 2) {
+    
+    # numerics matrix conversion
+    subtable <- df[-1, -1] %>%
+      dplyr::mutate(dplyr::across(dplyr::everything(), as.numeric)) %>%
+      as.matrix()
+    
+    # dimnames
+    rownames(subtable) <- df[-1,1][[1]]
+    colnames(subtable) <- df[1,-1]
+    
+    # remove NA column 
+    # this can happen if not all replicates have the same number of doses
+    ids <- which(apply(subtable, 2, function (x) !all(is.na(x))))
+    subtable <- subtable[,ids]
+    
+    # doses
+    drug_doses = list(
+      drugA = as.numeric(rownames(subtable)),
+      drugB = as.numeric(colnames(subtable))
+    )
+    
+    names(drug_doses) <- unlist(drug_names)[1:2]
+  }
   
-  # dimnames
-  rownames(subtable) <- df[-1,1][[1]]
-  colnames(subtable) <- df[1,-1]
+  if (type == 3) {
+    
+    subtable <- df[-1, -c(1, ncol(df))] %>%
+      dplyr::mutate(dplyr::across(dplyr::everything(), as.numeric)) %>%
+      as.matrix()
+    
+    drug_doses <- list(
+      drugA = as.numeric(unlist(unique(df[-1, 1]))),
+      drugB = as.numeric(df[1, -c(1, ncol(df))]),
+      drugC = as.numeric(unlist(unique(df[-1, ncol(df)])))
+    )
+    
+    names(drug_doses) <- unlist(drug_names)
+    
+    subtable <- t(subtable)
+    dim(subtable) <- lengths(drug_doses[c(2,1,3)])
+    subtable <- aperm(subtable, c(2,1,3))
+    dimnames(subtable) <- drug_doses
+  }
   
-  # remove NA column 
-  # this can happen if not all replicates have the same number of doses
-  ids <- which(apply(subtable, 2, function (x) !all(is.na(x))))
-  subtable <- subtable[,ids]
-  
-  return (subtable)
+  return (list(data_init = subtable, drug_doses = drug_doses))
 }
 
 checks <- function (data_init) {
@@ -149,6 +180,7 @@ bliss_matrix <- function (data_init) {
   # calculate the additivity matrix according to Bliss' method
   
   if (type == 2) {
+    
     fua <- data_init[1,]
     fub <- data_init[,1]
     
@@ -167,6 +199,7 @@ bliss_matrix <- function (data_init) {
   }
   
   if (type == 3) {
+    
     fua <- data_init[, "0", "0"]
     fub <- data_init["0", , "0"]
     fuc <- data_init["0", "0", ]
@@ -191,49 +224,19 @@ bliss_matrix <- function (data_init) {
 index <- function (data_init, data_bliss) {
   # calculate of syntetic indexes according to Lehar's method
   
-  if (type == 2) {
-    
-    dfa <- as.numeric(colnames(data_init)[3]) / as.numeric(colnames(data_init)[2])
-    dfb <- as.numeric(rownames(data_init)[3]) / as.numeric(rownames(data_init)[2])
-    
-    # additivity index
-    AI <- log(dfa) * log(dfb) * sum(100 - data_bliss, na.rm = TRUE) / 100
-    
-    # combination index
-    CI <- log(dfa) * log(dfb) * sum(data_bliss - data_init, na.rm = TRUE) / 100
-    
-    # efficacy index
-    EI <- log(dfa) * log(dfb) * sum(100 - data_init[-1,-1], na.rm = TRUE) / 100
-    
-    return (list(AI = AI, CI = CI, EI = EI))
-  }
+  dfa <- as.numeric(colnames(data_init)[3]) / as.numeric(colnames(data_init)[2])
+  dfb <- as.numeric(rownames(data_init)[3]) / as.numeric(rownames(data_init)[2])
   
-  if (type == 3) {
-    
-    dfa <- as.numeric(dimnames(data_init)[[2]][3]) / as.numeric(dimnames(data_init)[[2]][2])
-    dfb <- as.numeric(dimnames(data_init)[[1]][3]) / as.numeric(dimnames(data_init)[[1]][2])
-    dfc <- as.numeric(dimnames(data_init)[[3]][3]) / as.numeric(dimnames(data_init)[[3]][2])
-    
-    AIab <- sapply(dimnames(data_init)[[3]], function (l) {
-      log(dfa) * log(dfb) * sum((100 - data_bliss)[,,l], na.rm = TRUE) / 100
-    })
-    
-    # AI <- log(dfa) * log(dfb) * log(dfc) * sum(100 - data_array - Diff, na.rm = TRUE) / 100
-    
-    CIab <- sapply(dimnames(data_init)[[3]], function (l) {
-      log(dfa) * log(dfb) * sum((data_bliss - data_init)[,,l], na.rm = TRUE) / 100
-    })
-    
-    # CI <- log(dfa) * log(dfb) * log(dfc) * sum(Diff, na.rm = TRUE) / 100
-    
-    EIab <- sapply(dimnames(data_init)[[3]], function (l) {
-      log(dfa) * log(dfb) * sum((100 - data_init)[-1, -1, l], na.rm = TRUE) / 100
-    })
-    
-    # EI <- log(dfa) * log(dfb) * log(dfc) * sum(100 - data_array[-1, -1, ], na.rm = TRUE) / 100
-    
-    return (data.frame(dose = dimnames(data_init)[[3]], EI = EIab, CI = CIab, AI = AIab))
-  }
+  # additivity index
+  AI <- log(dfa) * log(dfb) * sum(100 - data_bliss, na.rm = TRUE) / 100
+  
+  # combination index
+  CI <- log(dfa) * log(dfb) * sum(data_bliss - data_init, na.rm = TRUE) / 100
+  
+  # efficacy index
+  EI <- log(dfa) * log(dfb) * sum(100 - data_init[-1,-1], na.rm = TRUE) / 100
+  
+  return (list(AI = AI, CI = CI, EI = EI))
 }
 
 convert_scientific <- function (vect) {
@@ -248,17 +251,21 @@ convert_scientific <- function (vect) {
   })
 }
 
-plot_heatmap <- function (data, drugs, color, title = "") {
+plot_heatmap <- function (data, drug_names, color, title = "", subtitle = "") {
   
   rownames(data) <- convert_scientific(vect = rownames(data))
   colnames(data) <- convert_scientific(vect = colnames(data))
   
   if (color == 1) {
     color_palette <- circlize::colorRamp2(breaks = c(0, 100), colors = c("dodgerblue1", "navy"))
+    color_breaks <- c(0, 50, 100)
+    color_labels <- c("  0", "  50", "  100")
   } else {
     color_palette <- circlize::colorRamp2(
       breaks = c(-100, -15.1, -15, 0, 15, 15.1, 100), 
       colors = c("#00FF00", "#004e00", "#000000", "#000000", "#000000", "#4e0000", "#FF0000"))
+    color_breaks <- c(-100, -50, 0, 50, 100)
+    color_labels <- c("-100", "-50", "  0", "  50", "  100")
   }
   
   p <- ComplexHeatmap::Heatmap(
@@ -266,11 +273,11 @@ plot_heatmap <- function (data, drugs, color, title = "") {
     name = "value",
     cluster_rows = FALSE,
     cluster_columns = FALSE,
-    row_title = drugs$drugA,
+    row_title = drug_names$drugA,
     row_title_side = "left",
     row_names_side = "left",
     row_names_centered = TRUE,
-    column_title = drugs$drugB,
+    column_title = drug_names$drugB,
     column_title_side = "bottom",
     column_names_side = "bottom",
     column_names_rot = 0,
@@ -278,275 +285,307 @@ plot_heatmap <- function (data, drugs, color, title = "") {
     col = color_palette,
     rect_gp = grid::gpar(col = "white", lwd = 0.05),
     cell_fun = function(j, i, x, y, width, height, fill) {
-      grid::grid.text(label = round(x = data[i,j], digits = 0), x = x, y = y, gp = grid::gpar(fontsize = 10, col = "white"))
+      grid::grid.text(
+        label = round(x = data[i,j], digits = 0), 
+        x = x, y = y, gp = grid::gpar(fontsize = 10, col = "white"))
     },
     top_annotation = ComplexHeatmap::HeatmapAnnotation(
-      foo = ComplexHeatmap::anno_block(
+      title = ComplexHeatmap::anno_block(
         gp = grid::gpar(fill = "white", col = "white"),
-        labels = title, 
-        labels_gp = grid::gpar(col = "black", fontsize = 12, fontface = "bold"))
-    )
+        labels = ifelse(subtitle == "", subtitle, title), 
+        labels_gp = grid::gpar(col = "black", fontsize = 12, fontface = "bold")),
+      subtitle = ComplexHeatmap::anno_block(
+        gp = grid::gpar(fill = "white", col = "white"),
+        labels = ifelse(subtitle == "", title, subtitle), 
+        labels_gp = grid::gpar(
+          col = "black", fontsize = ifelse(subtitle == "", 12, 10), 
+          fontface = ifelse(subtitle == "", "bold", "plain")))
+    ),
+    heatmap_legend_param = list(at = color_breaks, labels = color_labels)
   )
   
-  return(p)
+  return (p)
 }
 
-save_replicat_2drugs <- function (global, i) {
-  
-  # remove null replicates
-  global <- global[sapply(global, function (x) !is.null(x))]
-  
-  # pdf for each replicate
-  sapply(1:length(global), function (block) {
-    pdf(paste0(excel_sheets[i], "_", block, ".pdf"))
-    ComplexHeatmap::draw(global[[block]][["heatmap_init"]])
-    ComplexHeatmap::draw(global[[block]][["heatmap_bliss"]])
-    ComplexHeatmap::draw(global[[block]][["heatmap_diff"]])
-    dev.off()
-  })
-  
-  # check that all replicates have the same doses in row
-  doses_rows <- lapply(global, function (block) {
-    rownames(block[["data_init"]])
-  })
-  
-  if (!all(sapply(doses_rows, function(x) identical(x, doses_rows[[1]])))){
-    svDialogs::dlg_message("Replicates don't have the same doses in row", type = "ok")
-  }
-  
-  # check that replicates have the same doses in column
-  doses_cols <- lapply(global, function (block) {
-    colnames(block[["data_init"]])
-  })
-  
-  if (!all(sapply(doses_cols, function(x) identical(x, doses_cols[[1]])))){
-    svDialogs::dlg_message("Replicates don't have the same doses in column", type = "ok")
-  }
-  
-  grobs <- c(
-    lapply(1:length(global), function (block) {
-      grid::grid.grabExpr(ComplexHeatmap::draw(global[[block]][["heatmap_init"]]))
-    }),
-    lapply(1:length(global), function (block) {
-      grid::grid.grabExpr(ComplexHeatmap::draw(global[[block]][["heatmap_diff"]]))
-    })
-  )
-  
-  width  <- max(sapply(global, function(block) ncol(block$data_init))) * length(global) * 1.33
-  height <- max(sapply(global, function(block) nrow(block$data_init))) * 2
-  
-  pdf(paste0(excel_sheets[i], ".pdf"), width = grid::unit(x = width, units = "in"), height = grid::unit(x = height, units = "in"))
-  gridExtra::grid.arrange(grobs = grobs, nrow = 2, ncol = length(global))
-  dev.off()
-}
-
-two_drugs <- function (i, drugs, excel_sheet) {
+two_drugs <- function (sheet_name, drug_names, sheet_data) {
   
   # replicates identification
-  sep    <- which(apply(excel_sheet, 1, function(x) all(is.na(x))))
+  sep    <- which(apply(sheet_data, 1, function(x) all(is.na(x))))
   starts <- c(1, sep + 1)
-  ends   <- c(sep - 1, nrow(excel_sheet))
+  ends   <- c(sep - 1, nrow(sheet_data))
   blocks <- purrr::map2(starts, ends, ~ .x:.y) %>% 
     purrr::discard(~length(.) < 4)
   
   # for each replicate
   global <- lapply(blocks, function (block) {
     
-    data_init <- clean_subtable(df = excel_sheet[block,])
+    subtable <- clean_subtable(df = sheet_data[block,], drug_names = drug_names)
+    
+    data_init <- subtable[["data_init"]]
     data_init <- checks(data_init)
     
     if (is.null(data_init)) {
-      stop(call. = FALSE)
+      stop (call. = FALSE)
     }
     
     data_bliss <- bliss_matrix(data_init = data_init)
     data_diff  <- data_bliss - data_init
     
     return (list(
+      drug_doses = subtable[["drug_doses"]],
       data_init = data_init, 
       data_bliss = data_bliss, 
       index_list = index(data_init = data_init, data_bliss = data_bliss),
-      heatmap_init  = plot_heatmap(data = data_init, drugs = drugs, color = 1),
-      heatmap_bliss = plot_heatmap(data = data_bliss, drugs = drugs, color = 1),
-      heatmap_diff  = plot_heatmap(data = data_diff, drugs = drugs, color = 2)
+      heatmap_init  = plot_heatmap(data = data_init, drug_names = drug_names, color = 1, title = "Observed viability (%)"),
+      heatmap_bliss = plot_heatmap(data = data_bliss, drug_names = drug_names, color = 1, title = "Bliss expected viability (%)"),
+      heatmap_diff  = plot_heatmap(data = data_diff, drug_names = drug_names, color = 2, title = "Synergism/Antagonism (%)")
     ))
   })
   
-  save_replicat_2drugs(global = global, i = i)
+  save_replicat_2drugs(sheet_name = sheet_name, drug_names = drug_names, global = global)
 }
 
-three_drugs <- function (i, drugs, excel_sheet) {
+save_replicat_2drugs <- function (sheet_name, drug_names, global) {
+  
+  # remove null replicates
+  global <- global[sapply(global, function (x) !is.null(x))]
+  
+  # combine index
+  index_df <- do.call(rbind, lapply(1:length(global), function (rep) {
+    df <- as.data.frame(global[[rep]][["index_list"]])
+    df$rep <- rep
+    return (df[, c("rep", "AI", "CI", "EI")])
+  }))
+  
+  openxlsx::write.xlsx(x = index_df, file = paste0(sheet_name, "_index.xlsx"))
+  
+  # pdf for each replicate
+  sapply(1:length(global), function (rep) {
+    pdf(file = paste0(sheet_name, "_rep", rep, ".pdf"))
+    ComplexHeatmap::draw(global[[rep]][["heatmap_init"]])
+    ComplexHeatmap::draw(global[[rep]][["heatmap_bliss"]])
+    ComplexHeatmap::draw(global[[rep]][["heatmap_diff"]])
+    dev.off()
+  })
+  
+  # check that all replicates have the same doses in drugA
+  doses_drugA <- lapply(global, function (rep) rep[["drug_doses"]][[drug_names$drugA]])
+  if (!all(sapply(doses_drugA, function(x) identical(x, doses_drugA[[1]])))){
+    svDialogs::dlg_message("Replicates don't have the same doses in row", type = "ok")
+  }
+  
+  # check that replicates have the same doses in drugB
+  doses_drugB <- lapply(global, function (rep) rep[["drug_doses"]][[drug_names$drugB]])
+  if (!all(sapply(doses_drugB, function(x) identical(x, doses_drugB[[1]])))){
+    svDialogs::dlg_message("Replicates don't have the same doses in column", type = "ok")
+  }
+  
+  # compare replicates heatmaps in a single pdf
+  grobs <- c(
+    lapply(global, function (rep) {
+      grid::grid.grabExpr(ComplexHeatmap::draw(rep[["heatmap_init"]]))
+    }),
+    lapply(global, function (rep) {
+      grid::grid.grabExpr(ComplexHeatmap::draw(rep[["heatmap_diff"]]))
+    })
+  )
+  
+  width  <- max(sapply(global, function (rep) length(rep[["drug_doses"]][[drug_names$drugA]]))) * length(global) * 0.7 # * 1.33
+  height <- max(sapply(global, function (rep) length(rep[["drug_doses"]][[drug_names$drugB]]))) * 2
+  
+  pdf(
+    file = paste0(sheet_name, "_matrices.pdf"), 
+    width = grid::unit(x = width, units = "in"), height = grid::unit(x = height, units = "in")
+  )
+  gridExtra::grid.arrange(grobs = grobs, nrow = 2, ncol = length(global))
+  dev.off()
+}
+
+three_drugs <- function (sheet_name, drug_names, sheet_data) {
   
   drugs.n <- list(c(1,2,3), c(2,3,1), c(3,1,2))
-  drugs <- lapply(drugs.n, function(x) as.character(excel_sheet[1, 1:3])[x])
+  drug_perm <- lapply(drugs.n, function (x) unlist(drug_names[x]))
+  drug_perm <- lapply(drug_perm, function (x) {
+    names(x) <- c("drugA", "drugB", "drugC")
+    return (x)
+  })
   
   # replicates identification
-  sep    <- which(apply(excel_sheet, 1, function(x) all(is.na(x))))
+  sep    <- which(apply(sheet_data, 1, function(x) all(is.na(x))))
   starts <- c(1, sep + 1)
-  ends   <- c(sep - 1, nrow(excel_sheet))
+  ends   <- c(sep - 1, nrow(sheet_data))
   blocks <- purrr::map2(starts, ends, ~ .x:.y) %>% 
     purrr::discard(~length(.) < 4)
   
   # for each replicate
-  global <- lapply(1:length(blocks), function (sep_n) {
+  lapply(1:length(blocks), function (rep) {
     
-    block <- blocks[[sep_n]]
-    data <- as.matrix(excel_sheet[block,])
-    class(data) <- "numeric"
+    block <- blocks[[rep]]
     
-    doses <- list(drugA = as.numeric(unique(data[-1, 1])),
-                  drugB = as.numeric(data[1, -c(1, ncol(data))]),
-                  drugC = as.numeric(unique(data[-1, ncol(data)])))
+    subtable <- clean_subtable(df = sheet_data[block,], drug_names = drug_names)
+    data_init  <- subtable[["data_init"]]
+    drug_doses <- subtable[["drug_doses"]]
     
+    ############################################################################
+    # Creer une fonction checks pour 3 drugs
+    # data_init <- checks(data_init)
+    # 
+    # if (is.null(data_init)) {
+    #   stop (call. = FALSE)
+    # }
+    ############################################################################
     
-    data <- round(data[-1, -c(1, ncol(data))], 0)
-    data[which(data > 100)] <- 100 
-    
-    data <- t(data)
-    dim(data) <- lengths(doses[c(2,1,3)])
-    data <- aperm(data, c(2,1,3))
-    dimnames(data) <- doses
-    
-    
-    ## drugs permutation
-    for(dimnam_i in 1:length(drugs)){
+    # drugs permutation
+    lapply(1:length(drug_perm), function (perm) {
       
-      data_array <- aperm(data, perm = drugs.n[[dimnam_i]])
+      drug_names_perm <- drug_perm[[perm]]
+      data_perm <- aperm(data_init, perm = drug_names_perm)
       
-      name_a <- drugs[[dimnam_i]][1]
-      name_b <- drugs[[dimnam_i]][2]
-      name_c <- drugs[[dimnam_i]][3]
+      data_bliss <- bliss_matrix(data_init = data_perm)
+      data_diff <- round(data_bliss - data_perm, 1)
       
-      dose_a <- doses[[drugs.n[[dimnam_i]][1]]]
-      dose_b <- doses[[drugs.n[[dimnam_i]][2]]]
-      dose_c <- doses[[drugs.n[[dimnam_i]][3]]]
-      
-      
-      ## Bliss additive effect estimation
-      data_bliss <- bliss_matrix(data_init = data_array)
-      
-      
-      ## difference matrix
-      data_diff <- round(data_bliss - data_array, 1)
-      
-      index(data_init = data_array, data_bliss = data_bliss) %>%
-        openxlsx::write.xlsx(file = paste0(output_dir, excel_sheets[i], "_", sep_n, "_", dimnam_i, "_index.xlsx"), row.names = FALSE)
-      
-      ## plots 
-      colbreaks <- seq(-100, 100, 20)
-      
-      # plot data
-      matrices.data <- c()
-      for (l in dose_c) {
+      global <- lapply(drug_doses[[drug_names_perm[3]]], function (dose_c) {
         
-        plot.data <- plot_heatmap(
-          data = data_array[, , as.character(l)], 
-          drugs = list(drugA = drugs[[dimnam_i]][1], drugB = drugs[[dimnam_i]][2]), 
-          color = 1, 
-          title = paste0(drugs[[dimnam_i]][3]," = ",l)
+        dose_c <- as.character(dose_c)
+        subtitle <- paste0(drug_names_perm[3],": ", dose_c)
+        
+        heatmap_init <- plot_heatmap(
+          data = data_perm[,, dose_c], drug_names = as.list(drug_names_perm), color = 1, 
+          title = "Observed viability (%)", subtitle = subtitle
         )
         
-        matrices.data <- c(matrices.data, list(plot.data))
-      }
-      
-      
-      # plot Diff
-      matrices.Diff <- c()
-      for (l in dose_c) {
-        
-        plot.Diff <- plot_heatmap(
-          data = data_diff[, , as.character(l)], 
-          drugs = list(drugA = drugs[[dimnam_i]][1], drugB = drugs[[dimnam_i]][2]), 
-          color = 2, 
-          title = paste0(drugs[[dimnam_i]][3]," = ",l)
+        heatmap_bliss <- plot_heatmap(
+          data = data_bliss[,, dose_c], drug_names = as.list(drug_names_perm), color = 1, 
+          title = "Bliss expected viability (%)", subtitle = subtitle
         )
         
-        matrices.Diff <- c(matrices.Diff, list(plot.Diff))
-      }
+        heatmap_diff <- plot_heatmap(
+          data = data_diff[,, dose_c], drug_names = as.list(drug_names_perm), color = 2, 
+          title = "Synergism/Antagonism (%)", subtitle = subtitle
+        )
+        
+        return (list(
+          data_init = data_perm[,, dose_c],
+          data_bliss = data_bliss[,, dose_c],
+          index_list = index(data_init = data_perm[,, dose_c], data_bliss = data_bliss[,, dose_c]),
+          heatmap_init = heatmap_init,
+          heatmap_bliss = heatmap_bliss,
+          heatmap_diff = heatmap_diff
+        ))
+      })
       
-      
-      ## PDF manip 
-      pdf(paste0(output_dir, excel_sheets[i], "_", sep_n, "_", dimnam_i, ".pdf"))
-      for (k in 1:length(matrices.data)) ComplexHeatmap::draw(matrices.data[[k]])
-      for (k in 1:length(matrices.Diff)) ComplexHeatmap::draw(matrices.Diff[[k]])
-      dev.off()
-      
-      
-      ## PDF matrices
-      grobs <- c(
-        lapply(1:length(matrices.data), function (block) {
-          grid::grid.grabExpr(ComplexHeatmap::draw(matrices.data[[block]]))
-        }),
-        lapply(1:length(matrices.Diff), function (block) {
-          grid::grid.grabExpr(ComplexHeatmap::draw(matrices.Diff[[block]]))
-        })
+      save_perm_3drugs(
+        sheet_name = sheet_name, rep = rep, perm = perm, drug_doses = drug_doses, 
+        drug_names = drug_names_perm, global = global
       )
-      
-      width  <- length(dose_b) * length(dose_c) * 1.33
-      height <- 2 * length(dose_a)
-      
-      pdf(paste0(output_dir, excel_sheets[i], "_", sep_n, "_", dimnam_i, "_matrices.pdf"), width = grid::unit(x = width, units = "in"), height = grid::unit(x = height, units = "in"))
-      gridExtra::grid.arrange(grobs = grobs, nrow = 2, ncol = length(matrices.data))
-      dev.off()
-    }
+    })
   })
 }
 
-
-
-save_3drugs <- function () {
+save_perm_3drugs <- function (sheet_name, rep, perm, drug_doses, drug_names, global) {
   
+  # remove null rotation
+  global <- global[sapply(global, function (x) !is.null(x))]
+  
+  # combine index
+  index_df <- do.call(rbind, lapply(1:length(global), function (dose_c) {
+    df <- as.data.frame(global[[dose_c]][["index_list"]])
+    df$dose_c <- drug_doses[[drug_names[3]]][dose_c]
+    df <- df[, c("dose_c", "AI", "CI", "EI")]
+    colnames(df)[1] <- drug_names[3]
+    return (df)
+  }))
+  
+  openxlsx::write.xlsx(x = index_df, file = paste0(sheet_name, "_rep", rep, "_perm", perm, "_index.xlsx"))
+  
+  # global pdf
+  pdf(file = paste0(sheet_name, "_rep", rep, "_perm", perm, ".pdf"))
+  for (dose_c in 1:length(global)) ComplexHeatmap::draw(global[[dose_c]][["heatmap_init"]])
+  for (dose_c in 1:length(global)) ComplexHeatmap::draw(global[[dose_c]][["heatmap_bliss"]])
+  for (dose_c in 1:length(global)) ComplexHeatmap::draw(global[[dose_c]][["heatmap_diff"]])
+  dev.off()
+  
+  # global pdf - one file
+  grobs <- c(
+    lapply(1:length(global), function (dose_c) {
+      grid::grid.grabExpr(ComplexHeatmap::draw(global[[dose_c]][["heatmap_init"]]))
+    }),
+    lapply(1:length(global), function (dose_c) {
+      grid::grid.grabExpr(ComplexHeatmap::draw(global[[dose_c]][["heatmap_diff"]]))
+    })
+  )
+  
+  width  <- length(drug_doses[[drug_names[2]]]) * length(drug_doses[[drug_names[3]]]) * 1.33
+  height <- 2 * length(drug_doses[[drug_names[1]]])
+  
+  pdf(
+    file = paste0(sheet_name, "_rep", rep, "_perm", perm, "_matrices.pdf"), 
+    width = grid::unit(x = width, units = "in"), height = grid::unit(x = height, units = "in")
+  )
+  gridExtra::grid.arrange(grobs = grobs, nrow = 2, ncol = length(drug_doses[[drug_names[3]]]))
+  dev.off()
 }
-
 
 ################################################################################
 # Main
 ################################################################################
 
-options(warn = -1)
+run_EDITH <- function () {
+  
+  # options(warn = -1)
+  
+  # say_hello()
+  
+  filename <- file.choose(new = TRUE) %>%
+    stringr::str_replace_all(string = ., pattern = "\\\\", replacement = "/")
+  
+  output_dir <- filename %>%
+    stringr::str_replace(string = ., pattern = ".xlsx", replacement = "_output/")
+  
+  dir.create(output_dir, showWarnings = FALSE)
+  setwd(output_dir)
+  
+  sheet_names <- readxl::excel_sheets(path = filename)
+  
+  invisible(
+    sapply(sheet_names, function (sheet_name) {
+      
+      sheet_data <- readxl::read_excel(
+        path = filename, sheet = sheet_name, 
+        col_names = FALSE, progress = FALSE, .name_repair = "minimal"
+      )
+      
+      # rename empty colnames
+      colnames(sheet_data) <- 1:ncol(sheet_data)
+      
+      # if empty rows at the end of the file
+      while (all(sheet_data[nrow(sheet_data),] %in% c("NA", "", " ", NA))) {
+        sheet_data <- sheet_data[-nrow(sheet_data),]
+      }
+      
+      # drugs names extraction
+      drug_names <- list(
+        drugA = as.character(sheet_data[1,1]), 
+        drugB = as.character(sheet_data[1,2]),
+        drugC = as.character(sheet_data[1,3])
+      )
+      
+      if (any(c(drug_names$drugA, drug_names$drugB) %in% c("NA", "", " ", NA))) {
+        svDialogs::dlg_message(message = paste0("Drug name(s) are missing in sheet ", i), type = "ok")
+        return (NULL)
+      }
+      
+      # 2 or 3 drugs?
+      type <- NA
+      if (drug_names$drugC %in% c("NA", "", " ", NA)) {
+        type <<- 2
+        two_drugs(sheet_name = sheet_name, drug_names = drug_names, sheet_data = sheet_data)
+      } else {
+        type <<- 3
+        three_drugs(sheet_name = sheet_name, drug_names = drug_names, sheet_data = sheet_data)
+      }
+    })
+  )
+}
 
-# say_hello()
-
-filename <- file.choose(new = TRUE) %>%
-  stringr::str_replace_all(string = ., pattern = "\\\\", replacement = "/")
-
-output_dir <- filename %>%
-  stringr::str_replace(string = ., pattern = ".xlsx", replacement = "_output/")
-
-dir.create(output_dir, showWarnings = FALSE)
-setwd(output_dir)
-
-excel_sheets <- readxl::excel_sheets(path = filename)
-
-invisible(
-  sapply(1:length(excel_sheets), function (i) {
-    excel_sheet <- readxl::read_excel(path = filename, sheet = excel_sheets[i], col_names = FALSE)
-    
-    # if empty rows at the end of the file
-    while (all(excel_sheet[nrow(excel_sheet),] %in% c("NA", "", " ", NA))) {
-      excel_sheet <- excel_sheet[-nrow(excel_sheet),]
-    }
-    
-    # drugs names extraction
-    drugs <- list(
-      drugA = as.character(excel_sheet[1,1]), 
-      drugB = as.character(excel_sheet[1,2]),
-      drugC = as.character(excel_sheet[1,3])
-    )
-    
-    if (any(c(drugs$drugA, drugs$drugB) %in% c("NA", "", " ", NA))) {
-      svDialogs::dlg_message(message = paste0("Drug name(s) are missing in sheet ", i), type = "ok")
-      return (NULL)
-    }
-    
-    # 2 or 3 drugs?
-    type <- NA
-    if (drugs$drugC %in% c("NA", "", " ", NA)) {
-      type <<- 2
-      two_drugs(i = i, drugs = drugs, excel_sheet = excel_sheet)
-    } else {
-      type <<- 3
-      three_drugs(i = i, drugs = drugs, excel_sheet = excel_sheet)
-    }
-  })
-)
+run_EDITH() 
