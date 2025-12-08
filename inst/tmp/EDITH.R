@@ -338,7 +338,7 @@ two_drugs <- function (sheet_name, drug_names, sheet_data) {
       index_list = index(data_init = data_init, data_bliss = data_bliss),
       heatmap_init  = plot_heatmap(data = data_init, drug_names = drug_names, color = 1, title = "Observed viability (%)"),
       heatmap_bliss = plot_heatmap(data = data_bliss, drug_names = drug_names, color = 1, title = "Bliss expected viability (%)"),
-      heatmap_diff  = plot_heatmap(data = data_diff, drug_names = drug_names, color = 2, title = "Synergism/Antagonism (%)")
+      heatmap_diff  = plot_heatmap(data = data_diff, drug_names = drug_names, color = 2, title = "Interaction effect (%)")
     ))
   })
   
@@ -461,7 +461,7 @@ three_drugs <- function (sheet_name, drug_names, sheet_data) {
         
         heatmap_diff <- plot_heatmap(
           data = data_diff[,, dose_c], drug_names = as.list(drug_names_perm), color = 2, 
-          title = "Synergism/Antagonism (%)", subtitle = subtitle
+          title = "Interaction effect (%)", subtitle = subtitle
         )
         
         return (list(
