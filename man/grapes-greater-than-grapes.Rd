@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils-pipe.R
 \name{\%>\%}
 \alias{\%>\%}
-\title{Import magrittr pipe}
+\title{Import magrittr pipe.}
 \description{
-Import magrittr pipe
+Import magrittr pipe.
 }

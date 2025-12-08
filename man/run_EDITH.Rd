@@ -2,7 +2,7 @@
 % Please edit documentation in R/run_EDITH.R
 \name{run_EDITH}
 \alias{run_EDITH}
-\title{Main function to run EDITH analysis}
+\title{Main function to run EDITH analysis.}
 \usage{
 run_EDITH()
 }
@@ -10,7 +10,7 @@ run_EDITH()
 pdf and excel files saved in the output directory.
 }
 \description{
-Main function to run EDITH analysis
+Main function to run EDITH analysis.
 }
 \examples{
 ## Not run:

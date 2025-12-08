@@ -7,7 +7,7 @@
 convert_scientific(vect)
 }
 \arguments{
-\item{vect}{A numeric vector}
+\item{vect}{A numeric vector.}
 }
 \value{
 A character vector with numbers in scientific notation if they have more than 6 characters.

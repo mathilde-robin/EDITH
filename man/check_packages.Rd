@@ -2,12 +2,12 @@
 % Please edit documentation in R/check_packages.R
 \name{check_packages}
 \alias{check_packages}
-\title{Check and install required packages}
+\title{Check and install required packages.}
 \usage{
 check_packages()
 }
 \description{
-Check and install required packages
+Check and install required packages.
 }
 \examples{
 ## Not run:

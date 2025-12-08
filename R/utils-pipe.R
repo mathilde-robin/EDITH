@@ -1,4 +1,4 @@
-#' Import magrittr pipe
+#' Import magrittr pipe.
 #'
 #' @name %>%
 #' @importFrom magrittr %>%
