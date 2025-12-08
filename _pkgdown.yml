@@ -4,5 +4,5 @@ template:
   light-switch: true
   bootswatch: minty
 
-logo: inst/pkgdown/logo.png
+logo: man/figures/logo.png
 
