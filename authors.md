@@ -2,7 +2,11 @@
 
 ## Authors
 
-- **Diego Tosi**. Author, maintainer.
+- **Mathilde Robin**. Author, maintainer.
+
+- **Raphaël Romero**. Author.
+
+- **Diego Tosi**. Author.
 
 ## Citation
 
