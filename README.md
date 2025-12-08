@@ -1,4 +1,4 @@
-# **EDITH** <img src="inst/figures/EDITH_logo.png" align="right" width="150"/>
+# **EDITH** <img src="man/figures/logo.png" align="right" width="150"/>
 ### **Evaluation of Drug Interactions in the setting of THerapy combinations** 
 
 <br>
