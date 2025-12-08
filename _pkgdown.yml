@@ -1,6 +1,7 @@
 url: ~
 template:
   bootstrap: 5
+  light-switch: true
 
 logo: inst/figures/EDITH_logo.png
 
