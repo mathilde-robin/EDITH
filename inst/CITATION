@@ -1,0 +1,8 @@
+bibentry(
+  bibtype = "Manual",
+  title = "EDITH: Evaluation of Drug Interactions in the setting of THerapy combinations",
+  author = person("Mathilde", "Robin") + person("Raphaël", "Romero") + person("Diego", "Tosi"),
+  year = 2025,
+  note = "R package version 0.1.0",
+  url = https://mathilde-robin.github.io/EDITH/
+)
