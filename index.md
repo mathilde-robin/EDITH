@@ -46,11 +46,10 @@ Here a snapshot of the input data format for two drugs:
 
 `EDITH` is a all-in-one function that performs the entire analysis
 pipeline, from data preprocessing to visualization of results. The
-[`run_EDITH()`](https://mathilde-robin.github.io/EDITH/reference/run_EDITH.md)
-function detects whether the input data corresponds to a two-drug or
-three-drug combination and applies the appropriate analysis methods
-accordingly. The input file path is specified via a pop-up window when
-the function is executed.
+[`run_EDITH()`](reference/run_EDITH.md) function detects whether the
+input data corresponds to a two-drug or three-drug combination and
+applies the appropriate analysis methods accordingly. The input file
+path is specified via a pop-up window when the function is executed.
 
 ``` r
 library(EDITH)
