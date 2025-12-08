@@ -1,5 +1,9 @@
 pandoc: 3.1.11
 pkgdown: 2.2.0
 pkgdown_sha: ~
-articles: {}
-last_built: 2025-12-08T16:02Z
+articles:
+  install: install.html
+  theory: theory.html
+  three_drugs: three_drugs.html
+  two_drugs: two_drugs.html
+last_built: 2025-12-08T16:08Z

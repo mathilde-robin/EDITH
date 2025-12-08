@@ -112,3 +112,11 @@ The initial development of this package was motivated by the work of
 - [`two_drugs()`](two_drugs.md) : Process data for two-drug combination
   experiments.
 
+# Articles
+
+### All vignettes
+
+- [install](install.md):
+- [theory](theory.md):
+- [three_drugs](three_drugs.md):
+- [two drugs](two_drugs.md):
