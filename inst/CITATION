@@ -4,5 +4,5 @@ bibentry(
   author = person("Mathilde", "Robin") + person("Raphaël", "Romero") + person("Diego", "Tosi"),
   year = 2025,
   note = "R package version 0.1.0",
-  url = https://mathilde-robin.github.io/EDITH/
+  url = "https://mathilde-robin.github.io/EDITH/"
 )
