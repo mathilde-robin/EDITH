@@ -1,7 +1,7 @@
-#' Install package if not already installed
+#' Install package if not already installed.
 #'
-#' @param package Package name
-#' @param CRAN Boolean, whether the package is from CRAN or Bioconductor
+#' @param package Package name.
+#' @param CRAN Boolean, whether the package is from CRAN or Bioconductor.
 #'
 #' @returns
 #' NULL
@@ -21,7 +21,7 @@ install_or_not <- function (package, CRAN = TRUE)  {
   }
 }
 
-#' Check and install required packages
+#' Check and install required packages.
 #'
 #' @returns
 #' NULL

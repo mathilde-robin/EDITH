@@ -1,4 +1,4 @@
-#' Main function to run EDITH analysis
+#' Main function to run EDITH analysis.
 #'
 #' @returns pdf and excel files saved in the output directory.
 #' @export

@@ -27,7 +27,7 @@ if (!requireNamespace("ComplexHeatmap", quietly = TRUE)) {
 devtools::install_github("mathilde-robin/EDITH")
 ```
 
-#### 📊 **Input for `Edith`**
+#### 📊 **Input for `EDITH`**
 
 EDITH can explore the synergistic effects of two or three drugs based on cell 
 viability data obtained from combination experiments. The input data should be

@@ -2,17 +2,17 @@
 % Please edit documentation in R/check_packages.R
 \name{install_or_not}
 \alias{install_or_not}
-\title{Install package if not already installed}
+\title{Install package if not already installed.}
 \usage{
 install_or_not(package, CRAN = TRUE)
 }
 \arguments{
-\item{package}{Package name}
+\item{package}{Package name.}
 
-\item{CRAN}{Boolean, whether the package is from CRAN or Bioconductor}
+\item{CRAN}{Boolean, whether the package is from CRAN or Bioconductor.}
 }
 \description{
-Install package if not already installed
+Install package if not already installed.
 }
 \examples{
 ## Not run:

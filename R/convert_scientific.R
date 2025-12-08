@@ -1,6 +1,6 @@
 #' Convert to scientific notation.
 #'
-#' @param vect A numeric vector
+#' @param vect A numeric vector.
 #'
 #' @returns A character vector with numbers in scientific notation if they have more than 6 characters.
 #' @export
