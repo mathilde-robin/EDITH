@@ -1,43 +1,43 @@
-# EDITH - Evaluation of Drug Interactions in the setting of THerapy combinations
+# **EDITH** <img src="inst/figures/EDITH_logo.png" align="right" width="150"/>
+### **Evaluation of Drug Interactions in the setting of THerapy combinations** 
 
-## Description
+<br>
 
-Application Shiny pour analyser la synergie de drogues en utilisant la formule de Bliss avec support complet pour l'export en **PDF** et **HTML**.
+#### 🎯 **Motivations**
 
-## 💻 Installation
 
-1.  **Download R**: <https://cran.r-project.org/>
+#### ⚙️ **Installation**
 
-2.  **Download RStudio**: <https://posit.co/download/rstudio-desktop/>
+```r
+if (!requireNamespace("devtools", quietly = TRUE)) {
+    install.packages("devtools")
+}
 
-3.  **Cloner le dépôt** :
+if (!requireNamespace("ComplexHeatmap", quietly = TRUE)) {
+    if (!requireNamespace("BiocManager", quietly = TRUE)) {
+        install.packages("BiocManager")
+    }
+    BiocManager::install("ComplexHeatmap")
+}
 
-download photo !
-
--   dezip
-
-4.  **Open the file with RStudio**
-
-clic droit + ouvrir avec RStudio
-
-5.  **Install required packages** :
-
-``` r
-source("install_packages.R")
+devtools::install_github("mathilde-robin/EDITH")
+library(EDITH)
 ```
 
-5.  **Lancer l'application** :
+#### 📊 **Input for Edith**
 
-Cliquer sur source
+#### 🚀 **Usage**
 
-## ⚙️ Fonctionnalités
+```r
+run_EDITH()
+``` 
 
-### 📈 Analyse de Matrice de Doses → à revoir!
+#### 🎉 **Output**
 
--   Génération automatique de matrices dose-réponse
--   Heatmap de synergie interactive
--   **Fichier PDF**
+#### 🔗 **Reference**
 
-## 🆘 Support Technique
+The full package documentation is available at: 
 
-Contacter [raphael.romero\@inserm.fr](mailto:raphael.romero@inserm.fr){.email} ou [mathilde.robin\@inserm.fr](mailto:mathilde.robin@inserm.fr){.email}
+#### 🧑‍💻 **Authors**
+
+Mathilde Robin (mathilde.robin@inserm.fr), Raphaël Romero (raphael.romero@inserm.fr), Diego Tosi (diego.tosi@icm.unicancer.fr)
