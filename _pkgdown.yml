@@ -1,6 +1,6 @@
 url: ~
-logo: inst/figures/EDITH_logo.png
-
 template:
   bootstrap: 5
+
+logo: inst/figures/EDITH_logo.png
 
