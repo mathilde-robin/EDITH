@@ -1,6 +1,10 @@
 ---
 title: "Tutorial with 2 drugs"
-output: html_document
+output: html_vignette
+vignette: >
+  %\VignetteIndexEntry{Tutorial with 2 drugs}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include=FALSE}
