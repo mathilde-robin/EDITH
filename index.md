@@ -1,4 +1,4 @@
-# **EDITH** ![](inst/figures/EDITH_logo.png)
+# **EDITH**
 
 ### **Evaluation of Drug Interactions in the setting of THerapy combinations**
 
