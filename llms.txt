@@ -4,6 +4,8 @@
 
   
 
+🔎 More details here: <https://mathilde-robin.github.io/EDITH/>
+
 #### 🎯 **Motivations**
 
 The `EDITH` package enables the synergistic effects of two or three
@@ -73,7 +75,8 @@ combinations:
 
 #### 🔗 **Reference**
 
-The full package documentation is available [here]().
+The full package documentation is available
+[here](https://mathilde-robin.github.io/EDITH/).
 
 The initial development of this package was motivated by the work of
 [Tosi et al., BMC Cancer,
