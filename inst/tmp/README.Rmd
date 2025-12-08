@@ -33,8 +33,9 @@ if (!requireNamespace("ComplexHeatmap", quietly = TRUE)) {
 ```
 
 ``` r
-# install.packages("pak")
-pak::pak("mathilde-robin/EDITH")
+# install.packages("devtools")
+devtools::install_github("mathilde-robin/EDITH")
+library(EDITH)
 ```
 
 ## Example
