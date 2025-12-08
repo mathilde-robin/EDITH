@@ -5,3 +5,21 @@ template:
   bootswatch: minty
 
 logo: man/figures/logo.png
+
+navbar:
+  structure:
+    left:
+      - text: "Home"
+        href: index.html
+      - text: "Reference"
+        href: reference/index.html
+      - text: "Articles"
+        menu:
+          - text: "Installation"
+            href: articles/install.html
+          - text: "Tutorial with 2 drugs"
+            href: articles/two_drugs.html
+          - text: "Tutorial with 3 drugs"
+            href: articles/three_drugs.html
+          - text: "Theory"
+            href: articles/theory.html
