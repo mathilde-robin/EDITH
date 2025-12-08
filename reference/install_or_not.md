@@ -1,6 +1,6 @@
-# Install package if not already installed
+# Install package if not already installed.
 
-Install package if not already installed
+Install package if not already installed.
 
 ## Usage
 
@@ -12,11 +12,11 @@ install_or_not(package, CRAN = TRUE)
 
 - package:
 
-  Package name
+  Package name.
 
 - CRAN:
 
-  Boolean, whether the package is from CRAN or Bioconductor
+  Boolean, whether the package is from CRAN or Bioconductor.
 
 ## Examples
 

@@ -1,6 +1,6 @@
-# Main function to run EDITH analysis
+# Main function to run EDITH analysis.
 
-Main function to run EDITH analysis
+Main function to run EDITH analysis.
 
 ## Usage
 

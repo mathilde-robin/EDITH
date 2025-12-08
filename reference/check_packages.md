@@ -1,6 +1,6 @@
-# Check and install required packages
+# Check and install required packages.
 
-Check and install required packages
+Check and install required packages.
 
 ## Usage
 

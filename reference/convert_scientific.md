@@ -12,7 +12,7 @@ convert_scientific(vect)
 
 - vect:
 
-  A numeric vector
+  A numeric vector.
 
 ## Value
 
