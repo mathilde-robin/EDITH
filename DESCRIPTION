@@ -1,9 +1,11 @@
 Package: EDITH
-Title: What the Package Does (One Line, Title Case)
+Title: Evaluation of Drug Interactions in the setting of THerapy combinations
 Version: 0.1.0
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
+    person("Mathilde", "Robin", , "mathilde.robin@inserm.fr", role = c("aut", "cre"))
+    person("Raphaël", "Romero", , "raphael.romero@inserm.fr", role = c("aut", "cre"))
+    person("Diego", "Tosi", , "diego.tosi@icm.unicancer.fr", role = c("aut", "cre"))
+Description: The package enables the synergistic effects of two or three drugs to be explored.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

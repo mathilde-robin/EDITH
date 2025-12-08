@@ -5,6 +5,7 @@
 
 #### 🎯 **Motivations**
 
+The `EDITH` package enables the synergistic effects of two or three drugs to be explored. 
 
 #### ⚙️ **Installation**
 
@@ -21,14 +22,14 @@ if (!requireNamespace("ComplexHeatmap", quietly = TRUE)) {
 }
 
 devtools::install_github("mathilde-robin/EDITH")
-library(EDITH)
 ```
 
-#### 📊 **Input for Edith**
+#### 📊 **Input for `Edith`**
 
 #### 🚀 **Usage**
 
 ```r
+library(EDITH)
 run_EDITH()
 ``` 
 
