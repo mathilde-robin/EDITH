@@ -1,6 +1,4 @@
-# **EDITH**
-
-### **Evaluation of Drug Interactions in the setting of THerapy combinations**
+# **EDITH** - Evaluation of Drug Interactions in the setting of THerapy combinations
 
   
 

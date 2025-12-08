@@ -2,7 +2,7 @@
 
 ### All vignettes
 
-- [install](install.md):
-- [theory](theory.md):
-- [three_drugs](three_drugs.md):
-- [two drugs](two_drugs.md):
+- [Installation](install.md):
+- [Theory](theory.md):
+- [Tutorial with 3 drugs](three_drugs.md):
+- [Tutorial with 2 drugs](two_drugs.md):
