@@ -1,8 +1,8 @@
-url: ~
+url: https://mathilde-robin.github.io/EDITH/
 template:
   bootstrap: 5
   light-switch: true
-  bootswatch: flatly
+  bootswatch: minty
 
-logo: inst/figures/EDITH_logo.png
+logo: inst/pkgdown/logo.png
 
