@@ -5,10 +5,7 @@
 - **Antagonisme** : Effet observé < Effet attendu
 
 Ce code est un script R qui permet d'évaluer les interactions entre des médicaments dans le cadre de combinaisons thérapeutiques (2 ou 3 médicaments). Le script prend en entrée un fichier excel, comme suit: 
-photo 2 drogues, 
-photo 2 drogue + replicat
-photo feuilles excel
-photo 3 drogues + replicats
+
 
 Ensuite, il charge le package `tidyverse` pour la manipulation des données et la visualisation. Il définit plusieurs fonctions pour effectuer des tâches spécifiques, telles que l'affichage d'un message de bienvenue, le nettoyage des sous-tableaux, la vérification des données, le calcul de la matrice d'additivité selon la méthode de Bliss, le calcul des indices synthétiques selon la méthode de Lehar, et la création de graphiques de chaleur.
 Le script lit un fichier Excel sélectionné par l'utilisateur, extrait les noms des médicaments et les données de chaque feuille de calcul, puis effectue les analyses pour chaque bloc de données (représentant un réplicat). Pour chaque bloc, il nettoie les données, effectue les vérifications nécessaires, calcule la matrice d'additivité et les indices synthétiques, et génère des heatmaps pour visualiser les résultats.

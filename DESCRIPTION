@@ -3,7 +3,7 @@ Title: Evaluation of Drug Interactions in the setting of THerapy combinations
 Version: 0.1.0
 Authors@R: c(
     person("Mathilde", "Robin", email = "mathilde.robin@inserm.fr", role = c("aut", "cre")),
-    person("Raphaël", "Romero", email = "raphael.romero@inserm.fr", role = c("aut", "cre")),
+    person("Raphaël", "Romero", email = "raphael.romero@inserm.fr", role = "aut"),
     person("Diego", "Tosi", email = "diego.tosi@icm.unicancer.fr", role = "aut"))
 Description: The package enables the synergistic effects of two or three drugs to be explored.
 License: MIT + file LICENSE
