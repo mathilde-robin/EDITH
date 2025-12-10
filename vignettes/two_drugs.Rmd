@@ -21,7 +21,10 @@ of such a file in the `extdata` folder of the package, or found the complete pat
 by running the following code:
 
 ```{r, eval=TRUE}
-list.files(path = system.file("extdata", package = "EDITH"), pattern = ".xlsx", full.names = TRUE)
+list.files(
+  path = system.file("extdata", package = "EDITH"), 
+  pattern = ".xlsx", full.names = TRUE
+)
 ```
 
 Otherwise, you can have a look at the snapshot of the example input file below:
@@ -101,7 +104,7 @@ for a input file with 2 experiments (ie. 2 excel sheets `line1` and `line2`), wi
 
 You obtain:
 
-1. One pdf file per replicate (ie. per experiment and per replicate) with:
+1. One `.pdf` file per replicate (ie. per experiment and per replicate) with:
   - A heatmap visualizing the viability data across different drug concentration combinations,
   - A heatmap visualizing the expected viability based on the Bliss independence model,
   - A heatmap visualizing the interaction effect.
@@ -110,13 +113,13 @@ You obtain:
   <img src="../man/figures/two_drugs_output.png" alt="two drugs - output" width="800">
 </p>
 
-2. One pdf file per experiment (ie. per excel sheet) with the viability and interaction heatmaps of all replicates in an unique file.
+2. One `.pdf` file per experiment (ie. per excel sheet) with the viability and interaction heatmaps of all replicates in an unique file.
 
 <p align="center">
-  <img src="../man/figures/two_drugs_output_matrice.png" alt="two drugs - output matrice" width="500">
+  <img src="../man/figures/two_drugs_output_matrice.png" alt="two drugs - output matrice" width="800">
 </p>
 
-3. One excel file per experiment (ie. per excel sheet) detailing the additive, combination and efficacy indexes for all replicates.
+3. One `.xlsx` file per experiment (ie. per excel sheet) detailing the additive, combination and efficacy indexes for all replicates.
 
 <p align="center">
   <img src="../man/figures/two_drugs_output_index.png" alt="two drugs - output index" width="500">
