@@ -18,7 +18,7 @@ knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
 To use the `EDITH` package, you first need to install R and RStudio on your computer. You can directly go on the posit.co website (https://posit.co/downloads/) and follow the instructions:
 
 <p align="center">
-  <img src="../man/figures/installation_rstudio.png" width="800">
+  <img src="../man/figures/installation_rstudio.png" alt="install - rstudio" width="800">
 </p>
 
 <br>
