@@ -110,7 +110,7 @@ the analysis is performed for all the 3 possible drug permutations:
 
 <br>
 
-For each experiment, each replicate and each drug permutation, you obtain:
+Finaly, for each experiment, each replicate and each drug permutation, you obtain:
 
 1. One `.pdf` file with three pages per concentration of the third drug, containing:
   - A heatmap visualizing the viability data across different drug concentration combinations,
