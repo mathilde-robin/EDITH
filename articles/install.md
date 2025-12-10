@@ -16,7 +16,7 @@ your computer. You can directly go on the posit.co website
 
 You can know open RStudio and install the `EDITH` package by running the
 following code. You can just copy-paste it into the RStudio console and
-hit Enter.
+hit `Enter`.
 
 ``` r
 if (!requireNamespace("devtools", quietly = TRUE)) {

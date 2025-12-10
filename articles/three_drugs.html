@@ -81,8 +81,141 @@
 
     
     
-<p>to do</p>
-  </main>
+<p><br></p>
+<div class="section level2">
+<h2 id="input-for-edith">📊 <strong>Input for <code>EDITH</code></strong><a class="anchor" aria-label="anchor" href="#input-for-edith"></a>
+</h2>
+<p>To use the <code>EDITH</code> package, you need to provide an input
+file in <code>.xlsx</code> format. This file should contain the
+dose-response data for two drugs. You can find an example of such a file
+in the <code>extdata</code> folder of the package, or found the complete
+path by running the following code:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span></span>
+<span>  path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package <span class="op">=</span> <span class="st">"EDITH"</span><span class="op">)</span>, </span>
+<span>  pattern <span class="op">=</span> <span class="st">".xlsx"</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] "/home/runner/work/_temp/Library/EDITH/extdata/2drugs.xlsx"</span></span>
+<span><span class="co">## [2] "/home/runner/work/_temp/Library/EDITH/extdata/3drugs.xlsx"</span></span></code></pre>
+<p>Otherwise, you can have a look at the snapshot of the example input
+file below:</p>
+<p align="center">
+<img src="../reference/figures/three_drugs_input_1.png" alt="three drugs - input 1" width="500"></p>
+<p><br></p>
+<p>🔥 <strong>The criteria for the input file are as
+follows:</strong></p>
+<ul>
+<li>The file must be in <code>.xlsx</code> format.</li>
+<li>The first cell (<code>A1</code>) must contain the name of the drug
+in the rows (e.g., “Drug A”).</li>
+<li>The second cell (<code>B1</code>) must contain the name of the drug
+in the columns (e.g., “Drug B”).</li>
+<li>The third cell (<code>C1</code>) must contain the name of the drug
+in the layers (e.g., “Drug C”).</li>
+<li>The second row must be empty.</li>
+<li>The third row must contain the concentrations of Drug B (starting
+from cell <code>B3</code>).</li>
+<li>The first column must contain the concentrations of Drug A (starting
+from cell <code>A4</code>).</li>
+<li>The last column must contain the concentrations of Drug C by
+block.</li>
+<li>The drugs concentrations must be in increasing order, starting from
+zero (0) for no drug and with a consistent step size.</li>
+<li>The rest of the cells must contain the corresponding viability
+values between 0 and 100 (values higher than 100 will be set to
+100).</li>
+</ul>
+<p>💡 <strong>Note</strong>: If you have multiple replicates for the
+same experiment (ie. with exactly the same drugs and doses), you can add
+them in the same sheet, just below the first experiment, with one empty
+row in between.</p>
+<p>💡 <strong>Note</strong>: If you have multiple experiments, you can
+add them in additional sheets of the same file, with the same format.
+The name of each sheet will be used as the name of the output files.</p>
+<p align="center">
+<img src="../reference/figures/three_drugs_input_2.png" alt="three drugs - input 2" width="500"></p>
+<p><br></p>
+</div>
+<div class="section level2">
+<h2 id="run-edith">🚀 <strong>Run <code>EDITH</code></strong><a class="anchor" aria-label="anchor" href="#run-edith"></a>
+</h2>
+<p><code><a href="../reference/run_EDITH.html">run_EDITH()</a></code> is a all-in-one function that performs the
+entire analysis pipeline, from data preprocessing to visualization of
+results. After loading the <code>EDITH</code> package, you can run the
+function by copy-pasting the following code into the RStudio console and
+hitting <code>Enter</code>:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">EDITH</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/run_EDITH.html">run_EDITH</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>Then, you can select the input file you want to analyze via a pop-up
+window:</p>
+<p align="center">
+<img src="../reference/figures/two_drugs_popup.png" alt="three drugs - popup" width="500"></p>
+<p>After selecting the file, the function will automatically process the
+data, perform the analysis, and generate the output files in the
+designated output folder.</p>
+<p>💡 <strong>Note</strong>: You don’t need to create the output folder.
+It will be created automatically when running the functions. It will be
+create in the same directory as your input file, with the same name as
+your input file followed by <code>_output/</code>.</p>
+<p><br></p>
+</div>
+<div class="section level2">
+<h2 id="output">🎉 <strong>Output</strong><a class="anchor" aria-label="anchor" href="#output"></a>
+</h2>
+<p>After running the <code><a href="../reference/run_EDITH.html">run_EDITH()</a></code> function, you will find
+the output files in the output directory created automatically. Here is
+an example of the output directory structure for a input file with 1
+experiment (ie. 1 excel sheet <code>line1</code>), with 2
+replicates:</p>
+<p align="center">
+<img src="../reference/figures/three_drugs_output_dir.png" alt="three drugs - output dir" width="500"></p>
+<p><br></p>
+<p>In the three drugs version of <code>EDITH</code>, for each experiment
+and each replicate, the analysis is performed for all the 3 possible
+drug permutations:</p>
+<ul>
+<li>Perm 1: drug B in the x-axis, drug A in the y-axis, drug C is
+varying.</li>
+<li>Perm 2: drug C in the x-axis, drug B in the y-axis, drug A is
+varying.</li>
+<li>Perm 3: drug A in the x-axis, drug C in the y-axis, drug B is
+varying.</li>
+</ul>
+<p><br></p>
+<p>Finaly, for each experiment, each replicate and each drug
+permutation, you obtain:</p>
+<ol style="list-style-type: decimal">
+<li>One <code>.pdf</code> file with three pages per concentration of the
+third drug, containing:</li>
+</ol>
+<ul>
+<li>A heatmap visualizing the viability data across different drug
+concentration combinations,</li>
+<li>A heatmap visualizing the expected viability based on the Bliss
+independence model,</li>
+<li>A heatmap visualizing the interaction effect for each concentration
+of the third drug.</li>
+</ul>
+<ol start="2" style="list-style-type: decimal">
+<li>One <code>.pdf</code> file with the viability and interaction
+heatmaps for each concentration of the third drug in an unique
+file.</li>
+</ol>
+<p align="center">
+<img src="../reference/figures/three_drugs_output_matrice.png" alt="three drugs - output matrice" width="600"></p>
+<ol start="3" style="list-style-type: decimal">
+<li>One <code>.xlsx</code> file detailing the additive, combination and
+efficacy indexes for each concentration of the third drug.</li>
+</ol>
+<p align="center">
+<img src="../reference/figures/three_drugs_output_index.png" alt="three drugs - output index" width="500"></p>
+<p><br></p>
+<p>🔎 Fore more details about the method, please refer to the theory
+vignette: <a href="https://mathilde-robin.github.io/EDITH/articles/theory.html" class="external-link uri">https://mathilde-robin.github.io/EDITH/articles/theory.html</a></p>
+</div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 
