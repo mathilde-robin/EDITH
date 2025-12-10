@@ -2,7 +2,7 @@
 title: "Tutorial with 3 drugs"
 output: html_vignette
 vignette: >
-  %\VignetteIndexEntry{Tutoria with 3 drugs}
+  %\VignetteIndexEntry{Tutorial with 3 drugs}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
