@@ -2,7 +2,7 @@
 
   
 
-#### 🔗 **Reference**
+## 🔗 **Reference**
 
 🔎 The full package documentation is available here:
 <https://mathilde-robin.github.io/EDITH/>.
@@ -13,7 +13,7 @@
 
   
 
-#### 🎯 **Motivations**
+## 🎯 **Motivations**
 
 The `EDITH` package enables the synergistic effects of two or three
 drugs to be explored, based on cell viability data obtained from
@@ -21,7 +21,7 @@ combination experiments.
 
   
 
-#### ⚙️ **Installation**
+## ⚙️ **Installation**
 
 ``` r
 if (!requireNamespace("devtools", quietly = TRUE)) {
@@ -43,7 +43,7 @@ devtools::install_github("mathilde-robin/EDITH")
 
   
 
-#### 📊 **Input for `EDITH`**
+## 📊 **Input for `EDITH`**
 
 EDITH can explore the synergistic effects of two or three drugs based on
 cell viability data obtained from combination experiments. The input
@@ -70,7 +70,7 @@ drugs:
 
   
 
-#### 🚀 **Usage**
+## 🚀 **Usage**
 
 `EDITH` is a all-in-one function that performs the entire analysis
 pipeline, from data preprocessing to visualization of results. The
@@ -86,7 +86,7 @@ run_EDITH()
 
   
 
-#### 🎉 **Output**
+## 🎉 **Output**
 
 The main outputs of the `EDITH` package include:
 
