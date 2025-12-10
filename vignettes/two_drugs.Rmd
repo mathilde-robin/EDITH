@@ -54,7 +54,9 @@ experiment, with one empty row in between.
   <img src="../man/figures/two_drugs_input_2.png" alt="two drugs - input 2" width="500">
 </p>
 
-💡 **Note**: If you have multiple experiments, you can add them in additional sheets of the same file, with the same format. The name of each sheet will be used as the name of the output files.
+💡 **Note**: If you have multiple experiments, you can add them in additional sheets 
+of the same file, with the same format. The name of each sheet will be used as the 
+name of the output files.
 
 <p align="center">
   <img src="../man/figures/two_drugs_input_3.png" alt="two drugs - input 3" width="500">
@@ -104,7 +106,7 @@ for a input file with 2 experiments (ie. 2 excel sheets `line1` and `line2`), wi
 
 You obtain:
 
-1. One `.pdf` file per replicate (ie. per experiment and per replicate) with:
+1. One `.pdf` file per replicate (ie. per experiment and per replicate):
   - A heatmap visualizing the viability data across different drug concentration combinations,
   - A heatmap visualizing the expected viability based on the Bliss independence model,
   - A heatmap visualizing the interaction effect.
@@ -116,7 +118,7 @@ You obtain:
 2. One `.pdf` file per experiment (ie. per excel sheet) with the viability and interaction heatmaps of all replicates in an unique file.
 
 <p align="center">
-  <img src="../man/figures/two_drugs_output_matrice.png" alt="two drugs - output matrice" width="800">
+  <img src="../man/figures/two_drugs_output_matrice.png" alt="two drugs - output matrice" width="600">
 </p>
 
 3. One `.xlsx` file per experiment (ie. per excel sheet) detailing the additive, combination and efficacy indexes for all replicates.
