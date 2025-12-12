@@ -15,9 +15,21 @@
 
 ## 🎯 **Motivations**
 
+Characterizing interactions between drugs is an area of major interest
+for drug  
+development, as exploiting synergism between drugs could allow
+increasing treatment efficacy using lower doses of single drugs, and
+avoiding antagonistic interaction is needed to maintain the therapeutic
+efficacy of drugs. Broadly speaking, synergism and antagonism could be
+defined as an increase or a reduction of the effect of a drug
+combination compared to the effect expected for the combination on the
+basis of the single agent effects.
+
 The `EDITH` package enables the synergistic effects of two or three
 drugs to be explored, based on cell viability data obtained from
-combination experiments.
+combination experiments. The package is designed to analyze and
+visualize drug interactions and implements a widely used method for
+assessing drug interactions: *the Bliss independence model*.
 
   
 
