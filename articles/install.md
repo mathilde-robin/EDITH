@@ -19,8 +19,8 @@ following code. You can just copy-paste it into the RStudio console and
 hit `Enter`.
 
 ``` r
-if (!requireNamespace("devtools", quietly = TRUE)) {
-    install.packages("devtools")
+if (!requireNamespace("remotes", quietly = TRUE)) {
+    install.packages("remotes")
 }
 
 if (!requireNamespace("ComplexHeatmap", quietly = TRUE)) {
@@ -30,7 +30,7 @@ if (!requireNamespace("ComplexHeatmap", quietly = TRUE)) {
     BiocManager::install("ComplexHeatmap")
 }
 
-devtools::install_github("mathilde-robin/EDITH")
+remotes::install_github("mathilde-robin/EDITH")
 ```
 
 Once the installation is complete, you can load the package by running:

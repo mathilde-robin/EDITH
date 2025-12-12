@@ -36,8 +36,8 @@ assessing drug interactions: *the Bliss independence model*.
 ## ⚙️ **Installation**
 
 ``` r
-if (!requireNamespace("devtools", quietly = TRUE)) {
-    install.packages("devtools")
+if (!requireNamespace("remotes", quietly = TRUE)) {
+    install.packages("remotes")
 }
 
 if (!requireNamespace("ComplexHeatmap", quietly = TRUE)) {
@@ -47,7 +47,7 @@ if (!requireNamespace("ComplexHeatmap", quietly = TRUE)) {
     BiocManager::install("ComplexHeatmap")
 }
 
-devtools::install_github("mathilde-robin/EDITH")
+remotes::install_github("mathilde-robin/EDITH")
 ```
 
 🔎 More details in the installation vignette:
