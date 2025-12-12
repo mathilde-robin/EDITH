@@ -46,6 +46,9 @@ below:
 - The rest of the cells must contain the corresponding viability values
   between 0 and 100 (values higher than 100 will be set to 100).
 
+🚨 **Important**: the values in the input matrix must correspond to the
+percentage of living cells.
+
 💡 **Note**: If you have multiple replicates for the same experiment
 (ie. with exactly the same drugs and doses), you can add them in the
 same sheet, just below the first experiment, with one empty row in

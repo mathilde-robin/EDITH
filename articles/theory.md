@@ -20,6 +20,8 @@ combination experiments. The package is designed to analyze and
 visualize drug interactions and implements a widely used method for
 assessing drug interactions: *the Bliss independence model*.
 
+  
+
 ## 📐 **Bliss independence model**
 
 The Bliss independence model is a mathematical framework used to
@@ -75,6 +77,11 @@ where:
 - $i = 1,...,n$ indexes the drugs in the combination,
 - $U_{i}$ is the fraction of unaffected cells by drug $i$.
 
+🚨 **Important**: the values in the input matrix must correspond to the
+percentage of living cells.
+
+  
+
 ## 👀 ️**Visual example**
 
 To illustrate the Bliss independence model, consider the following
@@ -82,51 +89,53 @@ example with two drugs, A and B:
 
 ![theory - visual](../reference/figures/theory_visual.png)
 
+  
+
 ## 🔍 **Evaluation of drug interactions**
 
-**Interprétation** : - **Synergie** : Effet observé \> Effet attendu -
-**Additivité** : Effet observé ≈ Effet attendu  
-- **Antagonisme** : Effet observé \< Effet attendu
+To evaluate the interaction between drugs, the observed effect of the
+drug combination is compared to the expected effect calculated using the
+Bliss independence model. This is simply done by subtracting the
+observed effect from the expected effect:
 
-Ensuite, il charge le package `tidyverse` pour la manipulation des
-données et la visualisation. Il définit plusieurs fonctions pour
-effectuer des tâches spécifiques, telles que l’affichage d’un message de
-bienvenue, le nettoyage des sous-tableaux, la vérification des données,
-le calcul de la matrice d’additivité selon la méthode de Bliss, le
-calcul des indices synthétiques selon la méthode de Lehar, et la
-création de graphiques de chaleur. Le script lit un fichier Excel
-sélectionné par l’utilisateur, extrait les noms des médicaments et les
-données de chaque feuille de calcul, puis effectue les analyses pour
-chaque bloc de données (représentant un réplicat). Pour chaque bloc, il
-nettoie les données, effectue les vérifications nécessaires, calcule la
-matrice d’additivité et les indices synthétiques, et génère des heatmaps
-pour visualiser les résultats. Enfin, il enregistre les graphiques dans
-des fichiers PDF et affiche un message si les doses des médicaments ne
-sont pas cohérentes entre les réplicats. Le script est conçu pour être
-interactif, avec des boîtes de dialogue pour informer l’utilisateur des
-erreurs ou des avertissements, et pour lui permettre de choisir le
-fichier Excel à analyser. Le script est conçu pour être utilisé dans un
-environnement R et nécessite que l’utilisateur ait les droits d’écriture
-dans le répertoire de sortie spécifié.
+$$Interaction = E_{expected} - E_{observed}$$
 
-La formule de Bliss est utilisée pour évaluer l’additivité des effets de
-deux ou plusieurs médicaments lorsqu’ils sont administrés en
-combinaison. Elle repose sur l’idée que si deux médicaments agissent
-indépendamment l’un de l’autre, l’effet combiné devrait être égal à la
-somme des effets individuels de chaque médicament. La formule de Bliss
-est généralement exprimée comme suit :
+  
 
-En d’autres termes, si les médicaments A et B sont administrés
-séparément, leurs effets individuels sont additionnés, mais l’effet
-combiné est ajusté en soustrayant le produit de leurs effets
-individuels. Cela permet de tenir compte du fait que les médicaments
-peuvent interagir de manière additive ou synergique. La formule de Bliss
-est souvent utilisée dans les études pharmacologiques pour évaluer si
-une combinaison de médicaments produit un effet supérieur à celui
-attendu en fonction de leurs effets individuels. Si l’effet combiné est
-supérieur à celui prédit par la formule de Bliss, cela suggère une
-synergie entre les médicaments. Si l’effet combiné est inférieur, cela
-indique un antagonisme.
+## 🧩 **Interpretation**:
+
+The interaction can be classified into three categories based on this
+comparison:
+
+- ⚡ **Synergy**: More cells killed than expected → positive interaction
+  effect ($E_{expected} < E_{observed}$)
+- ⚖️ **Additivity**: As many cells killed as expected → no interaction
+  effect ($E_{expected} \approx E_{observed}$)
+- ⚔️ **Antagonism**: Less cells killed than expected → negative
+  interaction effect ($E_{expected} > E_{observed}$)
+
+  
+
+## 👀 ️**Visual example**
+
+To illustrate the interaction estimation, consider the following example
+with two drugs, A and B:
+
+![theory - visual 2](../reference/figures/theory_visual_2.png)
+
+  
+
+## 🧮 **Quantification of drug interactions**
+
+Different measures can be used to quantify drug interactions. In the
+`EDITH` package, we implement three different indexes: the additive
+index, the combination index and the efficacy index.
+
+### **Additive index**
+
+### **Combination index**
+
+### **Efficacy index**
 
 La formule de Lehar est utilisée pour évaluer l’efficacité des
 combinaisons de médicaments en tenant compte de leur interaction. Elle
@@ -137,24 +146,21 @@ suit : CI = (E_A \* E_B) / E_combined où : - CI est l’indice de
 combinaison, qui quantifie l’interaction entre les médicaments. - E_A
 est l’effet du médicament A. - E_B est l’effet du médicament B. -
 E_combined est l’effet combiné des deux médicaments lorsqu’ils sont
-administrés ensemble. L’indice de combinaison (CI) est utilisé pour
-évaluer si l’effet combiné des médicaments est supérieur, inférieur ou
-égal à la somme de leurs effets individuels. Un CI supérieur à 1 indique
-une synergie entre les médicaments, c’est-à-dire que leur effet combiné
-est supérieur à ce qui serait attendu en additionnant leurs effets
-individuels. Un CI égal à 1 indique une additivité, tandis qu’un CI
-inférieur à 1 suggère un antagonisme, où l’effet combiné est inférieur à
-la somme des effets individuels. La formule de Lehar est souvent
-utilisée dans les études pharmacologiques pour évaluer l’efficacité des
-combinaisons de médicaments, en particulier dans le contexte du
-traitement du cancer ou d’autres maladies où plusieurs médicaments sont
-utilisés simultanément. Elle permet aux chercheurs de mieux comprendre
-comment les médicaments interagissent entre eux et d’optimiser les
-schémas thérapeutiques.
+administrés ensemble.
 
-------------------------------------------------------------------------
-
-**Method**:
+L’indice de combinaison (CI) est utilisé pour évaluer si l’effet combiné
+des médicaments est supérieur, inférieur ou égal à la somme de leurs
+effets individuels. Un CI supérieur à 1 indique une synergie entre les
+médicaments, c’est-à-dire que leur effet combiné est supérieur à ce qui
+serait attendu en additionnant leurs effets individuels. Un CI égal à 1
+indique une additivité, tandis qu’un CI inférieur à 1 suggère un
+antagonisme, où l’effet combiné est inférieur à la somme des effets
+individuels. La formule de Lehar est souvent utilisée dans les études
+pharmacologiques pour évaluer l’efficacité des combinaisons de
+médicaments, en particulier dans le contexte du traitement du cancer ou
+d’autres maladies où plusieurs médicaments sont utilisés simultanément.
+Elle permet aux chercheurs de mieux comprendre comment les médicaments
+interagissent entre eux et d’optimiser les schémas thérapeutiques.
 
 *Index*:
 
@@ -184,6 +190,3 @@ Lehár, J., Krueger, A.S., Avery, W., Heilbut, A.M., Johansen, L.M.,
 Price, E.R., Rickles, R.J., Short, G.F., Staunton, J.E., Jin, X., et
 al. (2009). Synergistic drug combinations tend to improve
 therapeutically relevant selectivity. Nat. Biotechnol. 27, 659–666.
-
-Note: $M_{O}$ et $M_{E}$ correspondent aux nombres de cellules mortes
-(et pas vivantes comme dans nos calculs …)
