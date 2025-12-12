@@ -43,7 +43,7 @@ Otherwise, you can have a look at the snapshot of the example input file below:
 -   The second row must be empty.
 -   The third row must contain the concentrations of Drug B (starting from cell `B3`).
 -   The first column must contain the concentrations of Drug A (starting from cell `A4`).
--   The drugs concentrations must be in increasing order, starting from zero (0) for no drug and with a consistent step size.
+-   The drugs concentrations must be in increasing order, starting from 0 for no drug and with a consistent step size.
 -   The rest of the cells must contain the corresponding viability values between 0 and 100 (values higher than 100 will be set to 100).
 
 💡 **Note**: If you have multiple replicates for the same experiment (ie. with exactly 
