@@ -38,8 +38,8 @@ below:
   cell `B3`).
 - The first column must contain the concentrations of Drug A (starting
   from cell `A4`).
-- The drugs concentrations must be in increasing order, starting from
-  zero (0) for no drug and with a consistent step size.
+- The drugs concentrations must be in increasing order, starting from 0
+  for no drug and with a consistent step size.
 - The rest of the cells must contain the corresponding viability values
   between 0 and 100 (values higher than 100 will be set to 100).
 
