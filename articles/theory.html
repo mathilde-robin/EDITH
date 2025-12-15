@@ -83,7 +83,7 @@
     
 <p><br></p>
 <div class="section level2">
-<h2 id="motivations">🎯 <strong>Motivations</strong><a class="anchor" aria-label="anchor" href="#motivations"></a>
+<h2 id="aim">🎯 <strong>Aim</strong><a class="anchor" aria-label="anchor" href="#aim"></a>
 </h2>
 <p>Characterizing interactions between drugs is an area of major
 interest for drug<br>
@@ -172,7 +172,7 @@ indexes the drugs in the combination,</li>
 is the fraction of unaffected cells by drug
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>.</li>
 </ul>
-<p>🚨 <strong>Important</strong>: the values in the input matrix must
+<p>🚨 <strong>Important</strong>: The values in the input matrix must
 correspond to the percentage of living cells.</p>
 <p><br></p>
 </div>
@@ -201,7 +201,7 @@ observed effect from the expected effect:</p>
 <p>The interaction can be classified into three categories based on this
 comparison:</p>
 <ul>
-<li>⚡ <strong>Synergy</strong>: More cells killed than expected →
+<li>⚡ <strong>Synergy</strong>:More cells killed than expected →
 positive interaction effect
 (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>E</mi><mrow><mi>e</mi><mi>x</mi><mi>p</mi><mi>e</mi><mi>c</mi><mi>t</mi><mi>e</mi><mi>d</mi></mrow></msub><mo>&lt;</mo><msub><mi>E</mi><mrow><mi>o</mi><mi>b</mi><mi>s</mi><mi>e</mi><mi>r</mi><mi>v</mi><mi>e</mi><mi>d</mi></mrow></msub></mrow><annotation encoding="application/x-tex">E_{expected} &lt; E_{observed}</annotation></semantics></math>)</li>
 <li>⚖️ <strong>Additivity</strong>: As many cells killed as expected →
@@ -225,80 +225,122 @@ example with two drugs, A and B:</p>
 <div class="section level2">
 <h2 id="quantification-of-drug-interactions">🧮 <strong>Quantification of drug interactions</strong><a class="anchor" aria-label="anchor" href="#quantification-of-drug-interactions"></a>
 </h2>
-<p>Different measures can be used to quantify drug interactions. In the
-<code>EDITH</code> package, we implement three different indexes: the
-additive index, the combination index and the efficacy index.</p>
-<div class="section level3">
-<h3 id="additive-index">
-<strong>Additive index</strong><a class="anchor" aria-label="anchor" href="#additive-index"></a>
-</h3>
-</div>
+<p>In addition to this point-bypoint estimation, different measures can
+be used to quantify drug interactions. In the <code>EDITH</code>
+package, we implement three different indexes: the additive index, the
+combination index and the efficacy index.</p>
+<p>🚨 <strong>Important</strong>: These indexes can be used <strong>if
+and only if</strong> the dilution factor is fixed between all the dose
+levels for each drug used in the cytotocixity assay.</p>
+<p>🚨 <strong>Important</strong>: These indexes can be used to compared
+different experiments <strong>if and only if</strong> the same drug
+concentration ranges and the same dilution factors are used in all
+experiments.</p>
 <div class="section level3">
 <h3 id="combination-index">
 <strong>Combination index</strong><a class="anchor" aria-label="anchor" href="#combination-index"></a>
 </h3>
+<p>According to the approach proposed by Lehár (Lehár et al., 2007,
+2008, 2009), the <strong>combination index</strong>, is calculated as
+follows:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mi>I</mi><mo>=</mo><mi>l</mi><mi>n</mi><msub><mi>f</mi><mi>A</mi></msub><mi>l</mi><mi>n</mi><msub><mi>f</mi><mi>B</mi></msub><munder><mo>∑</mo><mrow><mi>A</mi><mo>,</mo><mi>B</mi></mrow></munder><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>M</mi><mn>0</mn></msub><mo>−</mo><msub><mi>M</mi><mi>E</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">CI = ln f_A ln f_B \sum_{A,B} (M_0 - M_E)</annotation></semantics></math></p>
+<p>where:</p>
+<ul>
+<li>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>f</mi><mi>A</mi></msub><annotation encoding="application/x-tex">f_A</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>f</mi><mi>B</mi></msub><annotation encoding="application/x-tex">f_B</annotation></semantics></math>
+are the dilution factors used in the cytotocixity assay for drugs A and
+B respectively,</li>
+<li>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mn>0</mn></msub><annotation encoding="application/x-tex">M_0</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mi>E</mi></msub><annotation encoding="application/x-tex">M_E</annotation></semantics></math>
+are the matrices of the survival percentage for the experimental data
+and for the corresponding Bliss independence data, respectively.</li>
+</ul>
+<p>The generalized form of the equation for a combination of n drugs
+is:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mi>I</mi><mo>=</mo><munderover><mo>∏</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mo>ln</mo><msub><mi>f</mi><mi>i</mi></msub><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msub><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>M</mi><mn>0</mn></msub><mo>−</mo><msub><mi>M</mi><mi>E</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">CI = \prod_{i=1}^n \ln f_i \sum_{i=1}^n (M_0 - M_E)_i</annotation></semantics></math></p>
+<p>where:</p>
+<ul>
+<li>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>f</mi><mi>i</mi></msub><annotation encoding="application/x-tex">f_i</annotation></semantics></math>
+is the dilution factor used in the cytotoxicity assay for drug
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>,</li>
+<li>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mn>0</mn></msub><annotation encoding="application/x-tex">M_0</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mi>E</mi></msub><annotation encoding="application/x-tex">M_E</annotation></semantics></math>
+are the matrices of the survival percentage for the experimental data
+and for the corresponding Bliss independence data, respectively.</li>
+</ul>
 </div>
 <div class="section level3">
 <h3 id="efficacy-index">
 <strong>Efficacy index</strong><a class="anchor" aria-label="anchor" href="#efficacy-index"></a>
 </h3>
-<p>La formule de Lehar est utilisée pour évaluer l’efficacité des
-combinaisons de médicaments en tenant compte de leur interaction. Elle
-est souvent utilisée dans le contexte de la pharmacologie pour
-quantifier l’effet d’une combinaison de médicaments par rapport à leurs
-effets individuels. La formule de Lehar est généralement exprimée comme
-suit : CI = (E_A * E_B) / E_combined où : - CI est l’indice de
-combinaison, qui quantifie l’interaction entre les médicaments. - E_A
-est l’effet du médicament A. - E_B est l’effet du médicament B. -
-E_combined est l’effet combiné des deux médicaments lorsqu’ils sont
-administrés ensemble.</p>
-<p>L’indice de combinaison (CI) est utilisé pour évaluer si l’effet
-combiné des médicaments est supérieur, inférieur ou égal à la somme de
-leurs effets individuels. Un CI supérieur à 1 indique une synergie entre
-les médicaments, c’est-à-dire que leur effet combiné est supérieur à ce
-qui serait attendu en additionnant leurs effets individuels. Un CI égal
-à 1 indique une additivité, tandis qu’un CI inférieur à 1 suggère un
-antagonisme, où l’effet combiné est inférieur à la somme des effets
-individuels. La formule de Lehar est souvent utilisée dans les études
-pharmacologiques pour évaluer l’efficacité des combinaisons de
-médicaments, en particulier dans le contexte du traitement du cancer ou
-d’autres maladies où plusieurs médicaments sont utilisés simultanément.
-Elle permet aux chercheurs de mieux comprendre comment les médicaments
-interagissent entre eux et d’optimiser les schémas thérapeutiques.</p>
-<p><em>Index</em>:</p>
-<p>According to the approach proposed by Lehar (Lehár et al., 2007,
-2008, 2009), a point-by-point calculation of the expected values in case
-of absence of interaction effect is performed over all the matrix
-concentration combinations in order to obtain an expected-value matrix.
-Then, a <strong>combination index</strong>, <strong>CI</strong>, is
-calculated as follows:
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mi>I</mi><mo>=</mo><mo>ln</mo><msub><mi>f</mi><mi>A</mi></msub><mo>ln</mo><msub><mi>f</mi><mi>B</mi></msub><msub><mo>∑</mo><mrow><mi>A</mi><mo>,</mo><mi>B</mi></mrow></msub><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>M</mi><mn>0</mn></msub><mo>−</mo><msub><mi>M</mi><mi>E</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">CI = \ln f_A \ln f_B \sum_{A,B} (M_0 - M_E)</annotation></semantics></math>
-where
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mi>O</mi></msub><annotation encoding="application/x-tex">M_O</annotation></semantics></math>
-and
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mi>E</mi></msub><annotation encoding="application/x-tex">M_E</annotation></semantics></math>
-are the matrices of the observed and expected values, respectively, and
+<p>An <strong>efficacy index</strong> is calculated as follow:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi><mi>I</mi><mo>=</mo><mo>ln</mo><msub><mi>f</mi><mi>A</mi></msub><mo>ln</mo><msub><mi>f</mi><mi>B</mi></msub><munder><mo>∑</mo><mrow><mi>A</mi><mo>,</mo><mi>B</mi></mrow></munder><msub><mi>M</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">EI = \ln f_A \ln f_B \sum_{A,B} M_0</annotation></semantics></math></p>
+<p>where:</p>
+<ul>
+<li>
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>f</mi><mi>A</mi></msub><annotation encoding="application/x-tex">f_A</annotation></semantics></math>
 and
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>f</mi><mi>B</mi></msub><annotation encoding="application/x-tex">f_B</annotation></semantics></math>
-are the dilution factors for the drugs A and B. The <strong>CI</strong>
-is a positive-gated, effect-weighted volume over the lack of interaction
-effect (i.e. Bliss independence), adjusted for variable dilution factors
+are the dilution factors used in the cytotocixity assay for drugs A and
+B respectively,</li>
+<li>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mn>0</mn></msub><annotation encoding="application/x-tex">M_0</annotation></semantics></math>
+is the matrix of the survival percentage for the experimental data.</li>
+</ul>
+<p>The generalized form of the equation for a combination of n drugs
+is:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi><mi>I</mi><mo>=</mo><munderover><mo>∏</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mo>ln</mo><msub><mi>f</mi><mi>i</mi></msub><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msub><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>M</mi><mn>0</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">EI = \prod_{i=1}^n \ln f_i \sum_{i=1}^n (M_0)_i</annotation></semantics></math></p>
+<p>where:</p>
+<ul>
+<li>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>f</mi><mi>i</mi></msub><annotation encoding="application/x-tex">f_i</annotation></semantics></math>
+is the dilution factor used in the cytotoxicity assay for drug
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>,</li>
+<li>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mn>0</mn></msub><annotation encoding="application/x-tex">M_0</annotation></semantics></math>
+is the matrix of the survival percentage for the experimental data.</li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="additive-index">
+<strong>Additive index</strong><a class="anchor" aria-label="anchor" href="#additive-index"></a>
+</h3>
+<p>An <strong>additive index</strong> is calculated as follow:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>I</mi><mo>=</mo><mo>ln</mo><msub><mi>f</mi><mi>A</mi></msub><mo>ln</mo><msub><mi>f</mi><mi>B</mi></msub><munder><mo>∑</mo><mrow><mi>A</mi><mo>,</mo><mi>B</mi></mrow></munder><mn>100</mn><mo>−</mo><msub><mi>M</mi><mi>E</mi></msub></mrow><annotation encoding="application/x-tex">AI = \ln f_A \ln f_B \sum_{A,B} 100 - M_E</annotation></semantics></math></p>
+<p>where:</p>
+<ul>
+<li>
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>f</mi><mi>A</mi></msub><annotation encoding="application/x-tex">f_A</annotation></semantics></math>
 and
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>f</mi><mi>B</mi></msub><annotation encoding="application/x-tex">f_B</annotation></semantics></math>.
-An <strong>efficacy index</strong> is also calculated as follow:
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi><mi>I</mi><mo>=</mo><mo>ln</mo><msub><mi>f</mi><mi>A</mi></msub><mo>ln</mo><msub><mi>f</mi><mi>B</mi></msub><msub><mo>∑</mo><mrow><mi>A</mi><mo>,</mo><mi>B</mi></mrow></msub><msub><mi>M</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">EI = \ln f_A \ln f_B \sum_{A,B} M_0</annotation></semantics></math>.</p>
-<p>Lehár, J., Zimmermann, G.R., Krueger, A.S., Molnar, R.A., Ledell,
-J.T., Heilbut, A.M., Short, G.F., Giusti, L.C., Nolan, G.P., Magid,
-O.A., et al. (2007). Chemical combination effects predict connectivity
-in biological systems. Mol. Syst. Biol. 3, 80.</p>
-<p>Lehár, J., Stockwell, B.R., Giaever, G., and Nislow, C. (2008).
-Combination chemical genetics. Nat. Chem. Biol. 4, 674–681.</p>
-<p>Lehár, J., Krueger, A.S., Avery, W., Heilbut, A.M., Johansen, L.M.,
-Price, E.R., Rickles, R.J., Short, G.F., Staunton, J.E., Jin, X., et
-al. (2009). Synergistic drug combinations tend to improve
-therapeutically relevant selectivity. Nat. Biotechnol. 27, 659–666.</p>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>f</mi><mi>B</mi></msub><annotation encoding="application/x-tex">f_B</annotation></semantics></math>
+are the dilution factors used in the cytotocixity assay for drugs A and
+B respectively,</li>
+<li>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mi>E</mi></msub><annotation encoding="application/x-tex">M_E</annotation></semantics></math>
+is the matrix of the survival percentage for the corresponding Bliss
+independence data.</li>
+</ul>
+<p>The generalized form of the equation for a combination of n drugs
+is:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>I</mi><mo>=</mo><munderover><mo>∏</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mo>ln</mo><msub><mi>f</mi><mi>i</mi></msub><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msub><mrow><mo stretchy="true" form="prefix">(</mo><mn>100</mn><mo>−</mo><msub><mi>M</mi><mi>E</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">AI = \prod_{i=1}^n \ln f_i \sum_{i=1}^n (100 - M_E)_i</annotation></semantics></math></p>
+<p>where:</p>
+<ul>
+<li>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>f</mi><mi>i</mi></msub><annotation encoding="application/x-tex">f_i</annotation></semantics></math>
+is the dilution factor used in the cytotoxicity assay for drug
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>,</li>
+<li>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mi>E</mi></msub><annotation encoding="application/x-tex">M_E</annotation></semantics></math>
+is the matrix of the survival percentage for the corresponding Bliss
+independence data.</li>
+</ul>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
