@@ -53,7 +53,6 @@ run_EDITH <- function () {
       }
 
       # 2 or 3 drugs?
-      type <- NA
       if (drug_names$drugC %in% c("NA", "", " ", NA)) {
         two_drugs(sheet_name = sheet_name, drug_names = drug_names, sheet_data = sheet_data)
       } else {

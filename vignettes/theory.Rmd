@@ -36,7 +36,7 @@ The Bliss independence model is a mathematical framework used to evaluate the in
 (ie. the absence of any interaction effect) of two drugs when they are administered 
 in combination. The  general form of Bliss independence model is the following equation:
 
-$$E_{combined} = E_A + E_B - (E_A * E_B)$$
+$$E_{combined} = E_A + E_B - (E_A \cdot E_B)$$
 where:
 
 - $E_A$ is the effect of drug A,
@@ -47,13 +47,13 @@ In the case of a cancer cell population, the effect will correspond to the fract
 cells killed by the drug(s). For example, if drug A kills 30% of the cells, $E_A = 0.3$ and 
 drug B kills 40% of the cells $E_B = 0.4$. According to the Bliss independence model, 
 the expected effect of the combination of drugs A and B would be: 
-$$E_{combined} = 0.3 + 0.4 - (0.3 * 0.4) = 0.58$$
+$$E_{combined} = 0.3 + 0.4 - (0.3 \times 0.4) = 0.58$$
 This means that the combination of drugs A and B is expected to kill 58% of the 
 cells if they act independently.
 
 The Bliss equation can be recast in terms of unaffected cells as follows:
 
-$$U_{combined} = U_A * U_B$$
+$$U_{combined} = U_A \cdot U_B$$
 
 where:
 
@@ -65,7 +65,7 @@ For example, if drug A leaves 70% of the cells unaffected, $U_A = 0.7$ and drug 
 leaves 60% of the cells unaffected $U_B = 0.6$. According to the Bliss independence model, 
 the expected fraction of unaffected cells by the combination of drugs A and B would be:
 
-$$U_{combined} = 0.7 * 0.6 = 0.42$$
+$$U_{combined} = 0.7 \times 0.6 = 0.42$$
 This means that the combination of drugs A and B is expected to leave 42% of the cells 
 unaffected if they act independently.
 
@@ -98,17 +98,17 @@ To evaluate the interaction between drugs, the observed effect of the drug combi
 is compared to the expected effect calculated using the Bliss independence model.
 This is simply done by subtracting the observed effect from the expected effect:
 
-$$Interaction = E_{expected} - E_{observed}$$
+$$Interaction = U_{expected} - U_{observed}$$
 
 <br>
 
 ## 🧩 **Interpretation**:
 
- The interaction can be classified into three categories based on this comparison:
+The interaction can be classified into three categories based on this comparison:
 
-- ⚡ **Synergy**:More cells killed than expected → positive interaction effect ($E_{expected} < E_{observed}$)
-- ⚖️ **Additivity**: As many cells killed as expected → no interaction effect ($E_{expected} ≈ E_{observed}$)
-- ⚔️ **Antagonism**: Less cells killed than expected → negative interaction effect ($E_{expected} > E_{observed}$)
+- ⚡ **Synergy**:More cells killed than expected → positive interaction effect ($U_{expected} - U_{observed}$)
+- ⚖️ **Additivity**: As many cells killed as expected → no interaction effect ($U_{expected} ≈ U_{observed}$)
+- ⚔️ **Antagonism**: Less cells killed than expected → negative interaction effect ($U_{expected} > U_{observed}$)
 
 <br>
 
@@ -134,62 +134,77 @@ is fixed between all the dose levels for each drug used in the cytotocixity assa
 🚨 **Important**: These indexes can be used to compared different experiments **if and only if**
 the same drug concentration ranges and the same dilution factors are used in all experiments.
 
-### **Combination index**
+<br>
 
-According to the approach proposed by Lehár (Lehár et al., 2007, 2008, 2009), the **combination index**, is calculated as follows:
+### 🌟 **Combination index**
 
-$$CI = ln f_A ln f_B \sum_{A,B} (M_0 - M_E)$$
+According to the approach proposed by Lehár (Lehár et al., 2007, 2008, 2009), 
+the **combination index**, is calculated as follows:
+
+$$CI = \ln f_A \cdot \ln f_B \cdot \sum_{A,B} (U_{expected} - U_{observed})$$
 
 where:
 
 - $f_A$ and $f_B$ are the dilution factors used in the cytotocixity assay for drugs A and B respectively,
-- $M_0$ and $M_E$ are the matrices of the survival percentage for the experimental data and for the corresponding Bliss independence data, respectively.
+- $U_{observed}$ and $U_{expected}$ are the matrices of the survival percentage for the experimental data and for the corresponding Bliss independence data, respectively.
 
-The generalized form of the equation for a combination of n drugs is:
+The generalized form of the equation for a combination of $n$ drugs is:
 
-$$CI = \prod_{i=1}^n \ln f_i \sum_{i=1}^n (M_0 - M_E)_i$$
+$$CI = \prod_{i=1}^n \ln f_i \cdot \sum_{i=1}^n (U_{expected} - U_{observed})_i$$
 
 where:
 
 - $f_i$ is the dilution factor used in the cytotoxicity assay for drug $i$,
-- $M_0$ and $M_E$ are the matrices of the survival percentage for the experimental data and for the corresponding Bliss independence data, respectively.
+- $U_{observed}$ and $U_{expected}$ are the matrices of the survival percentage for the experimental data and for the corresponding Bliss independence data, respectively.
 
-### **Efficacy index**
+🧩 **Interpretation**: The higher the combination index, the more synergistic the drugs are.
+
+<br>
+
+### 🌟 **Efficacy index**
 
 An **efficacy index** is calculated as follow: 
 
-$$EI = \ln f_A \ln f_B \sum_{A,B} M_0$$ 
+$$EI = \ln f_A \cdot \ln f_B \cdot \sum_{A,B} (100 - U_{observed})$$ 
 
 where:
 
 - $f_A$ and $f_B$ are the dilution factors used in the cytotocixity assay for drugs A and B respectively,
-- $M_0$ is the matrix of the survival percentage for the experimental data.
+- $U_{observed}$ is the matrix of the survival percentage for the experimental data.
 
-The generalized form of the equation for a combination of n drugs is:
+The generalized form of the equation for a combination of $n$ drugs is:
 
-$$EI = \prod_{i=1}^n \ln f_i \sum_{i=1}^n (M_0)_i$$
+$$EI = \prod_{i=1}^n \ln f_i \cdot \sum_{i=1}^n (100 - U_{observed})_i$$
 
 where:
 
 - $f_i$ is the dilution factor used in the cytotoxicity assay for drug $i$,
-- $M_0$ is the matrix of the survival percentage for the experimental data.
+- $U_{observed}$ is the matrix of the survival percentage for the experimental data.
 
-### **Additive index**
+🧩 **Interpretation**: The higher the efficacy index, the more lethal the drugs are.
+
+<br>
+
+### 🌟 **Additivity index**
 
 An **additive index** is calculated as follow:
 
-$$AI = \ln f_A \ln f_B \sum_{A,B} 100 - M_E$$
+$$AI = \ln f_A \cdot \ln f_B \cdot \sum_{A,B} (100 - U_{expected})$$
 
 where:
 
 - $f_A$ and $f_B$ are the dilution factors used in the cytotocixity assay for drugs A and B respectively,
-- $M_E$ is the matrix of the survival percentage for the corresponding Bliss independence data.
+- $U_{expected}$ is the matrix of the survival percentage for the corresponding Bliss independence data.
 
-The generalized form of the equation for a combination of n drugs is:
+The generalized form of the equation for a combination of $n$ drugs is:
 
-$$AI = \prod_{i=1}^n \ln f_i \sum_{i=1}^n (100 - M_E)_i$$
+$$AI = \prod_{i=1}^n \ln f_i \cdot \sum_{i=1}^n (100 - U_{expected})_i$$
 
 where:
 
 - $f_i$ is the dilution factor used in the cytotoxicity assay for drug $i$,
-- $M_E$ is the matrix of the survival percentage for the corresponding Bliss independence data.
+- $U_{expected}$ is the matrix of the survival percentage for the corresponding Bliss independence data.
+
+🧩 **Interpretation**: The higher the combination index, the more lethal the drugs 
+are supposed to be according to the Bliss independance model.
+
