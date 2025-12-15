@@ -228,5 +228,5 @@ where:
 - $U_{expected}$ is the matrix of the survival percentage for the
   corresponding Bliss independence data.
 
-🧩 **Interpretation**: The higher the combination index, the more lethal
+🧩 **Interpretation**: The higher the additive index, the more lethal
 the drugs are supposed to be according to the Bliss independance model.
