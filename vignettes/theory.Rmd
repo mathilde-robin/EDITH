@@ -13,7 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 <br>
 
-## 🎯 **Motivations**
+## 🎯 **Aim**
 
 Characterizing interactions between drugs is an area of major interest for drug  
 development, as exploiting synergism between drugs could allow increasing  treatment 
@@ -78,7 +78,7 @@ where:
 - $i = 1, ..., n$ indexes the drugs in the combination,
 - $U_i$ is the fraction of unaffected cells by drug $i$.
 
-🚨 **Important**: the values in the input matrix must correspond to the percentage of living cells.
+🚨 **Important**: The values in the input matrix must correspond to the percentage of living cells.
 
 <br>
 
@@ -106,7 +106,7 @@ $$Interaction = E_{expected} - E_{observed}$$
 
  The interaction can be classified into three categories based on this comparison:
 
-- ⚡ **Synergy**:  More cells killed than expected → positive interaction effect ($E_{expected} < E_{observed}$)
+- ⚡ **Synergy**:More cells killed than expected → positive interaction effect ($E_{expected} < E_{observed}$)
 - ⚖️ **Additivity**: As many cells killed as expected → no interaction effect ($E_{expected} ≈ E_{observed}$)
 - ⚔️ **Antagonism**: Less cells killed than expected → negative interaction effect ($E_{expected} > E_{observed}$)
 
@@ -124,35 +124,72 @@ To illustrate the interaction estimation, consider the following example with tw
 
 ## 🧮 **Quantification of drug interactions**
 
-Different measures can be used to quantify drug interactions. In the `EDITH` package, 
-we implement three different indexes: the additive index, the combination index and the efficacy index.
+In addition to this point-bypoint estimation, different measures can be used to 
+quantify drug interactions. In the `EDITH` package, we implement three different 
+indexes: the additive index, the combination index and the efficacy index.
 
-### **Additive index**
+🚨 **Important**: These indexes can be used **if and only if** the dilution factor 
+is fixed between all the dose levels for each drug used in the cytotocixity assay.
+
+🚨 **Important**: These indexes can be used to compared different experiments **if and only if**
+the same drug concentration ranges and the same dilution factors are used in all experiments.
 
 ### **Combination index**
 
+According to the approach proposed by Lehár (Lehár et al., 2007, 2008, 2009), the **combination index**, is calculated as follows:
+
+$$CI = ln f_A ln f_B \sum_{A,B} (M_0 - M_E)$$
+
+where:
+
+- $f_A$ and $f_B$ are the dilution factors used in the cytotocixity assay for drugs A and B respectively,
+- $M_0$ and $M_E$ are the matrices of the survival percentage for the experimental data and for the corresponding Bliss independence data, respectively.
+
+The generalized form of the equation for a combination of n drugs is:
+
+$$CI = \prod_{i=1}^n \ln f_i \sum_{i=1}^n (M_0 - M_E)_i$$
+
+where:
+
+- $f_i$ is the dilution factor used in the cytotoxicity assay for drug $i$,
+- $M_0$ and $M_E$ are the matrices of the survival percentage for the experimental data and for the corresponding Bliss independence data, respectively.
+
 ### **Efficacy index**
 
+An **efficacy index** is calculated as follow: 
 
-La formule de Lehar est utilisée pour évaluer l'efficacité des combinaisons de médicaments en tenant compte de leur interaction. 
-Elle est souvent utilisée dans le contexte de la pharmacologie pour quantifier l'effet d'une combinaison de médicaments par rapport à leurs effets individuels.
-La formule de Lehar est généralement exprimée comme suit :
-CI = (E_A * E_B) / E_combined
-où :
-- CI est l'indice de combinaison, qui quantifie l'interaction entre les médicaments.
-- E_A est l'effet du médicament A.
-- E_B est l'effet du médicament B.
-- E_combined est l'effet combiné des deux médicaments lorsqu'ils sont administrés ensemble.
+$$EI = \ln f_A \ln f_B \sum_{A,B} M_0$$ 
 
-L'indice de combinaison (CI) est utilisé pour évaluer si l'effet combiné des médicaments est supérieur, inférieur ou égal à la somme de leurs effets individuels. Un CI supérieur à 1 indique une synergie entre les médicaments, c'est-à-dire que leur effet combiné est supérieur à ce qui serait attendu en additionnant leurs effets individuels. Un CI égal à 1 indique une additivité, tandis qu'un CI inférieur à 1 suggère un antagonisme, où l'effet combiné est inférieur à la somme des effets individuels.
-La formule de Lehar est souvent utilisée dans les études pharmacologiques pour évaluer l'efficacité des combinaisons de médicaments, en particulier dans le contexte du traitement du cancer ou d'autres maladies où plusieurs médicaments sont utilisés simultanément. Elle permet aux chercheurs de mieux comprendre comment les médicaments interagissent entre eux et d'optimiser les schémas thérapeutiques.
+where:
 
-*Index*:
+- $f_A$ and $f_B$ are the dilution factors used in the cytotocixity assay for drugs A and B respectively,
+- $M_0$ is the matrix of the survival percentage for the experimental data.
 
-According to the approach proposed by Lehar (Lehár et al., 2007, 2008, 2009), a point-by-point calculation of the expected values in case of absence of interaction effect is performed over all the matrix concentration combinations in order to obtain an expected-value matrix. Then, a **combination index**, **CI**, is calculated as follows: $CI = \ln f_A \ln f_B \sum_{A,B} (M_0 - M_E)$ where $M_O$ and $M_E$ are the matrices of the observed and expected values, respectively, and $f_A$ and $f_B$ are the dilution factors for the drugs A and B. The **CI** is a positive-gated, effect-weighted volume over the lack of interaction effect (i.e. Bliss independence), adjusted for variable dilution factors $f_A$ and $f_B$. An **efficacy index** is also calculated as follow: $EI = \ln f_A \ln f_B \sum_{A,B} M_0$. 
+The generalized form of the equation for a combination of n drugs is:
 
-Lehár, J., Zimmermann, G.R., Krueger, A.S., Molnar, R.A., Ledell, J.T., Heilbut, A.M., Short, G.F., Giusti, L.C., Nolan, G.P., Magid, O.A., et al. (2007). Chemical combination effects predict connectivity in biological systems. Mol. Syst. Biol. 3, 80.
+$$EI = \prod_{i=1}^n \ln f_i \sum_{i=1}^n (M_0)_i$$
 
-Lehár, J., Stockwell, B.R., Giaever, G., and Nislow, C. (2008). Combination chemical genetics. Nat. Chem. Biol. 4, 674–681.
+where:
 
-Lehár, J., Krueger, A.S., Avery, W., Heilbut, A.M., Johansen, L.M., Price, E.R., Rickles, R.J., Short, G.F., Staunton, J.E., Jin, X., et al. (2009). Synergistic drug combinations tend to improve therapeutically relevant selectivity. Nat. Biotechnol. 27, 659–666.
+- $f_i$ is the dilution factor used in the cytotoxicity assay for drug $i$,
+- $M_0$ is the matrix of the survival percentage for the experimental data.
+
+### **Additive index**
+
+An **additive index** is calculated as follow:
+
+$$AI = \ln f_A \ln f_B \sum_{A,B} 100 - M_E$$
+
+where:
+
+- $f_A$ and $f_B$ are the dilution factors used in the cytotocixity assay for drugs A and B respectively,
+- $M_E$ is the matrix of the survival percentage for the corresponding Bliss independence data.
+
+The generalized form of the equation for a combination of n drugs is:
+
+$$AI = \prod_{i=1}^n \ln f_i \sum_{i=1}^n (100 - M_E)_i$$
+
+where:
+
+- $f_i$ is the dilution factor used in the cytotoxicity assay for drug $i$,
+- $M_E$ is the matrix of the survival percentage for the corresponding Bliss independence data.
