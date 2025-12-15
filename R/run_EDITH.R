@@ -27,6 +27,8 @@ run_EDITH <- function () {
   invisible(
     sapply(sheet_names, function (sheet_name) {
 
+      cat(paste0("Excel sheet: ", which(sheet_names == sheet_name), "/", length(sheet_names), " "))
+
       sheet_data <- readxl::read_excel(
         path = filename, sheet = sheet_name,
         col_names = FALSE, progress = FALSE, .name_repair = "minimal"
@@ -58,6 +60,8 @@ run_EDITH <- function () {
       } else {
         three_drugs(sheet_name = sheet_name, drug_names = drug_names, sheet_data = sheet_data)
       }
+
+      cat("\u2705 \n")
     })
   )
 }
