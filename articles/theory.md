@@ -206,7 +206,7 @@ the drugs are.
 
 ### 🌟 **Additivity index**
 
-An **additive index** is calculated as follow:
+An **additivity index** is calculated as follow:
 
 $$AI = \ln f_{A} \cdot \ln f_{B} \cdot \sum\limits_{A,B}\left( 100 - U_{expected} \right)$$
 
@@ -228,5 +228,5 @@ where:
 - $U_{expected}$ is the matrix of the survival percentage for the
   corresponding Bliss independence data.
 
-🧩 **Interpretation**: The higher the additive index, the more lethal
+🧩 **Interpretation**: The higher the additivity index, the more lethal
 the drugs are supposed to be according to the Bliss independance model.
