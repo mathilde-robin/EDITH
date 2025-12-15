@@ -187,7 +187,7 @@ where:
 
 ### 🌟 **Additivity index**
 
-An **additive index** is calculated as follow:
+An **additivity index** is calculated as follow:
 
 $$AI = \ln f_A \cdot \ln f_B \cdot \sum_{A,B} (100 - U_{expected})$$
 
@@ -205,6 +205,6 @@ where:
 - $f_i$ is the dilution factor used in the cytotoxicity assay for drug $i$,
 - $U_{expected}$ is the matrix of the survival percentage for the corresponding Bliss independence data.
 
-🧩 **Interpretation**: The higher the additive index, the more lethal the drugs 
+🧩 **Interpretation**: The higher the additivity index, the more lethal the drugs 
 are supposed to be according to the Bliss independance model.
 
