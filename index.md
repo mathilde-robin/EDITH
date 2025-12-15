@@ -13,7 +13,7 @@
 
   
 
-## 🎯 **Motivations**
+## 🎯 **Aim**
 
 Characterizing interactions between drugs is an area of major interest
 for drug  
