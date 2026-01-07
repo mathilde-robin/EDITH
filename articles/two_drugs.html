@@ -95,8 +95,11 @@ path by running the following code:</p>
 <span>  path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package <span class="op">=</span> <span class="st">"EDITH"</span><span class="op">)</span>, </span>
 <span>  pattern <span class="op">=</span> <span class="st">".xlsx"</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] "/home/runner/work/_temp/Library/EDITH/extdata/2drugs.xlsx"</span></span>
-<span><span class="co">## [2] "/home/runner/work/_temp/Library/EDITH/extdata/3drugs.xlsx"</span></span></code></pre>
+<pre><code><span><span class="co">## [1] "/home/runner/work/_temp/Library/EDITH/extdata/2drugs_error_na.xlsx"  </span></span>
+<span><span class="co">## [2] "/home/runner/work/_temp/Library/EDITH/extdata/2drugs_error_zero.xlsx"</span></span>
+<span><span class="co">## [3] "/home/runner/work/_temp/Library/EDITH/extdata/2drugs_ok.xlsx"        </span></span>
+<span><span class="co">## [4] "/home/runner/work/_temp/Library/EDITH/extdata/2drugs_warnings.xlsx"  </span></span>
+<span><span class="co">## [5] "/home/runner/work/_temp/Library/EDITH/extdata/3drugs.xlsx"</span></span></code></pre>
 <p>Otherwise, you can have a look at the snapshot of the example input
 file below:</p>
 <p align="center">
@@ -115,11 +118,14 @@ in the columns (e.g., “Drug B”).</li>
 from cell <code>B3</code>).</li>
 <li>The first column must contain the concentrations of Drug A (starting
 from cell <code>A4</code>).</li>
-<li>The drugs concentrations must be in increasing order, starting from
-0 for no drug and with a consistent step size.</li>
+<li>The drugs concentrations must be in increasing order (a correction
+is applied if it is not the case), starting from 0 for no drug (the
+function give an error if it is not the case), and with a consistent
+step size (<em>if you want to use the indexes</em>).</li>
 <li>The rest of the cells must contain the corresponding viability
-values between 0 and 100 (values higher than 100 will be set to
-100).</li>
+values between 0 and 100 (negative values will be set to 0, values
+higher than 100 will be set to 100, missing values will give an
+error).</li>
 </ul>
 <p>🚨 <strong>Important</strong>: the values in the input matrix must
 correspond to the percentage of living cells.</p>

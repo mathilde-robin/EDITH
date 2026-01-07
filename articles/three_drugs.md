@@ -16,8 +16,11 @@ list.files(
 )
 ```
 
-    ## [1] "/home/runner/work/_temp/Library/EDITH/extdata/2drugs.xlsx"
-    ## [2] "/home/runner/work/_temp/Library/EDITH/extdata/3drugs.xlsx"
+    ## [1] "/home/runner/work/_temp/Library/EDITH/extdata/2drugs_error_na.xlsx"  
+    ## [2] "/home/runner/work/_temp/Library/EDITH/extdata/2drugs_error_zero.xlsx"
+    ## [3] "/home/runner/work/_temp/Library/EDITH/extdata/2drugs_ok.xlsx"        
+    ## [4] "/home/runner/work/_temp/Library/EDITH/extdata/2drugs_warnings.xlsx"  
+    ## [5] "/home/runner/work/_temp/Library/EDITH/extdata/3drugs.xlsx"
 
 Otherwise, you can have a look at the snapshot of the example input file
 below:
@@ -41,10 +44,13 @@ below:
 - The first column must contain the concentrations of Drug A (starting
   from cell `A4`).
 - The last column must contain the concentrations of Drug C by block.
-- The drugs concentrations must be in increasing order, starting from 0
-  for no drug and with a consistent step size.
+- The drugs concentrations must be in increasing order (a correction is
+  applied if it is not the case), starting from 0 for no drug (the
+  function give an error if it is not the case), and with a consistent
+  step size (*if you want to use the indexes*).
 - The rest of the cells must contain the corresponding viability values
-  between 0 and 100 (values higher than 100 will be set to 100).
+  between 0 and 100 (negative values will be set to 0, values higher
+  than 100 will be set to 100, missing values will give an error).
 
 🚨 **Important**: the values in the input matrix must correspond to the
 percentage of living cells.
