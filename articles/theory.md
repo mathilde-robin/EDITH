@@ -109,11 +109,11 @@ The interaction can be classified into three categories based on this
 comparison:
 
 - ⚡ **Synergy**: More cells killed than expected → positive interaction
-  effect ($U_{expected} - U_{observed}$)
+  effect ($U_{expected} > U_{observed}$)
 - ⚖️ **Additivity**: As many cells killed as expected → no interaction
   effect ($U_{expected} \approx U_{observed}$)
 - ⚔️ **Antagonism**: Less cells killed than expected → negative
-  interaction effect ($U_{expected} > U_{observed}$)
+  interaction effect ($U_{expected} < U_{observed}$)
 
   
 
