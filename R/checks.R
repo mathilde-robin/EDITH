@@ -64,7 +64,7 @@ checks <- function (data_init) {
   # check that the dilution step is constant in column
   steps_cols <- log(as.numeric(colnames(data_init)[-1]))
   delta_cols <- round(x = steps_cols[2:length(steps_cols)] - steps_cols[1:(length(steps_cols)-1)], digits = 2)
-  if (length(unique(delta_rows)) != 1) {
+  if (length(unique(delta_cols)) != 1) {
     answer <- svDialogs::dlg_message(message = "The dilution step does not seem constant for drug in column \u2192 indices may be impacted", type = "yesno")$res
     if (answer == "no") return (NULL)
   }
