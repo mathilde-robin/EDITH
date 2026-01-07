@@ -57,7 +57,7 @@ checks <- function (data_init) {
   steps_rows <- log(as.numeric(rownames(data_init)[-1]))
   delta_rows <- round(x = steps_rows[2:length(steps_rows)] - steps_rows[1:(length(steps_rows)-1)], digits = 2)
   if (length(unique(delta_rows)) != 1) {
-    answer <- svDialogs::dlg_message(message = "The dilution step does not seem constant for drug in row \u2192 indices may be impacted", type = "yesno")$res
+    answer <- svDialogs::dlg_message(message = "The dilution step does not seem constant for drug in row \u2192 indices may be impacted. Continue?", type = "yesno")$res
     if (answer == "no") return (NULL)
   }
 
@@ -65,7 +65,7 @@ checks <- function (data_init) {
   steps_cols <- log(as.numeric(colnames(data_init)[-1]))
   delta_cols <- round(x = steps_cols[2:length(steps_cols)] - steps_cols[1:(length(steps_cols)-1)], digits = 2)
   if (length(unique(delta_cols)) != 1) {
-    answer <- svDialogs::dlg_message(message = "The dilution step does not seem constant for drug in column \u2192 indices may be impacted", type = "yesno")$res
+    answer <- svDialogs::dlg_message(message = "The dilution step does not seem constant for drug in column \u2192 indices may be impacted. Continue?", type = "yesno")$res
     if (answer == "no") return (NULL)
   }
 
