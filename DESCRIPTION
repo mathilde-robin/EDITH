@@ -22,7 +22,8 @@ Imports:
     readxl,
     stringr,
     svDialogs,
-    BiocManager
+    BiocManager,
+    ComplexHeatmap
 Suggests: 
     knitr,
     rmarkdown,
