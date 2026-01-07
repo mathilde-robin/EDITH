@@ -102,11 +102,11 @@ $$Interaction = U_{expected} - U_{observed}$$
 
 <br>
 
-## 🧩 **Interpretation**:
+## 🧩 **Interpretation**
 
 The interaction can be classified into three categories based on this comparison:
 
-- ⚡ **Synergy**:More cells killed than expected → positive interaction effect ($U_{expected} - U_{observed}$)
+- ⚡ **Synergy**: More cells killed than expected → positive interaction effect ($U_{expected} - U_{observed}$)
 - ⚖️ **Additivity**: As many cells killed as expected → no interaction effect ($U_{expected} ≈ U_{observed}$)
 - ⚔️ **Antagonism**: Less cells killed than expected → negative interaction effect ($U_{expected} > U_{observed}$)
 
