@@ -60,8 +60,7 @@ EDITH can explore the synergistic effects of two or three drugs based on
 cell viability data obtained from combination experiments. The input
 data should be provided in a specific format, as described in the
 package documentation. Example datasets are included in the package to
-illustrate the required format (`inst/extdata/2drugs.xlsx` and
-`inst/extdata/3drugs.xlsx`) and can be found with this command:
+illustrate the required format and can be found with this command:
 
 ``` r
 list.files(path = system.file("extdata", package = "EDITH"), full.names = TRUE)

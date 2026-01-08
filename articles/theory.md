@@ -5,8 +5,7 @@
 ## 🎯 **Aim**
 
 Characterizing interactions between drugs is an area of major interest
-for drug  
-development, as exploiting synergism between drugs could allow
+for drug development, as exploiting synergism between drugs could allow
 increasing treatment efficacy using lower doses of single drugs, and
 avoiding antagonistic interaction is needed to maintain the therapeutic
 efficacy of drugs. Broadly speaking, synergism and antagonism could be
@@ -128,7 +127,7 @@ with two drugs, A and B:
 
 ## 🧮 **Quantification of drug interactions**
 
-In addition to this point-bypoint estimation, different measures can be
+In addition to this point-by-point estimation, different measures can be
 used to quantify drug interactions. In the `EDITH` package, we implement
 three different indexes: the additive index, the combination index and
 the efficacy index.

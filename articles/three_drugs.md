@@ -16,12 +16,6 @@ list.files(
 )
 ```
 
-    ## [1] "/home/runner/work/_temp/Library/EDITH/extdata/2drugs_error_na.xlsx"  
-    ## [2] "/home/runner/work/_temp/Library/EDITH/extdata/2drugs_error_zero.xlsx"
-    ## [3] "/home/runner/work/_temp/Library/EDITH/extdata/2drugs_ok.xlsx"        
-    ## [4] "/home/runner/work/_temp/Library/EDITH/extdata/2drugs_warnings.xlsx"  
-    ## [5] "/home/runner/work/_temp/Library/EDITH/extdata/3drugs.xlsx"
-
 Otherwise, you can have a look at the snapshot of the example input file
 below:
 
