@@ -20,7 +20,7 @@ This file should contain the dose-response data for two drugs. You can find an e
 of such a file in the `extdata` folder of the package, or found the complete path 
 by running the following code:
 
-```{r, eval=TRUE}
+```{r}
 list.files(
   path = system.file("extdata", package = "EDITH"), 
   pattern = ".xlsx", full.names = TRUE
