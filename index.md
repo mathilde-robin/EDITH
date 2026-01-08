@@ -16,8 +16,7 @@
 ## 🎯 **Aim**
 
 Characterizing interactions between drugs is an area of major interest
-for drug  
-development, as exploiting synergism between drugs could allow
+for drug development, as exploiting synergism between drugs could allow
 increasing treatment efficacy using lower doses of single drugs, and
 avoiding antagonistic interaction is needed to maintain the therapeutic
 efficacy of drugs. Broadly speaking, synergism and antagonism could be
