@@ -6,7 +6,8 @@
 
 To use the `EDITH` package, you first need to install R and RStudio on
 your computer. You can directly go on the posit.co website
-(<https://posit.co/downloads/>) and follow the instructions:
+(<https://posit.co/download/rstudio-desktop/>) and follow the
+instructions:
 
 ![install - rstudio](../reference/figures/installation_rstudio.png)
 
