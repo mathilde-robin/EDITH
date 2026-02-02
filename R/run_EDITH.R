@@ -13,7 +13,7 @@ run_EDITH <- function () {
 
   # say_hello()
 
-  filename <- file.choose(new = TRUE) %>%
+  filename <- file.choose() %>%
     stringr::str_replace_all(pattern = "\\\\", replacement = "/")
 
   output_dir <- filename %>%
