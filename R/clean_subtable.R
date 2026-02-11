@@ -22,7 +22,7 @@ clean_subtable <- function (df, drug_names, type) {
       as.matrix()
 
     # dimnames
-    rownames(subtable) <- df[-1,1][[1]]
+    rownames(subtable) <- df[-1,1]
     colnames(subtable) <- df[1,-1]
 
     # remove NA column
