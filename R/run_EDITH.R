@@ -17,22 +17,48 @@ run_EDITH <- function () {
     stringr::str_replace_all(pattern = "\\\\", replacement = "/")
 
   output_dir <- filename %>%
-    stringr::str_replace(pattern = ".xlsx", replacement = "_output/")
+    stringr::str_replace(pattern = ".xlsx|.csv", replacement = "_output/")
 
   dir.create(output_dir, showWarnings = FALSE)
   setwd(output_dir)
 
-  sheet_names <- readxl::excel_sheets(path = filename)
+  if (stringr::str_detect(string = filename, pattern = ".xlsx$")) {
+    format <- "xlsx"
+    sheet_names <- readxl::excel_sheets(path = filename)
+  }
+
+  if (stringr::str_detect(string = filename, pattern = ".csv$")) {
+    format <- "csv"
+    sheet_names <- stringr::str_split(string = filename, pattern = "/")[[1]]
+    sheet_names <- tail(x = sheet_names, n = 1)
+    sheet_names <- stringr::str_split(string = sheet_names, pattern = "[.]")[[1]][1]
+  }
 
   invisible(
     sapply(sheet_names, function (sheet_name) {
 
       cat(paste0("Excel sheet: ", which(sheet_names == sheet_name), "/", length(sheet_names), " "))
 
-      sheet_data <- readxl::read_excel(
-        path = filename, sheet = sheet_name,
-        col_names = FALSE, progress = FALSE, .name_repair = "minimal"
-      )
+      if (format == "xlsx") {
+        sheet_data <- readxl::read_excel(
+          path = filename, sheet = sheet_name,
+          col_names = FALSE, progress = FALSE, .name_repair = "minimal"
+        )
+
+        sheet_data <- as.data.frame(sheet_data)
+      }
+
+      if (format == "csv") {
+
+        sep <- readLines(con = filename, n = 2)[2]
+        sep <- substr(x = sep, start = 1, stop = 1)
+
+        sheet_data <- utils::read.table(
+          file = filename, header = FALSE, sep = sep, dec = "."
+        )
+
+        sheet_data[which(sheet_data == "", arr.ind = TRUE)] <- NA
+      }
 
       # rename empty colnames
       colnames(sheet_data) <- 1:ncol(sheet_data)
