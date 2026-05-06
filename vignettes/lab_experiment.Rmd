@@ -1,5 +1,5 @@
 ---
-title: "Lab experiment"
+title: "Laboratory protocol"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{lab_experiment}
@@ -7,10 +7,12 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-[📄 Télécharger le PDF](media/protocol.pdf)
+The experimental protocol necessary to obtain suitable input data for EDITH is provided here. Please follow these guidelines to ensure compatibility with the package. 
 
-<video width="560" controls>
-  <source src="media/protocol.mp4" type="video/mp4">
-</video>
+[📄 Download the protocol](media/protocol.pdf)
+
+<!-- <video width="560" controls> -->
+<!--   <source src="media/protocol.mp4" type="video/mp4"> -->
+<!-- </video> -->
 
 

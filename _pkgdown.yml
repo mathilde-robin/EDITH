@@ -11,7 +11,7 @@ navbar:
     articles:
       text: Articles
       menu:
-      - text: Lab experiment
+      - text: Laboratory protocol
         href: articles/lab_experiment.html
       - text: -------
       - text: Installation
