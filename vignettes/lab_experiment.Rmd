@@ -2,7 +2,7 @@
 title: "Laboratory protocol"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{lab_experiment}
+  %\VignetteIndexEntry{Laboratory Protocol}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
