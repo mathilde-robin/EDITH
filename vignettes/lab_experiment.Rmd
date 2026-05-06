@@ -1,0 +1,16 @@
+---
+title: "Lab experiment"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{lab_experiment}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+[📄 Télécharger le PDF](media/protocol.pdf)
+
+<video width="560" controls>
+  <source src="media/protocol.mp4" type="video/mp4">
+</video>
+
+
