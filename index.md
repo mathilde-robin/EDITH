@@ -35,6 +35,7 @@ assessing drug interactions: *the Bliss independence model*.
 ## ⚙️ **Installation**
 
 ``` r
+
 if (!requireNamespace("remotes", quietly = TRUE)) {
     install.packages("remotes")
 }
@@ -63,6 +64,7 @@ package documentation. Example datasets are included in the package to
 illustrate the required format and can be found with this command:
 
 ``` r
+
 list.files(path = system.file("extdata", package = "EDITH"), full.names = TRUE)
 ```
 
@@ -91,6 +93,7 @@ accordingly. The input file path is specified via a pop-up window when
 the function is executed.
 
 ``` r
+
 library(EDITH)
 run_EDITH()
 ```

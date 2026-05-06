@@ -10,6 +10,7 @@ You can find an example of such a file in the `extdata` folder of the
 package, or found the complete path by running the following code:
 
 ``` r
+
 list.files(
   path = system.file("extdata", package = "EDITH"), 
   pattern = ".xlsx", full.names = TRUE
@@ -70,6 +71,7 @@ the function by copy-pasting the following code into the RStudio console
 and hitting `Enter`:
 
 ``` r
+
 library(EDITH)
 run_EDITH()
 ```

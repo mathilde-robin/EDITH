@@ -20,6 +20,7 @@ following code. You can just copy-paste it into the RStudio console and
 hit `Enter`.
 
 ``` r
+
 if (!requireNamespace("remotes", quietly = TRUE)) {
     install.packages("remotes")
 }
@@ -37,6 +38,7 @@ remotes::install_github("mathilde-robin/EDITH")
 Once the installation is complete, you can load the package by running:
 
 ``` r
+
 library(EDITH)
 ```
 

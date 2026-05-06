@@ -8,6 +8,8 @@
 
 - **Diego Tosi**. Author.
 
+- **Céline Gongora**. Author.
+
 ## Citation
 
 Robin M, Romero R, Tosi D (2025). *EDITH: Evaluation of Drug
