@@ -24,3 +24,6 @@ navbar:
       - text: -------
       - text: Theory
         href: articles/theory.html
+
+resources:
+  files: ['media/protocol.pdf']
