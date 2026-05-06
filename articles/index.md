@@ -3,7 +3,7 @@
 ### All vignettes
 
 - [Installation](install.md):
-- [Lab experiment](lab_experiment.md):
+- [Laboratory protocol](lab_experiment.md):
 - [Theory](theory.md):
 - [Tutorial with 3 drugs](three_drugs.md):
 - [Tutorial with 2 drugs](two_drugs.md):
