@@ -2,9 +2,7 @@
 .Rhistory
 .RData
 .Ruserdata
-docs
 /Meta/
 *_output/
 /presentations/
-inst/doc
 vignettes/media/*.mp4
