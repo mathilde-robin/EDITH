@@ -25,7 +25,7 @@ two_drugs <- function (sheet_name, drug_names, sheet_data) {
     subtable <- clean_subtable(df = sheet_data[block,], drug_names = drug_names, type = type)
 
     data_init <- subtable[["data_init"]]
-    data_init <- checks(data_init)
+    data_init <- checks(data_init = data_init, drug_names = drug_names, type = type)
 
     if (is.null(data_init)) {
       stop (call. = FALSE)

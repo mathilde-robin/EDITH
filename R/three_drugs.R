@@ -35,14 +35,11 @@ three_drugs <- function (sheet_name, drug_names, sheet_data) {
     data_init  <- subtable[["data_init"]]
     drug_doses <- subtable[["drug_doses"]]
 
-    ############################################################################
-    # Creer une fonction checks pour 3 drugs
-    # data_init <- checks(data_init)
-    #
-    # if (is.null(data_init)) {
-    #   stop (call. = FALSE)
-    # }
-    ############################################################################
+    data_init <- checks(data_init = data_init, drug_names = drug_names, type = type)
+
+    if (is.null(data_init)) {
+      stop (call. = FALSE)
+    }
 
     # drugs permutation
     lapply(1:length(drug_perm), function (perm) {

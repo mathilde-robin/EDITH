@@ -7,7 +7,7 @@
 #'
 #' @examples
 #' NULL
-checks <- function (data_init) {
+checks <- function (data_init, drug_names, type) {
 
   # check that there are no NA in the matrix
   if (anyNA(data_init)) {
@@ -28,45 +28,45 @@ checks <- function (data_init) {
   }
 
   # check that the first dose of each drug is 0
-  if (any(c(min(rownames(data_init)), min(colnames(data_init))) != "0")) {
+  if (any(sapply(dimnames(data_init), function (x) min(as.numeric(x)) != 0))) {
     svDialogs::dlg_message(message = "The first dose of one of the drugs is non-zero", type = "ok")
     return (NULL)
   }
 
   # check that there are at least 3 doses
-  if (any(c(ncol(data_init), nrow(data_init)) < 3)) {
+  if (any(dim(data_init) < 3)) {
     svDialogs::dlg_message(message = "One of the drugs has less than 3 doses", type = "ok")
     return (NULL)
   }
 
-  # check that doses in rows are in ascending order
-  doses_rows <- order(as.numeric(rownames(data_init)))
-  if (any(doses_rows != 1:length(doses_rows))) {
-    svDialogs::dlg_message(message = "Row doses not in ascending order \u2192 reordered", type = "ok")
-    data_init <- data_init[doses_rows,]
-  }
+  # check that doses are in ascending order
+  lapply(1:length(dim(data_init)), function (i) {
 
-  # check that doses in cols are in ascending order
-  doses_cols <- order(as.numeric(colnames(data_init)))
-  if (any(doses_cols != 1:length(doses_cols))) {
-    svDialogs::dlg_message(message = "Column doses not in ascending order \u2192 reordered", type = "ok")
-    data_init <- data_init[,doses_cols]
-  }
+    doses_i <- order(as.numeric(dimnames(data_init)[[i]]))
+    if (any(doses_i != 1:length(doses_i))) {
+      svDialogs::dlg_message(message = paste(drug_names[[i]], "doses not are in ascending order \u2192 reordered"), type = "ok")
+
+      if (type == 2) {
+        if (i == 1) data_init <- data_init[doses_i,]
+        if (i == 2) data_init <- data_init[, doses_i]
+      }
+
+      if (type == 3) {
+        if (i == 1) data_init <- data_init[doses_i,,]
+        if (i == 2) data_init <- data_init[, doses_i,]
+        if (i == 3) data_init <- data_init[,,doses_i]
+      }
+    }
+  })
 
   # check that the dilution step is constant in row
-  steps_rows <- log(as.numeric(rownames(data_init)[-1]))
-  delta_rows <- round(x = steps_rows[2:length(steps_rows)] - steps_rows[1:(length(steps_rows)-1)], digits = 2)
-  if (length(unique(delta_rows)) != 1) {
-    answer <- svDialogs::dlg_message(message = "The dilution step does not seem constant for drug in row \u2192 indices may be impacted. Continue?", type = "yesno")$res
-    if (answer == "no") return (NULL)
-  }
-
-  # check that the dilution step is constant in column
-  steps_cols <- log(as.numeric(colnames(data_init)[-1]))
-  delta_cols <- round(x = steps_cols[2:length(steps_cols)] - steps_cols[1:(length(steps_cols)-1)], digits = 2)
-  if (length(unique(delta_cols)) != 1) {
-    answer <- svDialogs::dlg_message(message = "The dilution step does not seem constant for drug in column \u2192 indices may be impacted. Continue?", type = "yesno")$res
-    if (answer == "no") return (NULL)
+  for (i in 1:length(dim(data_init))) {
+    steps <- log(as.numeric(dimnames(data_init)[[i]][-1]))
+    delta <- round(x = steps[2:length(steps)] - steps[1:(length(steps)-1)], digits = 2)
+    if (length(unique(delta)) != 1) {
+      answer <- svDialogs::dlg_message(message = paste("The dilution step does not seem constant for", drug_names[[i]], "\u2192 indices may be impacted. Continue?"), type = "yesno")$res
+      if (answer == "no") return (NULL)
+    }
   }
 
   return (data_init)
