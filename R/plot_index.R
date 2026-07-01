@@ -21,21 +21,21 @@ plot_index <- function (index_df) {
 
   patchwork::wrap_plots(
     index_df %>%
-      ggplot2::ggplot(ggplot2::aes(x = drug, y = AI, label = AI)) +
+      ggplot2::ggplot(ggplot2::aes(x = .data$drug, y = .data$AI, label = .data$AI)) +
       ggplot2::geom_col() +
-      ggplot2::geom_text(ggplot2::aes(vjust = ifelse(AI >= 0, 1.5, -1)), color = "white", size = 3) +
+      ggplot2::geom_text(ggplot2::aes(vjust = ifelse(.data$AI >= 0, 1.5, -1)), color = "white", size = 3) +
       ggplot2::labs(x = drug_name, y = "Additivity Index (AI)") +
       ggplot2::theme_bw(),
     index_df %>%
-      ggplot2::ggplot(ggplot2::aes(x = drug, y = CI, label = CI)) +
+      ggplot2::ggplot(ggplot2::aes(x = .data$drug, y = .data$CI, label = .data$CI)) +
       ggplot2::geom_col() +
-      ggplot2::geom_text(ggplot2::aes(vjust = ifelse(CI >= 0, 1.5, -1)), color = "white", size = 3) +
+      ggplot2::geom_text(ggplot2::aes(vjust = ifelse(.data$CI >= 0, 1.5, -1)), color = "white", size = 3) +
       ggplot2::labs(x = drug_name, y = "Combination Index (CI)") +
       ggplot2::theme_bw(),
     index_df %>%
-      ggplot2::ggplot(ggplot2::aes(x = drug, y = EI, label = EI)) +
+      ggplot2::ggplot(ggplot2::aes(x = .data$drug, y = .data$EI, label = .data$EI)) +
       ggplot2::geom_col() +
-      ggplot2::geom_text(ggplot2::aes(vjust = ifelse(EI >= 0, 1.5, -1)), color = "white", size = 3) +
+      ggplot2::geom_text(ggplot2::aes(vjust = ifelse(.data$EI >= 0, 1.5, -1)), color = "white", size = 3) +
       ggplot2::labs(x = drug_name, y = "Efficacy Index (EI)") +
       ggplot2::theme_bw(),
     nrow = 1
