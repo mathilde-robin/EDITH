@@ -4,7 +4,7 @@
 \alias{checks}
 \title{Checks on the input data matrix.}
 \usage{
-checks(data_init)
+checks(data_init, drug_names, type)
 }
 \arguments{
 \item{data_init}{A matrix or array containing the initial data.}

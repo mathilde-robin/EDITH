@@ -5,7 +5,7 @@ Checks on the input data matrix.
 ## Usage
 
 ``` r
-checks(data_init)
+checks(data_init, drug_names, type)
 ```
 
 ## Arguments
