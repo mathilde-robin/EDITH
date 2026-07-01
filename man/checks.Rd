@@ -8,6 +8,10 @@ checks(data_init, drug_names, type)
 }
 \arguments{
 \item{data_init}{A matrix or array containing the initial data.}
+
+\item{drug_names}{A character vector containing the names of the drugs.}
+
+\item{type}{An integer indicating the type of experiment: 2 for two-drug combinations, 3 for three-drug combinations.}
 }
 \value{
 A cleaned numeric matrix if all checks are passed; otherwise, NULL.
