@@ -11,7 +11,7 @@
 #' - heatmap_bliss: ComplexHeatmap object of the Bliss expected data
 #' - heatmap_diff: ComplexHeatmap object of the difference between Bliss expected and initial data
 #'
-#' @returns pdf and excel files saved in the output directory.
+#' @returns pdf, png and excel files saved in the output directory.
 #' @export
 #'
 #' @examples
