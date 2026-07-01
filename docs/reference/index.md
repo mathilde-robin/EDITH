@@ -18,6 +18,8 @@
   already installed.
 - [`plot_heatmap()`](plot_heatmap.md) : Plot heatmap for drug
   combination data (data_init/data_bliss/data_diff).
+- [`plot_index()`](plot_index.md) : Plot the calculated indexes (AI, CI,
+  EI) for each drug concentration.
 - [`plot_title()`](plot_title.md) : Add a title to a plot
 - [`run_EDITH()`](run_EDITH.md) : Main function to run EDITH analysis.
 - [`save_perm_3drugs()`](save_perm_3drugs.md) : Save permutation results

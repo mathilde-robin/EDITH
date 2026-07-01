@@ -51,7 +51,7 @@ save_perm_3drugs(sheet_name, rep, perm, drug_doses, drug_names, global)
 
 ## Value
 
-pdf and excel files saved in the output directory.
+pdf, png and excel files saved in the output directory.
 
 ## Examples
 
