@@ -5,7 +5,7 @@ Main function to run EDITH analysis.
 ## Usage
 
 ``` r
-run_EDITH(palette)
+run_EDITH(palette = "classic")
 ```
 
 ## Arguments
