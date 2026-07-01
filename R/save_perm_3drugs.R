@@ -67,9 +67,19 @@ save_perm_3drugs <- function (sheet_name, rep, perm, drug_doses, drug_names, glo
   width  <- length(drug_doses[[drug_names[2]]]) * length(drug_doses[[drug_names[3]]]) * 1.33
   height <- 2 * length(drug_doses[[drug_names[1]]])
 
+  # save in pdf
   grDevices::pdf(
     file = paste0(sheet_name, "_rep", rep, "_perm", perm, "_matrices.pdf"),
     width = grid::unit(x = width, units = "in"), height = grid::unit(x = height, units = "in")
+  )
+  gridExtra::grid.arrange(grobs = grobs, nrow = 2, ncol = length(drug_doses[[drug_names[3]]]))
+  plot_title(title = paste0(sheet_name, " | ", rep))
+  grDevices::dev.off()
+
+  # save in png
+  grDevices::png(
+    filename = paste0(sheet_name, "_rep", rep, "_perm", perm, "_matrices.png"),
+    width = width, height = height, units = "in", res = 300
   )
   gridExtra::grid.arrange(grobs = grobs, nrow = 2, ncol = length(drug_doses[[drug_names[3]]]))
   plot_title(title = paste0(sheet_name, " | ", rep))

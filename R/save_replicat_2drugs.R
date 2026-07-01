@@ -61,7 +61,7 @@ save_replicat_2drugs <- function (sheet_name, drug_names, global) {
     svDialogs::dlg_message("Replicates don't have the same doses in column", type = "ok")
   }
 
-  # compare replicates heatmaps in a single pdf
+  # compare replicates heatmaps in a single file
   grobs <- c(
     lapply(global, function (rep) {
       grid::grid.grabExpr(ComplexHeatmap::draw(rep[["heatmap_init"]]))
@@ -74,9 +74,19 @@ save_replicat_2drugs <- function (sheet_name, drug_names, global) {
   width  <- max(sapply(global, function (rep) length(rep[["drug_doses"]][[drug_names$drugA]]))) * length(global) * 0.7 # * 1.33
   height <- max(sapply(global, function (rep) length(rep[["drug_doses"]][[drug_names$drugB]]))) * 2
 
+  # save in pdf
   grDevices::pdf(
     file = paste0(sheet_name, "_matrices.pdf"),
     width = grid::unit(x = width, units = "in"), height = grid::unit(x = height, units = "in")
+  )
+  gridExtra::grid.arrange(grobs = grobs, nrow = 2, ncol = length(global))
+  plot_title(title = sheet_name)
+  grDevices::dev.off()
+
+  # save in png
+  grDevices::png(
+    filename = paste0(sheet_name, "_matrices.png"),
+    width = width, height = height, units = "in", res = 300
   )
   gridExtra::grid.arrange(grobs = grobs, nrow = 2, ncol = length(global))
   plot_title(title = sheet_name)

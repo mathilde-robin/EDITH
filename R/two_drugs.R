@@ -3,13 +3,14 @@
 #' @param sheet_name The name of the sheet being processed.
 #' @param drug_names A list where each element is the name of the corresponding drug.
 #' @param sheet_data A dataframe of the sheet data.
+#' @param palette Character string specifying the color palette for synergistic data. Options are "classic" (green-black-red) or "alternative" (blue-black-orange).
 #'
 #' @returns Cf. `save_replicat_2drugs` function.
 #' @export
 #'
 #' @examples
 #' NULL
-two_drugs <- function (sheet_name, drug_names, sheet_data) {
+two_drugs <- function (sheet_name, drug_names, sheet_data, palette = "classic") {
   type <- 2
 
   # replicates identification
@@ -39,9 +40,9 @@ two_drugs <- function (sheet_name, drug_names, sheet_data) {
       data_init = data_init,
       data_bliss = data_bliss,
       index_list = index(data_init = data_init, data_bliss = data_bliss),
-      heatmap_init  = plot_heatmap(data = data_init, drug_names = drug_names, color = 1, title = "Observed viability (%)"),
-      heatmap_bliss = plot_heatmap(data = data_bliss, drug_names = drug_names, color = 1, title = "Bliss expected viability (%)"),
-      heatmap_diff  = plot_heatmap(data = data_diff, drug_names = drug_names, color = 2, title = "Interaction effect (%)")
+      heatmap_init  = plot_heatmap(data = data_init, drug_names = drug_names, color = 1, palette = "classic", title = "Observed viability (%)"),
+      heatmap_bliss = plot_heatmap(data = data_bliss, drug_names = drug_names, color = 1, palette = "classic", title = "Bliss expected viability (%)"),
+      heatmap_diff  = plot_heatmap(data = data_diff, drug_names = drug_names, color = 2, palette = palette, title = "Interaction effect (%)")
     ))
   })
 

@@ -1,5 +1,7 @@
 #' Main function to run EDITH analysis.
 #'
+#' @param palette Character string specifying the color palette for synergistic data. Options are "classic" (green-black-red) or "alternative" (blue-black-orange).
+#'
 #' @returns pdf and excel files saved in the output directory.
 #' @export
 #'
@@ -7,7 +9,7 @@
 #' ## Not run:
 #' # run_EDITH()
 #' ## End(Not run)
-run_EDITH <- function () {
+run_EDITH <- function (palette) {
 
   # options(warn = -1)
 
@@ -82,9 +84,9 @@ run_EDITH <- function () {
 
       # 2 or 3 drugs?
       if (drug_names$drugC %in% c("NA", "", " ", NA)) {
-        two_drugs(sheet_name = sheet_name, drug_names = drug_names, sheet_data = sheet_data)
+        two_drugs(sheet_name = sheet_name, drug_names = drug_names, sheet_data = sheet_data, palette = palette)
       } else {
-        three_drugs(sheet_name = sheet_name, drug_names = drug_names, sheet_data = sheet_data)
+        three_drugs(sheet_name = sheet_name, drug_names = drug_names, sheet_data = sheet_data, palette = palette)
       }
 
       cat("\u2705 \n")

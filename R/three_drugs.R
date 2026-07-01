@@ -3,13 +3,14 @@
 #' @param sheet_name The name of the sheet being processed.
 #' @param drug_names A list where each element is the name of the corresponding drug.
 #' @param sheet_data A dataframe of the sheet data.
+#' @param palette Character string specifying the color palette for synergistic data. Options are "classic" (green-black-red) or "alternative" (blue-black-orange).
 #'
 #' @returns Cf. `save_perm_3drugs` function.
 #' @export
 #'
 #' @examples
 #' NULL
-three_drugs <- function (sheet_name, drug_names, sheet_data) {
+three_drugs <- function (sheet_name, drug_names, sheet_data, palette = "classic") {
   type <- 3
 
   drugs.n <- list(c(1,2,3), c(2,3,1), c(3,1,2))
@@ -56,17 +57,17 @@ three_drugs <- function (sheet_name, drug_names, sheet_data) {
         subtitle <- paste0(drug_names_perm[3],": ", dose_c)
 
         heatmap_init <- plot_heatmap(
-          data = data_perm[,, dose_c], drug_names = as.list(drug_names_perm), color = 1,
+          data = data_perm[,, dose_c], drug_names = as.list(drug_names_perm), color = 1, palette = "classic",
           title = "Observed viability (%)", subtitle = subtitle
         )
 
         heatmap_bliss <- plot_heatmap(
-          data = data_bliss[,, dose_c], drug_names = as.list(drug_names_perm), color = 1,
+          data = data_bliss[,, dose_c], drug_names = as.list(drug_names_perm), color = 1, palette = "classic",
           title = "Bliss expected viability (%)", subtitle = subtitle
         )
 
         heatmap_diff <- plot_heatmap(
-          data = data_diff[,, dose_c], drug_names = as.list(drug_names_perm), color = 2,
+          data = data_diff[,, dose_c], drug_names = as.list(drug_names_perm), color = 2, palette = palette,
           title = "Interaction effect (%)", subtitle = subtitle
         )
 

@@ -3,6 +3,7 @@
 #' @param data A matrix or array containing initial, additivity or synergistic data.
 #' @param drug_names A list where each element is the name of the corresponding drug.
 #' @param color 1 for initial/additivity data, 2 for synergistic data.
+#' @param palette Character string specifying the color palette for synergistic data. Options are "classic" (green-black-red) or "alternative" (blue-black-orange).
 #' @param title Character string for the title of the heatmap.
 #' @param subtitle Character string for the subtitle of the heatmap.
 #'
@@ -11,7 +12,7 @@
 #'
 #' @examples
 #' NULL
-plot_heatmap <- function (data, drug_names, color, title = "", subtitle = "") {
+plot_heatmap <- function (data, drug_names, color, palette = "classic", title = "", subtitle = "") {
 
   if (!requireNamespace("ComplexHeatmap", quietly = TRUE)) {
     stop ("The ComplexHeatmap package must be installed. Use BiocManager::install('ComplexHeatmap')")
@@ -25,9 +26,17 @@ plot_heatmap <- function (data, drug_names, color, title = "", subtitle = "") {
     color_breaks <- c(0, 50, 100)
     color_labels <- c("  0", "  50", "  100")
   } else {
-    color_palette <- circlize::colorRamp2(
-      breaks = c(-100, -15.1, -15, 0, 15, 15.1, 100),
-      colors = c("#00FF00", "#004e00", "#000000", "#000000", "#000000", "#4e0000", "#FF0000"))
+
+    if (palette == "classic") {
+      color_palette <- circlize::colorRamp2(
+        breaks = c(-100, -15.1, -15, 0, 15, 15.1, 100),
+        colors = c("#00FF00", "#004e00", "#000000", "#000000", "#000000", "#4e0000", "#FF0000"))
+    } else {
+      color_palette <- circlize::colorRamp2(
+        breaks = c(-100, -15.1, -15, 0, 15, 15.1, 100),
+        colors = c("#0000FF", "#00004e", "#000000", "#000000", "#000000", "#4e2900", "#FF8C00"))
+    }
+
     color_breaks <- c(-100, -50, 0, 50, 100)
     color_labels <- c("-100", "-50", "  0", "  50", "  100")
   }
