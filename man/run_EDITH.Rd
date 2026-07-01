@@ -4,7 +4,10 @@
 \alias{run_EDITH}
 \title{Main function to run EDITH analysis.}
 \usage{
-run_EDITH()
+run_EDITH(palette)
+}
+\arguments{
+\item{palette}{Character string specifying the color palette for synergistic data. Options are "classic" (green-black-red) or "alternative" (blue-black-orange).}
 }
 \value{
 pdf and excel files saved in the output directory.

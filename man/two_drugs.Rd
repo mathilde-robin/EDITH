@@ -4,7 +4,7 @@
 \alias{two_drugs}
 \title{Process data for two-drug combination experiments.}
 \usage{
-two_drugs(sheet_name, drug_names, sheet_data)
+two_drugs(sheet_name, drug_names, sheet_data, palette = "classic")
 }
 \arguments{
 \item{sheet_name}{The name of the sheet being processed.}
@@ -12,6 +12,8 @@ two_drugs(sheet_name, drug_names, sheet_data)
 \item{drug_names}{A list where each element is the name of the corresponding drug.}
 
 \item{sheet_data}{A dataframe of the sheet data.}
+
+\item{palette}{Character string specifying the color palette for synergistic data. Options are "classic" (green-black-red) or "alternative" (blue-black-orange).}
 }
 \value{
 Cf. \code{save_replicat_2drugs} function.

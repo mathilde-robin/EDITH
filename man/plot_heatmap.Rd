@@ -4,7 +4,14 @@
 \alias{plot_heatmap}
 \title{Plot heatmap for drug combination data (data_init/data_bliss/data_diff).}
 \usage{
-plot_heatmap(data, drug_names, color, title = "", subtitle = "")
+plot_heatmap(
+  data,
+  drug_names,
+  color,
+  palette = "classic",
+  title = "",
+  subtitle = ""
+)
 }
 \arguments{
 \item{data}{A matrix or array containing initial, additivity or synergistic data.}
@@ -12,6 +19,8 @@ plot_heatmap(data, drug_names, color, title = "", subtitle = "")
 \item{drug_names}{A list where each element is the name of the corresponding drug.}
 
 \item{color}{1 for initial/additivity data, 2 for synergistic data.}
+
+\item{palette}{Character string specifying the color palette for synergistic data. Options are "classic" (green-black-red) or "alternative" (blue-black-orange).}
 
 \item{title}{Character string for the title of the heatmap.}
 
