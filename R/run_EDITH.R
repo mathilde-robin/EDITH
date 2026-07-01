@@ -9,7 +9,7 @@
 #' ## Not run:
 #' # run_EDITH()
 #' ## End(Not run)
-run_EDITH <- function (palette) {
+run_EDITH <- function (palette = "classic") {
 
   # options(warn = -1)
 
