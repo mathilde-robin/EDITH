@@ -27,7 +27,8 @@ Imports:
     ComplexHeatmap,
     patchwork,
     ggplot2,
-    utils
+    utils,
+    rlang
 Suggests: 
     knitr,
     rmarkdown,
