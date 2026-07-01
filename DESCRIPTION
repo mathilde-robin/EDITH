@@ -25,7 +25,9 @@ Imports:
     svDialogs,
     BiocManager,
     ComplexHeatmap,
-    patchwork
+    patchwork,
+    ggplot2,
+    utils
 Suggests: 
     knitr,
     rmarkdown,
