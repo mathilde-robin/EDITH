@@ -1,4 +1,4 @@
-#' Add a title to a plot
+#' Add a title to a plot.
 #'
 #' @param title The title text to be added to the plot.
 #'
