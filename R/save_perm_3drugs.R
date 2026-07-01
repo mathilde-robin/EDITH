@@ -13,7 +13,7 @@
 #' - heatmap_bliss: ComplexHeatmap object of the Bliss expected data
 #' - heatmap_diff: ComplexHeatmap object of the difference between Bliss expected and initial data
 #'
-#' @returns pdf and excel files saved in the output directory.
+#' @returns pdf, png and excel files saved in the output directory.
 #' @export
 #'
 #' @examples
@@ -33,6 +33,26 @@ save_perm_3drugs <- function (sheet_name, rep, perm, drug_doses, drug_names, glo
   }))
 
   openxlsx::write.xlsx(x = index_df, file = paste0(sheet_name, "_rep", rep, "_perm", perm, "_index.xlsx"))
+
+  figure_index <- plot_index(index_df = index_df)  +
+    patchwork::plot_annotation(title = paste0(sheet_name, " | ", rep))
+
+  width  <- length(drug_doses[[drug_names[3]]]) * 3
+  height <- 5
+
+  grDevices::pdf(
+    file = paste0(sheet_name, "_rep", rep, "_perm", perm, "_index.pdf"),
+    width = grid::unit(x = width, units = "in"), height = grid::unit(x = height, units = "in")
+  )
+  figure_index
+  grDevices::dev.off()
+
+  grDevices::png(
+    filename = paste0(sheet_name, "_rep", rep, "_perm", perm, "_index.png"),
+    width = width, height = height, units = "in", res = 300
+  )
+  figure_index
+  grDevices::dev.off()
 
   # global pdf
   grDevices::pdf(file = paste0(sheet_name, "_rep", rep, "_perm", perm, ".pdf"))

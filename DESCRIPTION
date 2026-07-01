@@ -24,7 +24,8 @@ Imports:
     stringr,
     svDialogs,
     BiocManager,
-    ComplexHeatmap
+    ComplexHeatmap,
+    patchwork
 Suggests: 
     knitr,
     rmarkdown,
