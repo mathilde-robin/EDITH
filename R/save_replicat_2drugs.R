@@ -33,9 +33,19 @@ save_replicat_2drugs <- function (sheet_name, drug_names, global) {
   # pdf for each replicate
   sapply(1:length(global), function (rep) {
     grDevices::pdf(file = paste0(sheet_name, "_rep", rep, ".pdf"))
+
+    # Sheet 1
     ComplexHeatmap::draw(global[[rep]][["heatmap_init"]])
+    plot_title(title = sheet_name)
+
+    # Sheet 2
     ComplexHeatmap::draw(global[[rep]][["heatmap_bliss"]])
+    plot_title(title = sheet_name)
+
+    # Sheet 3
     ComplexHeatmap::draw(global[[rep]][["heatmap_diff"]])
+    plot_title(title = sheet_name)
+
     grDevices::dev.off()
   })
 
@@ -69,5 +79,6 @@ save_replicat_2drugs <- function (sheet_name, drug_names, global) {
     width = grid::unit(x = width, units = "in"), height = grid::unit(x = height, units = "in")
   )
   gridExtra::grid.arrange(grobs = grobs, nrow = 2, ncol = length(global))
+  plot_title(title = sheet_name)
   grDevices::dev.off()
 }

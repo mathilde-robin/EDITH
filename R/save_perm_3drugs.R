@@ -36,9 +36,22 @@ save_perm_3drugs <- function (sheet_name, rep, perm, drug_doses, drug_names, glo
 
   # global pdf
   grDevices::pdf(file = paste0(sheet_name, "_rep", rep, "_perm", perm, ".pdf"))
-  for (dose_c in 1:length(global)) ComplexHeatmap::draw(global[[dose_c]][["heatmap_init"]])
-  for (dose_c in 1:length(global)) ComplexHeatmap::draw(global[[dose_c]][["heatmap_bliss"]])
-  for (dose_c in 1:length(global)) ComplexHeatmap::draw(global[[dose_c]][["heatmap_diff"]])
+
+  for (dose_c in 1:length(global)) {
+    ComplexHeatmap::draw(global[[dose_c]][["heatmap_init"]])
+    plot_title(title = paste0(sheet_name, " | ", rep))
+  }
+
+  for (dose_c in 1:length(global)) {
+    ComplexHeatmap::draw(global[[dose_c]][["heatmap_bliss"]])
+    plot_title(title = paste0(sheet_name, " | ", rep))
+  }
+
+  for (dose_c in 1:length(global)) {
+    ComplexHeatmap::draw(global[[dose_c]][["heatmap_diff"]])
+    plot_title(title = paste0(sheet_name, " | ", rep))
+  }
+
   grDevices::dev.off()
 
   # global pdf - one file
@@ -59,5 +72,6 @@ save_perm_3drugs <- function (sheet_name, rep, perm, drug_doses, drug_names, glo
     width = grid::unit(x = width, units = "in"), height = grid::unit(x = height, units = "in")
   )
   gridExtra::grid.arrange(grobs = grobs, nrow = 2, ncol = length(drug_doses[[drug_names[3]]]))
+  plot_title(title = paste0(sheet_name, " | ", rep))
   grDevices::dev.off()
 }
