@@ -5,8 +5,16 @@ Main function to run EDITH analysis.
 ## Usage
 
 ``` r
-run_EDITH()
+run_EDITH(palette)
 ```
+
+## Arguments
+
+- palette:
+
+  Character string specifying the color palette for synergistic data.
+  Options are "classic" (green-black-red) or "alternative"
+  (blue-black-orange).
 
 ## Value
 

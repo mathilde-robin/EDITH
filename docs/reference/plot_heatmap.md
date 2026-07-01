@@ -5,7 +5,14 @@ Plot heatmap for drug combination data (data_init/data_bliss/data_diff).
 ## Usage
 
 ``` r
-plot_heatmap(data, drug_names, color, title = "", subtitle = "")
+plot_heatmap(
+  data,
+  drug_names,
+  color,
+  palette = "classic",
+  title = "",
+  subtitle = ""
+)
 ```
 
 ## Arguments
@@ -21,6 +28,12 @@ plot_heatmap(data, drug_names, color, title = "", subtitle = "")
 - color:
 
   1 for initial/additivity data, 2 for synergistic data.
+
+- palette:
+
+  Character string specifying the color palette for synergistic data.
+  Options are "classic" (green-black-red) or "alternative"
+  (blue-black-orange).
 
 - title:
 

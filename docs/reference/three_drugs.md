@@ -5,7 +5,7 @@ Process data for three-drug combination experiments.
 ## Usage
 
 ``` r
-three_drugs(sheet_name, drug_names, sheet_data)
+three_drugs(sheet_name, drug_names, sheet_data, palette = "classic")
 ```
 
 ## Arguments
@@ -21,6 +21,12 @@ three_drugs(sheet_name, drug_names, sheet_data)
 - sheet_data:
 
   A dataframe of the sheet data.
+
+- palette:
+
+  Character string specifying the color palette for synergistic data.
+  Options are "classic" (green-black-red) or "alternative"
+  (blue-black-orange).
 
 ## Value
 
