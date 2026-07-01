@@ -6,6 +6,7 @@
 #' @export
 #'
 #' @examples
+#' NULL
 plot_title <- function (title) {
   grid::grid.text(
     label = title,
