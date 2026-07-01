@@ -23,7 +23,7 @@ save_replicat_2drugs(sheet_name, drug_names, global)
 }}
 }
 \value{
-pdf and excel files saved in the output directory.
+pdf, png and excel files saved in the output directory.
 }
 \description{
 Save results for replicates of 2-drug combination experiments.

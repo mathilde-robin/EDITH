@@ -28,7 +28,7 @@ save_perm_3drugs(sheet_name, rep, perm, drug_doses, drug_names, global)
 }}
 }
 \value{
-pdf and excel files saved in the output directory.
+pdf, png and excel files saved in the output directory.
 }
 \description{
 Save permutation results for 3-drug combinations.
