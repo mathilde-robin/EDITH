@@ -15,10 +15,10 @@ plot_index <- function (index_df) {
 
   index_df <- index_df %>%
     dplyr::mutate(
-      drug = factor(drug),
-      AI = round(x = AI, digits = 2),
-      CI = round(x = CI, digits = 2),
-      EI = round(x = EI, digits = 2))
+      drug = factor(.data$drug),
+      AI = round(x = .data$AI, digits = 2),
+      CI = round(x = .data$CI, digits = 2),
+      EI = round(x = .data$EI, digits = 2))
 
   patchwork::wrap_plots(
     index_df %>%
