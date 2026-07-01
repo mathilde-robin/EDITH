@@ -32,7 +32,7 @@ run_EDITH <- function (palette = "classic") {
   if (stringr::str_detect(string = filename, pattern = ".csv$")) {
     format <- "csv"
     sheet_names <- stringr::str_split(string = filename, pattern = "/")[[1]]
-    sheet_names <- tail(x = sheet_names, n = 1)
+    sheet_names <- utils::tail(x = sheet_names, n = 1)
     sheet_names <- stringr::str_split(string = sheet_names, pattern = "[.]")[[1]][1]
   }
 
