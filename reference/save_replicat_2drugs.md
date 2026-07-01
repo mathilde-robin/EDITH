@@ -41,7 +41,7 @@ save_replicat_2drugs(sheet_name, drug_names, global)
 
 ## Value
 
-pdf and excel files saved in the output directory.
+pdf, png and excel files saved in the output directory.
 
 ## Examples
 
