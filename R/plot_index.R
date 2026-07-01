@@ -3,6 +3,7 @@
 #' @param index_df A data frame containing the calculated indexes: Additivity Index (AI), Combination Index (CI), and Efficacy Index (EI) for each drug concentration.
 #'
 #' @returns A patchwork plot with three bar plots for AI, CI, and EI.
+#' @importFrom rlang .data
 #' @export
 #'
 #' @examples
