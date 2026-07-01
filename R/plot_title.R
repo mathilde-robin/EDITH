@@ -10,7 +10,8 @@
 plot_title <- function (title) {
   grid::grid.text(
     label = title,
-    x = unit(5, "mm"), y = unit(1, "npc") - unit(5, "mm"),
+    x = grid::unit(5, "mm"),
+    y = grid::unit(1, "npc") - grid::unit(5, "mm"),
     just = c("left", "top"),
     gp = grid::gpar(fontsize = 14, fontface = "bold")
   )
