@@ -135,7 +135,7 @@ Finaly, for each experiment, each replicate and each drug permutation, you obtai
 4. One `.pdf` and one `.png` file with the additive, combination and efficacy indexes for each concentration of the third drug in a barplot. 
 
 <p align="center">
-  <img src="../man/figures/three_drugs_output_index_png.png" alt="three drugs - output index png" width="500">
+  <img src="../man/figures/three_drugs_output_index_png.png" alt="three drugs - output index png" width="800">
 </p>
 
 <br>
