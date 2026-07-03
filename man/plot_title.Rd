@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_title.R
 \name{plot_title}
 \alias{plot_title}
-\title{Add a title to a plot}
+\title{Add a title to a plot.}
 \usage{
 plot_title(title)
 }
@@ -13,7 +13,7 @@ plot_title(title)
 A grid text object representing the title, positioned at the top left of the plot.
 }
 \description{
-Add a title to a plot
+Add a title to a plot.
 }
 \examples{
 NULL

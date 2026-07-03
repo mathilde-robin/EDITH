@@ -1,6 +1,6 @@
-# Add a title to a plot
+# Add a title to a plot.
 
-Add a title to a plot
+Add a title to a plot.
 
 ## Usage
 
