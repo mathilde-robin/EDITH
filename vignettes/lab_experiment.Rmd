@@ -7,9 +7,11 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-The experimental protocol necessary to obtain suitable input data for EDITH is provided here. Please follow these guidelines to ensure compatibility with the package. 
+The experimental protocol necessary to obtain suitable input data for `EDITH` is provided here. Please follow these guidelines to ensure compatibility with the package. 
 
 [📄 Download the protocol](media/protocol.pdf)
+
+The video below walks through each step of the protocol.
 
 <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
   <iframe 

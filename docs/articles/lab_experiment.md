@@ -1,7 +1,9 @@
 # Laboratory protocol
 
 The experimental protocol necessary to obtain suitable input data for
-EDITH is provided here. Please follow these guidelines to ensure
+`EDITH` is provided here. Please follow these guidelines to ensure
 compatibility with the package.
 
 [📄 Download the protocol](media/protocol.pdf)
+
+The video below walks through each step of the protocol.
