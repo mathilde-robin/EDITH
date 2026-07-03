@@ -86,7 +86,7 @@ save_replicat_2drugs <- function (sheet_name, drug_names, global) {
   # save in png
   grDevices::png(
     filename = paste0(sheet_name, "_matrices.png"),
-    width = width, height = height, units = "in", res = 300
+    width = width, height = height, units = "in", res = 300, type = "cairo"
   )
   gridExtra::grid.arrange(grobs = grobs, nrow = 2, ncol = length(global))
   plot_title(title = sheet_name)

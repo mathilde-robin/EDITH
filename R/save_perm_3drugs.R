@@ -44,14 +44,14 @@ save_perm_3drugs <- function (sheet_name, rep, perm, drug_doses, drug_names, glo
     file = paste0(sheet_name, "_rep", rep, "_perm", perm, "_index.pdf"),
     width = grid::unit(x = width, units = "in"), height = grid::unit(x = height, units = "in")
   )
-  figure_index
+  print(figure_index)
   grDevices::dev.off()
 
   grDevices::png(
     filename = paste0(sheet_name, "_rep", rep, "_perm", perm, "_index.png"),
-    width = width, height = height, units = "in", res = 300
+    width = width, height = height, units = "in", res = 300, type = "cairo"
   )
-  figure_index
+  print(figure_index)
   grDevices::dev.off()
 
   # global pdf
@@ -99,7 +99,7 @@ save_perm_3drugs <- function (sheet_name, rep, perm, drug_doses, drug_names, glo
   # save in png
   grDevices::png(
     filename = paste0(sheet_name, "_rep", rep, "_perm", perm, "_matrices.png"),
-    width = width, height = height, units = "in", res = 300
+    width = width, height = height, units = "in", res = 300, type = "cairo"
   )
   gridExtra::grid.arrange(grobs = grobs, nrow = 2, ncol = length(drug_doses[[drug_names[3]]]))
   plot_title(title = paste0(sheet_name, " | ", rep))
