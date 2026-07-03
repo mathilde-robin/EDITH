@@ -26,7 +26,9 @@ below:
 
 🔥 **The criteria for the input file are as follows:**
 
-- The file must be in `.xlsx` format.
+- The file must be in `.xlsx` or `.csv` format. For `.csv` files, the
+  decimal separator must be `.` and the field separator either `;` or
+  `,`.
 - The first cell (`A1`) must contain the name of the drug in the rows
   (e.g., “Drug A”).
 - The second cell (`B1`) must contain the name of the drug in the
@@ -117,9 +119,9 @@ You obtain:
 
 ![two drugs - output](../reference/figures/two_drugs_output.png)
 
-2.  One `.pdf` file per experiment (ie. per excel sheet) with the
-    viability and interaction heatmaps of all replicates in an unique
-    file.
+2.  One `.pdf` and one `.png` file per experiment (ie. per excel sheet)
+    with the viability and interaction heatmaps of all replicates in an
+    unique file.
 
 ![two drugs - output
 matrice](../reference/figures/two_drugs_output_matrice.png)

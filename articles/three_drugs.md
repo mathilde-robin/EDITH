@@ -26,7 +26,9 @@ below:
 
 🔥 **The criteria for the input file are as follows:**
 
-- The file must be in `.xlsx` format.
+- The file must be in `.xlsx` or `.csv` format. For `.csv` files, the
+  decimal separator must be `.` and the field separator either `;` or
+  `,`.
 - The first cell (`A1`) must contain the name of the drug in the rows
   (e.g., “Drug A”).
 - The second cell (`B1`) must contain the name of the drug in the
@@ -129,8 +131,8 @@ you obtain:
 - A heatmap visualizing the interaction effect for each concentration of
   the third drug.
 
-2.  One `.pdf` file with the viability and interaction heatmaps for each
-    concentration of the third drug in an unique file.
+2.  One `.pdf` and one `.png` file with the viability and interaction
+    heatmaps for each concentration of the third drug in an unique file.
 
 ![three drugs - output
 matrice](../reference/figures/three_drugs_output_matrice.png)
@@ -140,6 +142,13 @@ matrice](../reference/figures/three_drugs_output_matrice.png)
 
 ![three drugs - output
 index](../reference/figures/three_drugs_output_index.png)
+
+4.  One `.pdf` and one `.png` file with the additive, combination and
+    efficacy indexes for each concentration of the third drug in a
+    barplot.
+
+![three drugs - output index
+png](../reference/figures/three_drugs_output_index_png.png)
 
   
 

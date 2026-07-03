@@ -105,7 +105,10 @@ file below:</p>
 <p>🔥 <strong>The criteria for the input file are as
 follows:</strong></p>
 <ul>
-<li>The file must be in <code>.xlsx</code> format.</li>
+<li>The file must be in <code>.xlsx</code> or <code>.csv</code> format.
+For <code>.csv</code> files, the decimal separator must be
+<code>.</code> and the field separator either <code>;</code> or
+<code>,</code>.</li>
 <li>The first cell (<code>A1</code>) must contain the name of the drug
 in the rows (e.g., “Drug A”).</li>
 <li>The second cell (<code>B1</code>) must contain the name of the drug
@@ -203,9 +206,9 @@ independence model,</li>
 of the third drug.</li>
 </ul>
 <ol start="2" style="list-style-type: decimal">
-<li>One <code>.pdf</code> file with the viability and interaction
-heatmaps for each concentration of the third drug in an unique
-file.</li>
+<li>One <code>.pdf</code> and one <code>.png</code> file with the
+viability and interaction heatmaps for each concentration of the third
+drug in an unique file.</li>
 </ol>
 <p align="center">
 <img src="../reference/figures/three_drugs_output_matrice.png" alt="three drugs - output matrice" width="800"></p>
@@ -215,6 +218,13 @@ efficacy indexes for each concentration of the third drug.</li>
 </ol>
 <p align="center">
 <img src="../reference/figures/three_drugs_output_index.png" alt="three drugs - output index" width="500"></p>
+<ol start="4" style="list-style-type: decimal">
+<li>One <code>.pdf</code> and one <code>.png</code> file with the
+additive, combination and efficacy indexes for each concentration of the
+third drug in a barplot.</li>
+</ol>
+<p align="center">
+<img src="../reference/figures/three_drugs_output_index_png.png" alt="three drugs - output index png" width="500"></p>
 <p><br></p>
 <p>🔎 Fore more details about the method, please refer to the theory
 vignette: <a href="https://mathilde-robin.github.io/EDITH/articles/theory.html" class="external-link uri">https://mathilde-robin.github.io/EDITH/articles/theory.html</a></p>

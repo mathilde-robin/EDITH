@@ -98,6 +98,14 @@ library(EDITH)
 run_EDITH()
 ```
 
+If you prefer a colorblind-friendly palette, use the palette argument:
+
+``` r
+
+library(EDITH)
+run_EDITH(palette = "alternative")
+```
+
   
 
 ## 🎉 **Output**
