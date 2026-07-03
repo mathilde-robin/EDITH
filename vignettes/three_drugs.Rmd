@@ -37,7 +37,7 @@ Otherwise, you can have a look at the snapshot of the example input file below:
 
 🔥 **The criteria for the input file are as follows:**
 
--   The file must be in `.xlsx` format.
+-   The file must be in `.xlsx` or `.csv` format. For `.csv` files, the decimal separator must be `.` and the field separator either `;` or `,`.
 -   The first cell (`A1`) must contain the name of the drug in the rows (e.g., "Drug A").
 -   The second cell (`B1`) must contain the name of the drug in the columns (e.g., "Drug B").
 -   The third cell (`C1`) must contain the name of the drug in the layers (e.g., "Drug C").
@@ -120,7 +120,7 @@ Finaly, for each experiment, each replicate and each drug permutation, you obtai
   - A heatmap visualizing the interaction effect
   for each concentration of the third drug. 
   
-2. One `.pdf` file with the viability and interaction heatmaps for each concentration of the third drug in an unique file.
+2. One `.pdf` and one `.png` file with the viability and interaction heatmaps for each concentration of the third drug in an unique file.
 
 <p align="center">
   <img src="../man/figures/three_drugs_output_matrice.png" alt="three drugs - output matrice" width="800">
@@ -130,6 +130,12 @@ Finaly, for each experiment, each replicate and each drug permutation, you obtai
 
 <p align="center">
   <img src="../man/figures/three_drugs_output_index.png" alt="three drugs - output index" width="500">
+</p>
+
+4. One `.pdf` and one `.png` file with the additive, combination and efficacy indexes for each concentration of the third drug in a barplot. 
+
+<p align="center">
+  <img src="../man/figures/three_drugs_output_index_png.png" alt="three drugs - output index png" width="500">
 </p>
 
 <br>
