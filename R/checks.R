@@ -61,7 +61,7 @@ checks <- function (data_init, drug_names, type) {
     }
   })
 
-  # check that the dilution step is constant in row
+  # check that the dilution step is constant
   for (i in 1:length(dim(data_init))) {
     steps <- log(as.numeric(dimnames(data_init)[[i]][-1]))
     delta <- round(x = steps[2:length(steps)] - steps[1:(length(steps)-1)], digits = 2)
