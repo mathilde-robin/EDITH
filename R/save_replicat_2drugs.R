@@ -71,24 +71,44 @@ save_replicat_2drugs <- function (sheet_name, drug_names, global) {
     })
   )
 
-  width  <- max(sapply(global, function (rep) length(rep[["drug_doses"]][[drug_names$drugA]]))) * length(global) * 0.7 # * 1.33
-  height <- max(sapply(global, function (rep) length(rep[["drug_doses"]][[drug_names$drugB]]))) * 2
+  width <- ComplexHeatmap::draw(global[[1]][["heatmap_init"]]) %>%
+    ComplexHeatmap:::width() %>%
+    grid::convertWidth(unitTo = "in", valueOnly = TRUE)
+
+  height <- ComplexHeatmap::draw(global[[1]][["heatmap_init"]]) %>%
+    ComplexHeatmap:::height() %>%
+    grid::convertWidth(unitTo = "in", valueOnly = TRUE)
+
+  widths  <- rep(x = width, times = length(global))
+  heights <- rep(x = height, times = 2)
 
   # save in pdf
   grDevices::pdf(
     file = paste0(sheet_name, "_matrices.pdf"),
-    width = grid::unit(x = width, units = "in"), height = grid::unit(x = height, units = "in")
+    width = sum(widths), height = sum(heights)
   )
-  gridExtra::grid.arrange(grobs = grobs, nrow = 2, ncol = length(global))
+  gridExtra::grid.arrange(
+    grobs = grobs,
+    nrow = 2,
+    ncol = length(global),
+    widths  = grid::unit(widths, "in"),
+    heights = grid::unit(heights, "in")
+  )
   plot_title(title = sheet_name)
   grDevices::dev.off()
 
   # save in png
   grDevices::png(
     filename = paste0(sheet_name, "_matrices.png"),
-    width = width, height = height, units = "in", res = 300, type = "cairo"
+    width = sum(widths), height = sum(heights), units = "in", res = 300, type = "cairo"
   )
-  gridExtra::grid.arrange(grobs = grobs, nrow = 2, ncol = length(global))
+  gridExtra::grid.arrange(
+    grobs = grobs,
+    nrow = 2,
+    ncol = length(global),
+    widths  = grid::unit(widths, "in"),
+    heights = grid::unit(heights, "in")
+  )
   plot_title(title = sheet_name)
   grDevices::dev.off()
 }

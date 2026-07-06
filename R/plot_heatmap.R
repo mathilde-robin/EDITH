@@ -57,6 +57,8 @@ plot_heatmap <- function (data, drug_names, color, palette = "classic", title = 
     column_names_centered = TRUE,
     col = color_palette,
     rect_gp = grid::gpar(col = "white", lwd = 0.05),
+    width  = ncol(data) * grid::unit(15, "mm"),
+    height = nrow(data) * grid::unit(15, "mm"),
     cell_fun = function(j, i, x, y, width, height, fill) {
       grid::grid.text(
         label = round(x = data[i,j], digits = 0),
